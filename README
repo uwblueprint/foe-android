@@ -1,0 +1,7 @@
+To run:
+
+Open with Android Studio. Attach an Android device running Android KitKat or later. Hit the play button.
+
+To do development:
+
+Create a branch off of dev. When you want to merge your branch back to dev, create a pull request. Request the approval of at least one member on the team (default Luisa for Android).
