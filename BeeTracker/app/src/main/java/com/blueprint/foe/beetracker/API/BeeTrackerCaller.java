@@ -1,7 +1,6 @@
 package com.blueprint.foe.beetracker.API;
 
 import com.facebook.AccessToken;
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
@@ -9,10 +8,10 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
- * Created by luisa on 2017-06-21.
+ * Class that handles interacting with the Retrofit interface.
+ * It abstracts away most of the API interface
  */
 
 public class BeeTrackerCaller {
@@ -43,11 +42,9 @@ public class BeeTrackerCaller {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                //.addConverterFactory(ScalarsConverterFactory.create())
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        Call<SignupResponse> localToken = service.facebookAuth(new SignupRequest(token.getToken().toString()));
-        return localToken;
+        return service.facebookAuth(new SignupRequest(token.getToken().toString()));
     }
 }

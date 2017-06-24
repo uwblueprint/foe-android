@@ -36,25 +36,24 @@ public class MainActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                // App code
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
                     Call<BeeTrackerCaller.SignupResponse> token = caller.signup(loginResult.getAccessToken());
                     token.enqueue(loginCallback);
-                    //Log.v(TAG, token);
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
+                    // TODO: https://github.com/uwblueprint/foe/issues/16
                 }
             }
 
             @Override
             public void onCancel() {
-                // App code
+                // TODO: https://github.com/uwblueprint/foe/issues/16
             }
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
+                // TODO: https://github.com/uwblueprint/foe/issues/16
             }
         });
 
@@ -62,13 +61,14 @@ public class MainActivity extends AppCompatActivity {
         loginCallback = new Callback<BeeTrackerCaller.SignupResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
-                // Get result Repo from response.body()
                 Log.d(TAG, "got response string: " + response.body().getToken());
+                // TODO: Store returned token https://github.com/uwblueprint/foe/issues/17
             }
 
             @Override
             public void onFailure(Call<BeeTrackerCaller.SignupResponse> call, Throwable t) {
                 Log.e(TAG, "loginCallback ERROR" + t.toString());
+                // TODO: https://github.com/uwblueprint/foe/issues/16
             }
         };
     }
