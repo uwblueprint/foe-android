@@ -14,5 +14,5 @@ import retrofit2.http.Path;
 
 public interface  BeeTrackerService {
     @POST("/auth/facebook")
-    Call<String> facebookAuth(@Body String token);
+    Call<BeeTrackerCaller.SignupResponse> facebookAuth(@Body BeeTrackerCaller.SignupRequest token);
 }

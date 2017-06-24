@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 // App code
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
-                    Call<String> token = caller.signup(loginResult.getAccessToken());
+                    Call<BeeTrackerCaller.SignupResponse> token = caller.signup(loginResult.getAccessToken());
                     token.enqueue(loginCallback);
                     //Log.v(TAG, token);
                 } catch (IOException e) {
@@ -59,15 +59,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        loginCallback = new Callback<String>() {
+        loginCallback = new Callback<BeeTrackerCaller.SignupResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
                 // Get result Repo from response.body()
-                Log.d(TAG, "got response string: " + response.body());
+                Log.d(TAG, "got response string: " + response.body().getToken());
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<BeeTrackerCaller.SignupResponse> call, Throwable t) {
                 Log.e(TAG, "loginCallback ERROR" + t.toString());
             }
         };
