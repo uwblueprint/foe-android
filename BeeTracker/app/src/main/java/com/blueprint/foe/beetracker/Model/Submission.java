@@ -145,4 +145,10 @@ public class Submission {
     public boolean isComplete() {
         return species != null && habitat != null && weather != null && location != null;
     }
+
+    public void print() {
+        System.out.println("Face: " + face + ", Thorax: " + thorax + ", Abdomen: " + abdomen);
+        System.out.println("Species: " + species + ", Habitat: " + habitat + ", Weather: " + weather);
+        System.out.println("Location: " + location);
+    }
 }
