@@ -125,8 +125,6 @@ public class SubmissionTest {
 
     }
 
-
-
     @Test
     public void incompleteSubmission_isIncomplete() throws Exception {
         Submission submission = new Submission();
