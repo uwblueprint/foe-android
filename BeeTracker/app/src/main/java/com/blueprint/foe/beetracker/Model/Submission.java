@@ -35,7 +35,7 @@ public class Submission {
         Sunny, PartlyCloudy, Cloudy, Raining, Hailing
     }
 
-    private void clear() {
+    public void clear() {
         face = -1;
         thorax = -1;
         abdomen = -1;
@@ -140,5 +140,9 @@ public class Submission {
             species = Species.Colletidae;
         else
             species = Species.Unknown;
+    }
+
+    public boolean isComplete() {
+        return species != null && habitat != null && weather != null && location != null;
     }
 }
