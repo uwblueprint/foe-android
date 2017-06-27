@@ -8,6 +8,8 @@ import org.junit.Test;
 import java.util.MissingFormatArgumentException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by luisa on 2017-06-24.
@@ -138,5 +140,48 @@ public class SubmissionTest {
 
         assertEquals(false, submission.isComplete());
 
+    }
+
+    @Test
+    public void submission_isEqual() throws Exception {
+        Submission submission = new Submission();
+
+        submission.setFace(0);
+        submission.setAbdomen(0);
+        submission.setThorax(0);
+        submission.getSpecies();
+        submission.setWeather(Submission.Weather.Cloudy);
+        submission.setHabitat(Submission.Habitat.Park);
+
+        Submission submission1 = new Submission();
+        submission1.setFace(0);
+        submission1.setAbdomen(0);
+        submission1.setThorax(0);
+        submission1.getSpecies();
+        submission1.setWeather(Submission.Weather.Cloudy);
+        submission1.setHabitat(Submission.Habitat.Park);
+
+        assertTrue(submission.equals(submission1));
+        assertTrue(submission1.equals(submission));
+    }
+
+    @Test
+    public void submission_isNotEqual() throws Exception {
+        Submission submission = new Submission();
+
+        submission.setFace(0);
+        submission.setAbdomen(0);
+        submission.setThorax(0);
+        submission.setHabitat(Submission.Habitat.Park);
+
+        Submission submission1 = new Submission();
+        submission1.setFace(0);
+        submission1.setAbdomen(0);
+        submission1.setThorax(0);
+        submission1.setWeather(Submission.Weather.Cloudy); // other has no weather
+        submission1.setHabitat(Submission.Habitat.Park);
+
+        assertFalse(submission.equals(submission1));
+        assertFalse(submission1.equals(submission));
     }
 }

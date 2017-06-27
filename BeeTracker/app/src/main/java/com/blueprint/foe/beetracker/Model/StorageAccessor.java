@@ -38,11 +38,15 @@ public class StorageAccessor {
         return sb.toString();
     }
 
-    public Submission load(Context context) throws IOException {
-        FileInputStream fis = context.openFileInput(FILENAME);
-        String string = convertStreamToString(fis);
-        fis.close();
+    public Submission load(InputStream inputStream) throws IOException {
+        String string = convertStreamToString(inputStream);
+        inputStream.close();
         Gson gson = new Gson();
         return gson.fromJson(string, Submission.class);
+    }
+
+    public Submission load(Context context) throws IOException {
+        InputStream fis = context.openFileInput(FILENAME);
+        return load(fis);
     }
 }

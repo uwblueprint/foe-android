@@ -1,11 +1,17 @@
 package com.blueprint.foe.beetracker;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
+import com.blueprint.foe.beetracker.Model.StorageAccessor;
+import com.blueprint.foe.beetracker.Model.Submission;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -71,6 +77,45 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: https://github.com/uwblueprint/foe/issues/16
             }
         };
+
+        Button submitButton = (Button) findViewById(R.id.submit);
+        final Context context = this;
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Submission submission = new Submission();
+                submission.setFace(0);
+                submission.setAbdomen(0);
+                submission.setHabitat(Submission.Habitat.HouseGarden);
+                Location location = new Location("TEST");
+                location.setLatitude(-23.532);
+                location.setLongitude(78.23);
+                submission.setLocation(location);
+                StorageAccessor storageAccessor = new StorageAccessor();
+                try {
+                    storageAccessor.store(context, submission);
+                    System.out.println("stored");
+                } catch (IOException e) {
+                    System.out.println(e.toString());
+                }
+
+            }
+        });
+
+        Button loadButton = (Button) findViewById(R.id.load);
+        loadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StorageAccessor storageAccessor = new StorageAccessor();
+                try {
+                    Submission submission = storageAccessor.load(context);
+                    submission.print();
+                } catch (IOException e) {
+                    System.out.println(e.toString());
+                }
+
+            }
+        });
     }
 
     @Override

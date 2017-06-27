@@ -22,6 +22,24 @@ public class Submission {
     private Location location = null;
     // TODO: image
 
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Submission)) {
+            return false;
+        }
+
+        Submission that = (Submission) other;
+
+        // Custom equality check here.
+        return this.face == that.face
+                && this.thorax == that.thorax
+                && this.abdomen == that.abdomen
+                && this.species == that.species
+                && this.habitat == that.habitat
+                && this.weather == that.weather
+                && ((this.location == null && that.location == null) || this.location.equals(that.location));
+    }
+
     public enum Species {
         Apidae, Andrenidae, Halictidae, Megachilidae, Colletidae, Unknown
     }
