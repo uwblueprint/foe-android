@@ -12,7 +12,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by luisa on 2017-06-24.
+ * Tests all aspects of the Submission model
  */
 
 public class SubmissionTest {

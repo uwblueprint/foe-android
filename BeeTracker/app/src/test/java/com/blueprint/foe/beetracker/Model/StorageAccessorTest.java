@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by luisa on 2017-06-26.
+ * Tests methods from StorageAcessor
  */
 @RunWith(MockitoJUnitRunner.class)
 public class StorageAccessorTest {

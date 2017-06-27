@@ -5,7 +5,7 @@ import android.location.Location;
 import java.util.MissingFormatArgumentException;
 
 /**
- * Created by luisa on 2017-06-24.
+ * Represents the data object that contains all information related to submission.
  */
 
 public class Submission {
@@ -20,7 +20,7 @@ public class Submission {
     private Habitat habitat = null;
     private Weather weather = null;
     private Location location = null;
-    // TODO: image
+    // TODO: Store image in camera role. https://github.com/uwblueprint/foe/issues/22
 
     @Override
     public boolean equals(Object other) {
@@ -30,7 +30,6 @@ public class Submission {
 
         Submission that = (Submission) other;
 
-        // Custom equality check here.
         return this.face == that.face
                 && this.thorax == that.thorax
                 && this.abdomen == that.abdomen
@@ -164,6 +163,7 @@ public class Submission {
         return species != null && habitat != null && weather != null && location != null;
     }
 
+    /* For debug only */
     public void print() {
         System.out.println("Face: " + face + ", Thorax: " + thorax + ", Abdomen: " + abdomen);
         System.out.println("Species: " + species + ", Habitat: " + habitat + ", Weather: " + weather);
