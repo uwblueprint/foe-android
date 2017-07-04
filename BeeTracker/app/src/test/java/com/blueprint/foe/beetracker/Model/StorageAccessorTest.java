@@ -38,7 +38,7 @@ public class StorageAccessorTest {
         submission.setThorax(0);
         submission.setFace(0);
         submission.getSpecies();
-        String correctJson = "{\"face\":0,\"thorax\":0,\"abdomen\":0,\"species\":\"Apidae\"}";
+        String correctJson = "{\"mFace\":0,\"mThorax\":0,\"mAbdomen\":0,\"mSpecies\":\"Apidae\"}";
         StorageAccessor storageAccessor = new StorageAccessor();
         ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
 
@@ -58,7 +58,7 @@ public class StorageAccessorTest {
         correctSubmission.setThorax(0);
         correctSubmission.setFace(0);
         correctSubmission.getSpecies();
-        String inputJson = "{\"face\":0,\"thorax\":0,\"abdomen\":0,\"species\":\"Apidae\"}";
+        String inputJson = "{\"mFace\":0,\"mThorax\":0,\"mAbdomen\":0,\"mSpecies\":\"Apidae\"}";
         InputStream fis = new ByteArrayInputStream(inputJson.getBytes(StandardCharsets.UTF_8));
 
         StorageAccessor storageAccessor = new StorageAccessor();

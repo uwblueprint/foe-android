@@ -5,8 +5,6 @@ import android.location.Location;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.MissingFormatArgumentException;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -32,8 +30,8 @@ public class SubmissionTest {
         try {
             Submission.Species species = submission.getSpecies();
             Assert.fail();
-        } catch (MissingFormatArgumentException e) {
-            assertEquals("Format specifier 'Thorax is missing'", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            assertEquals("Thorax is missing", e.getMessage());
         }
     }
 
@@ -45,8 +43,8 @@ public class SubmissionTest {
         try {
             Submission.Species species = submission.getSpecies();
             Assert.fail();
-        } catch (MissingFormatArgumentException e) {
-            assertEquals("Format specifier 'Face is missing'", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            assertEquals("Face is missing", e.getMessage());
         }
     }
 
@@ -56,8 +54,8 @@ public class SubmissionTest {
         try {
             submission.setFace(Submission.MAX_FACE + 1);
             Assert.fail();
-        } catch (MissingFormatArgumentException e) {
-            assertEquals("Format specifier 'Invalid face value'", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            assertEquals("Invalid face value", e.getMessage());
         }
     }
 
@@ -68,8 +66,8 @@ public class SubmissionTest {
         try {
             submission.setAbdomen(Submission.MAX_ABDOMEN + 1);
             Assert.fail();
-        } catch (MissingFormatArgumentException e) {
-            assertEquals("Format specifier 'Invalid abdomen value'", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            assertEquals("Invalid abdomen value", e.getMessage());
         }
     }
 
@@ -79,8 +77,8 @@ public class SubmissionTest {
         try {
             submission.setThorax(Submission.MAX_THORAX + 1);
             Assert.fail();
-        } catch (MissingFormatArgumentException e) {
-            assertEquals("Format specifier 'Invalid thorax value'", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            assertEquals("Invalid thorax value", e.getMessage());
         }
     }
 
