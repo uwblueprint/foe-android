@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
                 Log.d(TAG, "got response string: " + response.body().getToken());
                 // TODO: Store returned token https://github.com/uwblueprint/foe/issues/17
+                Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override
