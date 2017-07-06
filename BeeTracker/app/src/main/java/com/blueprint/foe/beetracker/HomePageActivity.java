@@ -15,32 +15,21 @@ public class HomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        // Locate the button in activity_learn.xml
-        Button submitButton = (Button) findViewById(R.id.button2);
-
-        // Capture button clicks
+        Button submitButton = (Button) findViewById(R.id.buttonSubmit);
         submitButton.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
-
-                // Start Submission Activity
                 Intent myIntent = new Intent(HomePageActivity.this,
                         SubmissionActivity.class);
                 startActivity(myIntent);
             }
         });
-        // Locate the button in activity_home_page.xml
-        Button learnButton = (Button) findViewById(R.id.button3);
-
-        // Capture button clicks
+        Button learnButton = (Button) findViewById(R.id.buttonLearn);
         learnButton.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
-
-                // Start Learn Activity
                 Intent myIntent = new Intent(HomePageActivity.this,
                         LearnActivity.class);
                 startActivity(myIntent);
             }
         });
-
     }
 }
