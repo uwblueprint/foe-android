@@ -2,7 +2,6 @@
     <string name="app_name">Bee Tracker</string>
     <string name="facebook_app_id">221233091726222</string>
     <string name="fb_login_protocol_scheme">fb221233091726222</string>
-    <string name="SubmitButton">Submit</string>
     <string name="title_activity_submission">SubmissionActivity</string>
     <string name="title_activity_learn">LearnActivity</string>
 </resources>

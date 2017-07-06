@@ -78,10 +78,6 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    /** Called when the user taps the submission button */
-    public void startSubmission(View view) {
-        // Do something in response to button
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
