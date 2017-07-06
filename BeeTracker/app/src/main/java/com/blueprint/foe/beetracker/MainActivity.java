@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.facebook.FacebookSdk;
+import android.view.View;
 import android.util.Log;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+                startActivity(intent);
+                finish();
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
                     Call<BeeTrackerCaller.SignupResponse> token = caller.signup(loginResult.getAccessToken());
@@ -74,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    /** Called when the user taps the submission button */
+    public void startSubmission(View view) {
+        // Do something in response to button
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
