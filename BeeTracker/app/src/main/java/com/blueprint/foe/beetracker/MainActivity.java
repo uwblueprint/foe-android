@@ -3,7 +3,6 @@ package com.blueprint.foe.beetracker;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.facebook.FacebookSdk;
 import android.view.View;
 import android.util.Log;
 
@@ -38,9 +37,6 @@ public class MainActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
-                startActivity(intent);
-                finish();
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
                     Call<BeeTrackerCaller.SignupResponse> token = caller.signup(loginResult.getAccessToken());
@@ -68,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
                 Log.d(TAG, "got response string: " + response.body().getToken());
                 // TODO: Store returned token https://github.com/uwblueprint/foe/issues/17
+                Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override
