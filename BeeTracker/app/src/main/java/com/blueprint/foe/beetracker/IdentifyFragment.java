@@ -18,13 +18,12 @@ public class IdentifyFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.identify_fragment, container, false);
+
         Button nextButton = (Button) view.findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create new fragment and transaction
                 Fragment newFragment = new ReviewFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -33,10 +32,10 @@ public class IdentifyFragment extends Fragment {
                 transaction.replace(R.id.fragment_container, newFragment);
                 transaction.addToBackStack(null);
 
-                // Commit the transaction
                 transaction.commit();
             }
         });
+
         Button backButton = (Button) view.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +43,7 @@ public class IdentifyFragment extends Fragment {
                 getFragmentManager().popBackStack();
             }
         });
+
         return view;
     }
 }

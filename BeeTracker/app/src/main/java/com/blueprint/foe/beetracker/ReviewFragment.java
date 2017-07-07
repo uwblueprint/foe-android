@@ -13,21 +13,22 @@ import android.widget.Button;
  * environment type and current weather.
  */
 
-public class ReviewFragment  extends Fragment {
+public class ReviewFragment extends Fragment {
     private static final String TAG = ReviewFragment.class.toString();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.review_fragment, container, false);
+
         Button submitButton = (Button) view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Show popup then go back to home page
+                // TODO: show popup https://github.com/uwblueprint/foe/issues/28
                 getActivity().finish();
             }
         });
+
         Button backButton = (Button) view.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +36,7 @@ public class ReviewFragment  extends Fragment {
                 getFragmentManager().popBackStack();
             }
         });
+
         return view;
     }
 }

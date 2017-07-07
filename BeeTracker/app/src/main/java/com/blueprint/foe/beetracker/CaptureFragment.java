@@ -18,13 +18,12 @@ public class CaptureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.capture_fragment, container, false);
+
         Button nextButton = (Button) view.findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create new fragment and transaction
                 Fragment newFragment = new IdentifyFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -33,19 +32,19 @@ public class CaptureFragment extends Fragment {
                 transaction.replace(R.id.fragment_container, newFragment);
                 transaction.addToBackStack(null);
 
-                // Commit the transaction
                 transaction.commit();
             }
         });
+
         Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create new fragment and transaction
                 // Back to Home page activity
                 getActivity().finish();
             }
         });
+
         return view;
     }
 
