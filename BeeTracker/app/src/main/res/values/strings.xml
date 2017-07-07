@@ -4,4 +4,8 @@
     <string name="fb_login_protocol_scheme">fb221233091726222</string>
     <string name="title_activity_submission">SubmissionActivity</string>
     <string name="title_activity_learn">LearnActivity</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
 </resources>

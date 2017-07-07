@@ -9,10 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 /**
- * Created by luisa on 2017-07-07.
+ * This fragment will allow the user to review the species, location, as well as add the
+ * environment type and current weather.
  */
 
 public class ReviewFragment  extends Fragment {
+    private static final String TAG = ReviewFragment.class.toString();
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -29,17 +32,7 @@ public class ReviewFragment  extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create new fragment and transaction
-                Fragment newFragment = new IdentifyFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack(null);
-
-                // Commit the transaction
-                transaction.commit();
+                getFragmentManager().popBackStack();
             }
         });
         return view;

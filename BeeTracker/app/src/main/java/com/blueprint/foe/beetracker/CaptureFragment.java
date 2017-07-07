@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 /**
- * Created by luisa on 2017-07-07.
+ * This fragment will allow the user to take a picture in-app.
  */
 
 public class CaptureFragment extends Fragment {
+    private static final String TAG = CaptureFragment.class.toString();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
