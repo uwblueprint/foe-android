@@ -78,6 +78,15 @@ public class CaptureFragment extends Fragment {
             }
         });
 
+
+        // Create an instance of Camera
+        mCamera = getCameraInstance();
+
+        // Create our Preview view and set it as the content of our activity.
+        mPreview = new CameraPreview(getActivity(), mCamera);
+        FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
+        preview.addView(mPreview);
+
         // Add a listener to the Capture button
         ImageView captureButton = (ImageView) view.findViewById(R.id.buttonCapture);
         captureButton.setOnClickListener(
@@ -179,6 +188,5 @@ public class CaptureFragment extends Fragment {
 
         transaction.commit();
     }
-
 
 }
