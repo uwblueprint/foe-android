@@ -2,6 +2,7 @@ package com.blueprint.foe.beetracker;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.blueprint.foe.beetracker.Model.Submission;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -108,6 +111,12 @@ public class CaptureFragment extends Fragment {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
                 return;
             }
+
+            Submission submission = new Submission();
+            submission.setImageFile(pictureFile);
+
+            SubmissionActivity activity = (SubmissionActivity) getActivity();
+            activity.setSubmission(submission);
 
             Fragment newFragment = new IdentifyFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();

@@ -3,6 +3,8 @@ package com.blueprint.foe.beetracker.Model;
 import android.location.Location;
 import android.util.Log;
 
+import java.io.File;
+
 /**
  * Represents the data object that contains all information related to submission.
  */
@@ -21,6 +23,7 @@ public class Submission {
     private Weather mWeather = null;
     private Location mLocation = null;
     // TODO: Store image in camera role. https://github.com/uwblueprint/foe/issues/22
+    private File imageFile = null;
 
     @Override
     public boolean equals(Object other) {
@@ -157,6 +160,14 @@ public class Submission {
             mSpecies = Species.Unknown;
 
         return mSpecies;
+    }
+
+    public File getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(File file) {
+        imageFile = file;
     }
 
     public boolean isComplete() {
