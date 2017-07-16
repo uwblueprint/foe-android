@@ -1,11 +1,11 @@
-package com.blueprint.foe.beetracker; /**
+package com.blueprint.foe.beetracker;
+/**
  * Created by luisa on 2017-07-07.
  */
 
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.Log;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
