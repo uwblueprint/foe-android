@@ -37,5 +37,4 @@ public class SubmissionActivity extends AppCompatActivity {
             }
         }
     }
-
 }

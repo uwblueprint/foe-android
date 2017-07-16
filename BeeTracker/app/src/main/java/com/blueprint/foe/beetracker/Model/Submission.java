@@ -3,6 +3,8 @@ package com.blueprint.foe.beetracker.Model;
 import android.location.Location;
 import android.util.Log;
 
+import java.io.File;
+
 /**
  * Represents the data object that contains all information related to submission.
  */
