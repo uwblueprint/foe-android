@@ -9,4 +9,22 @@
     <string name="back">Back</string>
     <string name="next">Next</string>
     <string name="step_two">STEP 2: IDENTIFY</string>
+    <string name="step_three">STEP 3: GEOTAG</string>
+    <string name="speciesID">Some Bumble Bee</string>
+    <string name="scientificID">Scientific Name</string>
+    <string name="habitat_prompt">Select</string>
+
+    <string-array name="habitat_arrays">
+        <item>Backyard</item>
+        <item>Balcony/Container Garden</item>
+        <item>Community Garden</item>
+        <item>City Park</item>
+        <item>Rural</item>
+        <item>Golf Course</item>
+        <item>Roadside</item>
+        <item>Woodland</item>
+        <item>Farmland</item>
+        <item>School Grounds</item>
+        <item>Other</item>
+    </string-array>
 </resources>

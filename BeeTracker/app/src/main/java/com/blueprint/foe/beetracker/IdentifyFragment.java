@@ -1,5 +1,6 @@
 package com.blueprint.foe.beetracker;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
@@ -44,6 +45,14 @@ public class IdentifyFragment extends Fragment {
                 transaction.addToBackStack(null);
 
                 transaction.commit();
+
+
+              // the code below was causing the app to stop working so I'm commenting it out for now
+              //  TextView beeSpeciesID = (TextView) view.findViewById(R.id.speciesID);
+              //  beeSpeciesID.setText("a bee species");
+
+              //  TextView beeScientificID = (TextView) view.findViewById(R.id.scientificID);
+              //  beeScientificID.setText("scientific name");
             }
         });
 
