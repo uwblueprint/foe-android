@@ -3,6 +3,7 @@ package com.blueprint.foe.beetracker;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class IdentifyFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "on create view");
         View view = inflater.inflate(R.layout.identify_fragment, container, false);
 
         Button nextButton = (Button) view.findViewById(R.id.nextButton);
