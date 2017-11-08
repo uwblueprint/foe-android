@@ -120,6 +120,7 @@ public class SubmissionTest {
         submission.setWeather(Submission.Weather.Cloudy);
         submission.setHabitat(Submission.Habitat.Park);
         submission.setLocation(new Location("Test"));
+        submission.setImageFilePath("filepath");
 
         assertEquals(true, submission.isComplete());
 
@@ -135,6 +136,7 @@ public class SubmissionTest {
         submission.getSpecies();
         submission.setWeather(Submission.Weather.Cloudy);
         submission.setHabitat(Submission.Habitat.Park);
+        submission.setImageFilePath("filepath");
 
         assertEquals(false, submission.isComplete());
 

@@ -3,15 +3,10 @@ package com.blueprint.foe.beetracker;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import com.blueprint.foe.beetracker.Model.StorageAccessor;
-
-import java.io.IOException;
 
 /**
  * This fragment will allow the user to identify a bee species based on its head, thorax
@@ -48,12 +43,6 @@ public class IdentifyFragment extends Fragment {
                 getFragmentManager().popBackStack();
             }
         });
-
-        try {
-            Log.d(TAG, StorageAccessor.load(getActivity()).getImageFilePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return view;
     }

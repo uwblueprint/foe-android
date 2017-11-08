@@ -170,7 +170,7 @@ public class Submission {
     }
 
     public boolean isComplete() {
-        return mSpecies != null && mHabitat != null && mWeather != null && mLocation != null;
+        return mSpecies != null && mHabitat != null && mWeather != null && mLocation != null && mImageFilePath != null;
     }
 
     /* For debug only */
