@@ -30,11 +30,9 @@ public class SubmissionActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        Log.d(TAG, Integer.toString(requestCode));
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
                 CaptureFragment fragment = (CaptureFragment) getFragmentManager().findFragmentById(R.id.fragment_container);
-                // If request is cancelled, the result arrays are empty.
                 fragment.permissionResult(grantResults);
             }
         }

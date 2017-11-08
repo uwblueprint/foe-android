@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.blueprint.foe.beetracker.Model.StorageAccessor;
+
+import java.io.IOException;
+
 /**
  * This fragment will allow the user to identify a bee species based on its head, thorax
  * and abdomen patterns. It will also let the user review the image they selected.
@@ -19,7 +23,6 @@ public class IdentifyFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "on create view");
         View view = inflater.inflate(R.layout.identify_fragment, container, false);
 
         Button nextButton = (Button) view.findViewById(R.id.nextButton);
@@ -45,6 +48,12 @@ public class IdentifyFragment extends Fragment {
                 getFragmentManager().popBackStack();
             }
         });
+
+        try {
+            Log.d(TAG, StorageAccessor.load(getActivity()).getImageFilePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return view;
     }

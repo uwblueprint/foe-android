@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
+import com.blueprint.foe.beetracker.Model.Submission;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * This fragment will allow the user to take a picture in-app.
@@ -48,29 +51,29 @@ public class CaptureFragment extends Fragment {
         mCameraView.addCameraListener(new CameraListener() {
             @Override
             public void onPictureTaken(byte[] picture) {
-                // Create a bitmap or a file...
-                // CameraUtils will read EXIF orientation for you, in a worker thread.
+                // CameraUtils will generate image, with correct EXIF orientation, in a worker thread.
                 CameraUtils.decodeBitmap(picture, new CameraUtils.BitmapCallback() {
                     @Override
                     public void onBitmapReady(Bitmap bitmap) {
                         if (checkForPermissions(getActivity())) {
-                            String result = StorageAccessor.saveBitmapExternally(bitmap, getActivity());
-                            if (result == null) {
+                            String filename = null;
+                            try {
+                                filename = StorageAccessor.saveBitmapExternally(bitmap);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
                                 errorAndExit("There was a problem saving your image externally.");
                             }
-                            launchNextFragment();
+                            saveAndLaunchNextFragment(filename);
                         } else {
-                            Log.d(TAG, "checkForPermissions returned false");
-                            String result = StorageAccessor.saveBitmapInternally(bitmap, getActivity());
-                            if (result == null) {
+                            try {
+                                StorageAccessor.saveBitmapInternally(bitmap, getActivity());
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
                                 errorAndExit("There was a problem saving your image internally.");
                             }
-                            Log.d(TAG, "imaged saved internally");
                         }
                     }
                 });
-
-
             }
         });
 
@@ -89,8 +92,8 @@ public class CaptureFragment extends Fragment {
     }
 
     private void errorAndExit(String message) {
+        getActivity().finish();
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-        System.exit(0);
     }
 
     @Override
@@ -117,26 +120,30 @@ public class CaptureFragment extends Fragment {
     }
 
     public void permissionResult(int[] grantResults) {
-        Log.d(TAG, "request code");
+        // If request is cancelled, the result arrays are empty.
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            String result = StorageAccessor.readAndSaveTemporaryBitmap(getActivity());
-            if (result == null) {
+            String filename = null;
+            try {
+                Bitmap image = StorageAccessor.readInternalBitmap(getActivity());
+                filename = StorageAccessor.saveBitmapExternally(image);
+                StorageAccessor.deleteInternalBitmap(getActivity());
+            } catch (IOException e) {
+                e.printStackTrace();
                 errorAndExit("There was a problem saving your image externally.");
             }
+            saveAndLaunchNextFragment(filename);
         } else {
-            Log.d(TAG, "Permission not granted");
-            Toast.makeText(getActivity(), "You will not be able to view the image outside this app.", Toast.LENGTH_LONG).show();
+            StorageAccessor.deleteInternalBitmap(getActivity());
+            errorAndExit("The app cannot continue without permission to save externally.");
         }
-        launchNextFragment();
-        return;
     }
 
     private boolean checkForPermissions(Activity context) {
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "requesting permission");
+            Toast.makeText(context, "BeeTracker needs permission to save to storage so you can access the image later.", Toast.LENGTH_LONG);
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     SubmissionActivity.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
@@ -144,6 +151,22 @@ public class CaptureFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    private void saveAndLaunchNextFragment(String imageFilePath) {
+        saveSubmission(imageFilePath);
+        launchNextFragment();
+    }
+
+    private void saveSubmission(String imageFilePath) {
+        Submission submission = new Submission();
+        submission.setImageFilePath(imageFilePath);
+        try {
+            StorageAccessor.store(getActivity(), submission);
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorAndExit("Could not save submission.");
+        }
     }
 
     private void launchNextFragment() {

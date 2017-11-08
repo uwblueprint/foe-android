@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,9 +28,9 @@ public class StorageAccessor {
     private static final String TAG = StorageAccessor.class.toString();
     private static final String FILENAME = "submission";
     private static final String TEMPORARY_IMAGE_FILENAME = "TemporaryImageFile";
+    private static final int MEDIA_TYPE_IMAGE = 1;
 
-
-    public void store(Context context, Submission submission) throws IOException {
+    public static void store(Context context, Submission submission) throws IOException {
         Gson gson = new Gson();
         String string = gson.toJson(submission);
         FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
@@ -37,7 +38,7 @@ public class StorageAccessor {
         fos.close();
     }
 
-    private String convertStreamToString(InputStream is) throws IOException {
+    private static String convertStreamToString(InputStream is) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line = null;
@@ -48,31 +49,26 @@ public class StorageAccessor {
         return sb.toString();
     }
 
-    public Submission load(InputStream inputStream) throws IOException {
+    public static Submission load(InputStream inputStream) throws IOException {
         String string = convertStreamToString(inputStream);
         inputStream.close();
         Gson gson = new Gson();
         return gson.fromJson(string, Submission.class);
     }
 
-    public Submission load(Context context) throws IOException {
+    public static Submission load(Context context) throws IOException {
         InputStream fis = context.openFileInput(FILENAME);
         return load(fis);
     }
 
-    public static String saveBitmapExternally(Bitmap bitmap, Context context) {
+    public static String saveBitmapExternally(Bitmap bitmap) throws FileNotFoundException {
         File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-        Log.d(TAG, pictureFile.getPath());
         FileOutputStream out = null;
 
         try {
             out = new FileOutputStream(pictureFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            context.deleteFile(TEMPORARY_IMAGE_FILENAME);
             return pictureFile.getAbsolutePath();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         } finally {
             try {
                 if (out != null) {
@@ -84,37 +80,12 @@ public class StorageAccessor {
         }
     }
 
-    public static String readAndSaveTemporaryBitmap(Context context) {
-        FileInputStream fis = null;
-        try {
-            fis = context.openFileInput(TEMPORARY_IMAGE_FILENAME);
-            byte arr[] = new byte[(int) fis.getChannel().size()];
-            fis.read(arr);
-            Bitmap image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
-            return saveBitmapExternally(image, context);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static String saveBitmapInternally(Bitmap bitmap, Context context) {
+    public static String saveBitmapInternally(Bitmap bitmap, Context context) throws FileNotFoundException {
         FileOutputStream fos = null;
         try {
             fos = context.openFileOutput(TEMPORARY_IMAGE_FILENAME, Context.MODE_PRIVATE);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             return TEMPORARY_IMAGE_FILENAME;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
         } finally {
             try {
                 if (fos != null) {
@@ -126,8 +97,27 @@ public class StorageAccessor {
         }
     }
 
-    public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
+    public static void deleteInternalBitmap(Context context) {
+        context.deleteFile(TEMPORARY_IMAGE_FILENAME);
+    }
+
+    public static Bitmap readInternalBitmap(Context context) throws IOException{
+        FileInputStream fis = null;
+        try {
+            fis = context.openFileInput(TEMPORARY_IMAGE_FILENAME);
+            byte arr[] = new byte[(int) fis.getChannel().size()];
+            fis.read(arr);
+            return BitmapFactory.decodeByteArray(arr, 0, arr.length);
+        } finally {
+            try {
+                if (fis != null) {
+                    fis.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /** Create a File for saving an image or video */
     private static File getOutputMediaFile(int type){
@@ -153,9 +143,6 @@ public class StorageAccessor {
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "IMG_"+ timeStamp + ".jpg");
-        } else if(type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_"+ timeStamp + ".mp4");
         } else {
             return null;
         }
