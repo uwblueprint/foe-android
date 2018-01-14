@@ -37,8 +37,8 @@ public class CaptureFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.capture_fragment, container, false);
 
-        TextView cancelButton = (TextView) view.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        TextView cancelTextView = (TextView) view.findViewById(R.id.cancelButton);
+        cancelTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Back to Home page activity
@@ -65,6 +65,7 @@ public class CaptureFragment extends Fragment {
                             }
                             saveAndLaunchNextFragment(filename);
                         } else {
+                            // Once permission is granted, image will be read from internal storage and saved externally
                             try {
                                 StorageAccessor.saveBitmapInternally(bitmap, getActivity());
                             } catch (FileNotFoundException e) {
