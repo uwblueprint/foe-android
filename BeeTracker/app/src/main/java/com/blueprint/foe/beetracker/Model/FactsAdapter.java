@@ -2,6 +2,7 @@ package com.blueprint.foe.beetracker.Model;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +21,20 @@ import java.util.ArrayList;
  * Created by johnsington on 2017-07-08.
  */
 
-public class FactsAdapter extends ArrayAdapter<FactCollection.Fact> {
-    public FactsAdapter(Context context, ArrayList<FactCollection.Fact> facts) {
+public class FactsAdapter extends ArrayAdapter<Fact> {
+    private static String TAG = FactsAdapter.class.toString();
+
+    private ArrayList<Fact> facts;
+    public FactsAdapter(Context context, ArrayList<Fact> facts) {
         super(context, 0, facts);
+        this.facts = facts;
     }
 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        final FactCollection.Fact fact = getItem(position);
+        final Fact fact = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fact_view, parent, false);
@@ -42,15 +47,15 @@ public class FactsAdapter extends ArrayAdapter<FactCollection.Fact> {
 
         factTitle.setText(fact.getTitle());
         factDescription.setText(fact.getDescription());
-        factId.setText("Tip #" + Integer.toString(fact.getId()+1));
+        factId.setText("Tip #" + Integer.toString(fact.getId()));
 
         ImageView factImage = (ImageView) convertView.findViewById(R.id.imgFactIllustration);
 
         switch (fact.getCategory()) {
-            case GENERAL:
+            case General:
                 factImage.setImageResource(R.drawable.fact_illustation_general);
                 break;
-            case WATER:
+            case Water:
                 factImage.setImageResource(R.drawable.fact_illustration_water);
                 break;
             default:
@@ -64,7 +69,8 @@ public class FactsAdapter extends ArrayAdapter<FactCollection.Fact> {
             @Override
             public void onClick(View v) {
                 System.out.println( fact.getId() + " clicked!");
-                remove(fact);
+                facts.remove(fact);
+                notifyDataSetChanged();
             }
 
         });
@@ -74,12 +80,21 @@ public class FactsAdapter extends ArrayAdapter<FactCollection.Fact> {
         final TextView completeText = (TextView) convertView.findViewById(R.id.lblCompleteCTA);
         final ImageView completeImage = (ImageView) convertView.findViewById(R.id.iconCompleteCTA);
 
+        if (fact.isCompleted()) {
+            completeText.setText(getContext().getString(R.string.completed));
+            completeText.setTextColor(ContextCompat.getColor(getContext(), R.color.light_grey));
+            completeImage.setImageResource(R.drawable.icon_done_checkmark_disabled);
+        } else {
+            completeText.setText(getContext().getString(R.string.done));
+            completeText.setTextColor(ContextCompat.getColor(getContext(), R.color.grassGreen));
+            completeImage.setImageResource(R.drawable.icon_done_checkmark);
+        }
+
         completeButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                completeText.setText("Completed");
-                completeText.setTextColor(ContextCompat.getColor(getContext(), R.color.light_grey));
-                completeImage.setImageResource(R.drawable.icon_done_checkmark_disabled);
+                fact.setCompleted();
+                notifyDataSetChanged();
             }
 
         });

@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +31,7 @@ public class StorageAccessorTest {
     FileOutputStream fos;
 
     @Test
-    public void store_isCorrect() throws Exception {
+    public void storeSubmission_isCorrect() throws Exception {
         Submission submission = new Submission();
         submission.setAbdomen(0);
         submission.setThorax(0);
@@ -45,14 +44,14 @@ public class StorageAccessorTest {
         when(context.openFileOutput("submission", Context.MODE_PRIVATE)).thenReturn(fos);
 
         //assertEquals("John", argument.getValue().getName());
-        storageAccessor.store(context, submission);
+        storageAccessor.storeSubmission(context, submission);
         verify(fos).write(argument.capture());
         String string = new String(argument.getValue());
         assertEquals(correctJson, string);
     }
 
     @Test
-    public void load_isCorrect() throws Exception {
+    public void loadSubmission_isCorrect() throws Exception {
         Submission correctSubmission = new Submission();
         correctSubmission.setAbdomen(0);
         correctSubmission.setThorax(0);
@@ -62,7 +61,65 @@ public class StorageAccessorTest {
         InputStream fis = new ByteArrayInputStream(inputJson.getBytes(StandardCharsets.UTF_8));
 
         StorageAccessor storageAccessor = new StorageAccessor();
-        Submission submission = storageAccessor.load(fis);
+        Submission submission = storageAccessor.loadSubmission(fis);
         assertTrue(correctSubmission.equals(submission));
+    }
+
+    @Test
+    public void storeFacts_isCorrect() throws Exception {
+        FactCollection facts = new FactCollection();
+        facts.addFact(new Fact("Do not mow so low", "Mow lawns with high blade setting", 1));
+        facts.addFact(new Fact("Title2", "Description2", 2, Fact.Category.Water));
+
+        String correctJson = "{\"facts\":[" +
+                "{" +
+                    "\"mTitle\":\"Do not mow so low\"," +
+                    "\"mDescription\":\"Mow lawns with high blade setting\"," +
+                    "\"mCategory\":\"General\"," +
+                    "\"mId\":1," +
+                    "\"mCompleted\":false" +
+                "},{" +
+                    "\"mTitle\":\"Title2\"," +
+                    "\"mDescription\":\"Description2\"," +
+                    "\"mCategory\":\"Water\"," +
+                    "\"mId\":2," +
+                    "\"mCompleted\":false" +
+                "}]}";
+        StorageAccessor storageAccessor = new StorageAccessor();
+        ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
+
+        when(context.openFileOutput("facts", Context.MODE_PRIVATE)).thenReturn(fos);
+
+        storageAccessor.storeFacts(context, facts);
+        verify(fos).write(argument.capture());
+        String string = new String(argument.getValue());
+        assertEquals(correctJson, string);
+    }
+
+    @Test
+    public void loadFacts_isCorrect() throws Exception {
+        FactCollection correctFacts = new FactCollection();
+        correctFacts.addFact(new Fact("Do not mow so low", "Mow lawns with high blade setting", 1));
+        correctFacts.addFact(new Fact("Title2", "Description2", 2, Fact.Category.Water));
+
+        String inputJson = "{\"facts\":[" +
+                "{" +
+                "\"mTitle\":\"Do not mow so low\"," +
+                "\"mDescription\":\"Mow lawns with high blade setting\"," +
+                "\"mCategory\":\"General\"," +
+                "\"mId\":1," +
+                "\"mCompleted\":false" +
+                "},{" +
+                "\"mTitle\":\"Title2\"," +
+                "\"mDescription\":\"Description2\"," +
+                "\"mCategory\":\"Water\"," +
+                "\"mId\":2," +
+                "\"mCompleted\":false" +
+                "}]}";
+        InputStream fis = new ByteArrayInputStream(inputJson.getBytes(StandardCharsets.UTF_8));
+
+        StorageAccessor storageAccessor = new StorageAccessor();
+        FactCollection facts = storageAccessor.loadFacts(fis);
+        assertTrue(correctFacts.equals(facts));
     }
 }

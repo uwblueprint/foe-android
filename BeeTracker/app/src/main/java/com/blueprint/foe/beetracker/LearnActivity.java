@@ -1,41 +1,58 @@
 package com.blueprint.foe.beetracker;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
+import android.util.Log;
 import android.widget.ListView;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.Model.FactCollection;
 import com.blueprint.foe.beetracker.Model.FactsAdapter;
+import com.blueprint.foe.beetracker.Model.StorageAccessor;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
+/*
+ * Displays facts and call to actions for the user to read and act upon.
+ *
+ * Facts are initially loaded from a raw file and are stored to an internal file. On subsequent
+ * LearnActivity launches, the facts are loaded from the internal file.
+ */
 public class LearnActivity extends AppCompatActivity {
+    private static String TAG = LearnActivity.class.toString();
 
-    public static FactCollection facts = new FactCollection();
+    private FactCollection facts;
+    private StorageAccessor storageAccessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn);
 
-        facts.addFact("Don\'t Mow So Low",
-                "Mow lawns with a high blade setting to allow violets and clovers to grow.");
-        facts.addFact("Stop Sprinkler Irrigation",
-                "Bees can perceive imminent rain and will seak protection in their nests. Sprinkler irrigation offers no warning cues and can alter visual landmarks and entrance to nests.",
-                FactCollection.Category.WATER);
-        facts.addFact("Stop Fertilizing",
-                "Native plants do not need it, and fertilizing only encourages weeds and invasive species.");
+        this.storageAccessor = new StorageAccessor();
+
+        try {
+            this.facts = storageAccessor.loadFacts(this);
+        } catch (IOException e) {
+            Toast.makeText(this, "Could not load facts.", Toast.LENGTH_LONG);
+            this.facts = new FactCollection();
+        }
 
         final FactsAdapter adapter = new FactsAdapter(this, facts.getFacts());
         ListView listView = (ListView) findViewById(R.id.factsListView);
 
         listView.setAdapter(adapter);
     };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            this.storageAccessor.storeFacts(getBaseContext(), this.facts);
+        } catch (IOException e){
+            Log.e(TAG, "Could not store facts: " + e.toString());
+            // Fail silently, they can see all their facts again
+            // In the future, we may want to delete the facts file
+        }
+    }
 }

@@ -1,0 +1,24 @@
+{
+    "facts": [
+    {
+        "mTitle": "Don't Mow So Low",
+        "mDescription": "Mow lawns with a high blade setting to allow violets and clovers to grow.",
+        "mCategory": "General",
+        "mId": 1,
+        "mCompleted": false
+    },
+    {
+        "mTitle": "Stop Sprinkler Irrigation",
+        "mDescription": "Bees can perceive imminent rain and will seek protection in their nests. Sprinkler irrigation offers no warning cues and can alter visual landmarks and entrance to nests.",
+        "mCategory": "Water",
+        "mId": 2,
+        "mCompleted": false
+    },
+    {
+        "mTitle": "Stop Fertilizing",
+        "mDescription": "Native plants do not need it, and fertilizing only encourages weeds and invasive species.",
+        "mCategory": "General",
+        "mId": 3,
+        "mCompleted": false
+    }
+]}
