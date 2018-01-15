@@ -1,9 +1,9 @@
 package com.blueprint.foe.beetracker.Model;
 
 /**
- * Created by luisa on 2018-01-15.
+ * This class represents everything about a fact or call-to-action. These facts are displayed on
+ * the LearnActivity.
  */
-
 public class Fact {
     private static final String TAG = Fact.class.toString();
 
@@ -16,7 +16,6 @@ public class Fact {
     Category mCategory;
     int mId;
     boolean mCompleted;
-
 
     public Fact(String title, String description, int id) {
         this.mTitle = title;

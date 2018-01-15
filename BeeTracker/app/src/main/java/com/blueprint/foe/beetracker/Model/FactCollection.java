@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * The primary purpose of this class is to leverage Gson when storing/loading.
  * Gson expects a class as input, hence this wrapper.
  *
- * In the future we may want to
+ * In the future we may want to leverage this class to help with appending new facts.
  */
 
 public class FactCollection {

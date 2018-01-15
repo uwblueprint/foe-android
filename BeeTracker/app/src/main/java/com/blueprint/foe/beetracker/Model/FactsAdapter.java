@@ -13,14 +13,11 @@ import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 /**
- * Created by johnsington on 2017-07-08.
+ * An ArrayAdapter for the fact collection. Used by LearnActivity.
  */
-
 public class FactsAdapter extends ArrayAdapter<Fact> {
     private static String TAG = FactsAdapter.class.toString();
 

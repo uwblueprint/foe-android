@@ -9,4 +9,5 @@
     <color name="dark_grey">#333333</color>
     <color name="light_grey">#e0e0e0</color>
     <color name="medium_grey">#e5e5e5</color>
+    <color name="learn_activity_background">#f6f6f6</color>
 </resources>

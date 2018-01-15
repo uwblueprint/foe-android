@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LearnActivity"
+            android:name=".HomePageActivity"
             android:label="My Challenges">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +37,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomePageActivity" />
+        <activity android:name=".LearnActivity" android:label="My Challenges"/>
         <activity android:name=".SubmissionActivity" />
         <activity android:name=".MainActivity" />
     </application>
