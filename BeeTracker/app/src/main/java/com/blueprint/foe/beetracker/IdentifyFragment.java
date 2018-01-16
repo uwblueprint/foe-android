@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,10 +57,13 @@ public class IdentifyFragment extends Fragment {
         });
 
         SubmissionActivity activity = (SubmissionActivity) getActivity();
-        File imageFile = activity.getSubmission().getImageFile();
-        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+        Log.d(TAG, activity.getSubmission().getImageFilePath());
+        Bitmap bitmap = BitmapFactory.decodeFile(activity.getSubmission().getImageFilePath());
+        int width = bitmap.getWidth();
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, container.getWidth(), (int)(((double)bitmap.getHeight() / (double)width) * container.getWidth()), false);
+        Log.d(TAG, "" + bitmap.getByteCount() + " " + scaled.getByteCount());
         ImageView preview = (ImageView) view.findViewById(R.id.previewImageView);
-        preview.setImageBitmap(bitmap);
+        preview.setImageBitmap(scaled);
 
         final LinearLayout beePicker = (LinearLayout) view.findViewById(R.id.beePicker);
         setScrollView(beePicker, BeePart.FACE);
