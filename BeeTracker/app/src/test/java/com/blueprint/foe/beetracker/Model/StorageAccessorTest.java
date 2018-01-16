@@ -1,6 +1,7 @@
 package com.blueprint.foe.beetracker.Model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -16,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +34,9 @@ public class StorageAccessorTest {
     @Mock
     FileOutputStream fos;
 
+    @Mock
+    Bitmap bitmap;
+
     @Test
     public void store_isCorrect() throws Exception {
         Submission submission = new Submission();
@@ -39,13 +45,12 @@ public class StorageAccessorTest {
         submission.setFace(0);
         submission.getSpecies();
         String correctJson = "{\"mFace\":0,\"mThorax\":0,\"mAbdomen\":0,\"mSpecies\":\"Apidae\"}";
-        StorageAccessor storageAccessor = new StorageAccessor();
         ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
 
         when(context.openFileOutput("submission", Context.MODE_PRIVATE)).thenReturn(fos);
 
         //assertEquals("John", argument.getValue().getName());
-        storageAccessor.store(context, submission);
+        StorageAccessor.store(context, submission);
         verify(fos).write(argument.capture());
         String string = new String(argument.getValue());
         assertEquals(correctJson, string);
@@ -61,8 +66,15 @@ public class StorageAccessorTest {
         String inputJson = "{\"mFace\":0,\"mThorax\":0,\"mAbdomen\":0,\"mSpecies\":\"Apidae\"}";
         InputStream fis = new ByteArrayInputStream(inputJson.getBytes(StandardCharsets.UTF_8));
 
-        StorageAccessor storageAccessor = new StorageAccessor();
-        Submission submission = storageAccessor.load(fis);
+        Submission submission = StorageAccessor.load(fis);
         assertTrue(correctSubmission.equals(submission));
+    }
+
+    @Test
+    public void saveBitmapInternally_isCorrect() throws Exception {
+        when(context.openFileOutput("TemporaryImageFile", Context.MODE_PRIVATE)).thenReturn(fos);
+        String result = StorageAccessor.saveBitmapInternally(bitmap, context);
+        verify(bitmap, times(1)).compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        assertEquals("TemporaryImageFile", result);
     }
 }
