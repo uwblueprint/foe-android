@@ -22,17 +22,14 @@ public class LearnActivity extends AppCompatActivity {
     private static String TAG = LearnActivity.class.toString();
 
     private FactCollection facts;
-    private StorageAccessor storageAccessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn);
 
-        this.storageAccessor = new StorageAccessor();
-
         try {
-            this.facts = storageAccessor.loadFacts(this);
+            this.facts = StorageAccessor.loadFacts(this);
         } catch (IOException e) {
             Toast.makeText(this, "Could not load facts.", Toast.LENGTH_LONG);
             this.facts = new FactCollection();
@@ -48,7 +45,7 @@ public class LearnActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         try {
-            this.storageAccessor.storeFacts(getBaseContext(), this.facts);
+            StorageAccessor.storeFacts(getBaseContext(), this.facts);
         } catch (IOException e){
             Log.e(TAG, "Could not store facts: " + e.toString());
             // Fail silently, they can see all their facts again

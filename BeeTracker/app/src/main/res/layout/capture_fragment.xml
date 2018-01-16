@@ -1,19 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Capture fragment"/>
-    <Button
-        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:id="@+id/rlTop">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:gravity="center_vertical"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:id="@+id/cancelButton"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="STEP 1: CAPTURE"/>
+    </RelativeLayout>
+
+    <com.otaliastudios.cameraview.CameraView
+        android:id="@+id/camera"
+        android:keepScreenOn="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next"
-        android:id="@+id/nextButton"/>
-    <Button
+        android:layout_below="@id/rlTop"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:id="@+id/cancelButton"/>
-</LinearLayout>
+        android:layout_height="66dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:id="@+id/rlCapture">
+        <ImageView
+            android:id="@+id/buttonCapture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:layout_centerInParent="true"
+            android:src="@drawable/capture_icon"
+            android:background="@null"/>
+    </RelativeLayout>
+</RelativeLayout>

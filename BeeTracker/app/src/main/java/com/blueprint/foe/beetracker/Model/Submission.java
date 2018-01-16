@@ -20,7 +20,7 @@ public class Submission {
     private Habitat mHabitat = null;
     private Weather mWeather = null;
     private Location mLocation = null;
-    // TODO: Store image in camera role. https://github.com/uwblueprint/foe/issues/22
+    private String mImageFilePath = null;
 
     @Override
     public boolean equals(Object other) {
@@ -37,6 +37,7 @@ public class Submission {
                 && this.mSpecies == that.mSpecies
                 && this.mHabitat == that.mHabitat
                 && this.mWeather == that.mWeather
+                && this.mImageFilePath == that.mImageFilePath
                 && ((this.mLocation == null && that.mLocation == null) || this.mLocation.equals(that.mLocation));
     }
 
@@ -61,6 +62,7 @@ public class Submission {
         mHabitat = null;
         mWeather = null;
         mLocation = null;
+        mImageFilePath = null;
     }
 
     public Submission() {
@@ -159,8 +161,16 @@ public class Submission {
         return mSpecies;
     }
 
+    public String getImageFilePath() {
+        return mImageFilePath;
+    }
+
+    public void setImageFilePath(String imageFilePath) {
+        mImageFilePath = imageFilePath;
+    }
+
     public boolean isComplete() {
-        return mSpecies != null && mHabitat != null && mWeather != null && mLocation != null;
+        return mSpecies != null && mHabitat != null && mWeather != null && mLocation != null && mImageFilePath != null;
     }
 
     /* For debug only */
