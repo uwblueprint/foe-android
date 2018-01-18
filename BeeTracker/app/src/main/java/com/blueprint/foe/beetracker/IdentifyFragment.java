@@ -4,20 +4,24 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.File;
+import com.blueprint.foe.beetracker.Model.BeePart;
+import com.blueprint.foe.beetracker.Model.PartsPickerAdapter;
+import com.blueprint.foe.beetracker.Model.StorageAccessor;
+import com.blueprint.foe.beetracker.Model.Submission;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This fragment will allow the user to identify a bee species based on its head, thorax
@@ -26,7 +30,12 @@ import java.io.File;
 
 public class IdentifyFragment extends Fragment {
     private static final String TAG = IdentifyFragment.class.toString();
-    private enum BeePart {FACE, ABDOMEN, THORAX};
+    private enum BeePartType {FACE, ABDOMEN, THORAX};
+    private PartsPickerAdapter faceAdapter;
+    private PartsPickerAdapter abdomenAdapter;
+    private PartsPickerAdapter thoraxAdapter;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,6 +45,15 @@ public class IdentifyFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                SubmissionActivity submissionActivity = (SubmissionActivity) getActivity();
+                try {
+                    StorageAccessor.store(getActivity(), submissionActivity.getSubmission());
+                    submissionActivity.setSubmission(submissionActivity.getSubmission());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    errorAndExit("Could not save submission.");
+                }
                 Fragment newFragment = new ReviewFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -56,23 +74,18 @@ public class IdentifyFragment extends Fragment {
             }
         });
 
-        SubmissionActivity activity = (SubmissionActivity) getActivity();
-        Log.d(TAG, activity.getSubmission().getImageFilePath());
-        Bitmap bitmap = BitmapFactory.decodeFile(activity.getSubmission().getImageFilePath());
+        Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+        Bitmap bitmap = BitmapFactory.decodeFile(submission.getImageFilePath());
         int width = bitmap.getWidth();
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, container.getWidth(), (int)(((double)bitmap.getHeight() / (double)width) * container.getWidth()), false);
-        Log.d(TAG, "" + bitmap.getByteCount() + " " + scaled.getByteCount());
         ImageView preview = (ImageView) view.findViewById(R.id.previewImageView);
         preview.setImageBitmap(scaled);
-
-        final LinearLayout beePicker = (LinearLayout) view.findViewById(R.id.beePicker);
-        setScrollView(beePicker, BeePart.FACE);
 
         TextView faceButton = (TextView) view.findViewById(R.id.faceButton);
         faceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setScrollView(beePicker, BeePart.FACE);
+                mRecyclerView.setAdapter(faceAdapter);
             }
         });
 
@@ -80,7 +93,7 @@ public class IdentifyFragment extends Fragment {
         abdomenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setScrollView(beePicker, BeePart.ABDOMEN);
+                mRecyclerView.setAdapter(abdomenAdapter);
             }
         });
 
@@ -88,40 +101,52 @@ public class IdentifyFragment extends Fragment {
         thoraxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setScrollView(beePicker, BeePart.THORAX);
+                mRecyclerView.setAdapter(thoraxAdapter);
             }
         });
+
+        int[] faceAssets = {R.drawable.face_black, R.drawable.face_yellow};
+        int[] abdomenAssets = {R.drawable.ab_byb, R.drawable.ab_red_tail, R.drawable.ab_white_tail, R.drawable.ab_y_stripe, R.drawable.ab_yb, R.drawable.ab_yby, R.drawable.ab_yry, R.drawable.ab_yyy};
+        int[] thoraxAssets = {R.drawable.thorax_bdot, R.drawable.thorax_whsh, R.drawable.thorax_ybb, R.drawable.thorax_yby, R.drawable.thorax_yyy};
+        List<BeePart> faces = new ArrayList<>();
+        for (int i = 0; i < faceAssets.length; i++) {
+            faces.add(new BeePart(i, faceAssets[i], getActivity()));
+        }
+        List<BeePart> abdomens = new ArrayList<>();
+        for (int i = 0; i < abdomenAssets.length; i++) {
+            abdomens.add(new BeePart(i, abdomenAssets[i], getActivity()));
+        }
+        List<BeePart> thoraxes = new ArrayList<>();
+        for (int i = 0; i < thoraxAssets.length; i++) {
+            thoraxes.add(new BeePart(i, thoraxAssets[i], getActivity()));
+        }
+
+        if (submission.getFace() > -1) {
+            faces.get(submission.getFace()).setSelection(true);
+        }
+        if (submission.getAbdomen() > -1) {
+            abdomens.get(submission.getAbdomen()).setSelection(true);
+        }
+        if (submission.getThorax() > -1) {
+            thoraxes.get(submission.getThorax()).setSelection(true);
+        }
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        faceAdapter = new PartsPickerAdapter(faces, PartsPickerAdapter.BeePartType.Face);
+        thoraxAdapter = new PartsPickerAdapter(thoraxes, PartsPickerAdapter.BeePartType.Thorax);
+        abdomenAdapter = new PartsPickerAdapter(abdomens, PartsPickerAdapter.BeePartType.Abdomen);
+        mRecyclerView.setAdapter(faceAdapter);
 
         return view;
     }
 
-    private void setScrollView(LinearLayout scrollView, BeePart type) {
-        scrollView.removeAllViews();
-        switch(type) {
-            case FACE:
-                int[] faceAssets = {R.drawable.face_black, R.drawable.face_yellow};
-                for (int i = 0; i < faceAssets.length; i++) {
-                    ImageView view = new ImageView(getActivity());
-                    view.setImageResource(faceAssets[i]);
-                    scrollView.addView(view);
-                }
-                break;
-            case ABDOMEN:
-                int[] abdomenAssets = {R.drawable.ab_byb, R.drawable.ab_red_tail, R.drawable.ab_white_tail, R.drawable.ab_y_stripe, R.drawable.ab_yb, R.drawable.ab_yby, R.drawable.ab_yry, R.drawable.ab_yyy};
-                for (int i = 0; i < abdomenAssets.length; i++) {
-                    ImageView view = new ImageView(getActivity());
-                    view.setImageResource(abdomenAssets[i]);
-                    scrollView.addView(view);
-                }
-                break;
-            case THORAX:
-                int[] thoraxAssets = {R.drawable.thorax_bdot, R.drawable.thorax_whsh, R.drawable.thorax_ybb, R.drawable.thorax_yby, R.drawable.thorax_yyy};
-                for (int i = 0; i < thoraxAssets.length; i++) {
-                    ImageView view = new ImageView(getActivity());
-                    view.setImageResource(thoraxAssets[i]);
-                    scrollView.addView(view);
-                }
-                break;
-        }
+    private void errorAndExit(String message) {
+        getActivity().finish();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 }
