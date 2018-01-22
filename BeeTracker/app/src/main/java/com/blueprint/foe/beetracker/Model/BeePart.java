@@ -7,7 +7,8 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 
 /**
- * Created by luisa on 2018-01-15.
+ * This class contains information about the bee part including whether or not it is selected,
+ * its index and the drawable image to be loaded into the UI component.
  */
 
 public class BeePart {
@@ -24,10 +25,6 @@ public class BeePart {
         roundedBeeOptionDrawable.setAntiAlias(true);
         mDrawable = roundedBeeOptionDrawable;
     }
-
-//    public int getDrawable() {
-//        return mDrawable;
-//    }
 
     public RoundedBitmapDrawable getDrawable() {
         return mDrawable;

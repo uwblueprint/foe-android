@@ -16,10 +16,8 @@ import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.Model.BeePart;
 import com.blueprint.foe.beetracker.Model.PartsPickerAdapter;
-import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.Submission;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +25,6 @@ import java.util.List;
  * This fragment will allow the user to identify a bee species based on its head, thorax
  * and abdomen patterns. It will also let the user review the image they selected.
  */
-
 public class IdentifyFragment extends Fragment implements OnBeePartSelectedListener {
     private static final String TAG = IdentifyFragment.class.toString();
     private PartsPickerAdapter faceAdapter;
@@ -47,15 +44,6 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                SubmissionActivity submissionActivity = (SubmissionActivity) getActivity();
-//                try {
-//                    StorageAccessor.store(getActivity(), submissionActivity.getSubmission());
-//                    //submissionActivity.setSubmission(submissionActivity.getSubmission());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    errorAndExit("Could not save submission.");
-//                }
                 Fragment newFragment = new ReviewFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -171,6 +159,4 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
             thoraxButton.setTextColor(getResources().getColor(R.color.grassGreen));
         }
     }
-
-
 }

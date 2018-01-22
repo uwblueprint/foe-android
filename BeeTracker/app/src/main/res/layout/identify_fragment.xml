@@ -50,7 +50,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:id="@+id/faceButton"
-            android:text="FACE"/>
+            android:text="@string/face"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:id="@+id/thoraxButton"
-            android:text="THORAX"/>
+            android:text="@string/thorax"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -68,21 +68,11 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/abdomenButton"
-            android:text="ABDOMEN"/>
+            android:text="@string/abdomen"/>
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/recyclerView"/>
-    <!--<HorizontalScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:id="@+id/beePicker">-->
-        <!--</LinearLayout>-->
-    <!--</HorizontalScrollView>-->
 </LinearLayout>

@@ -9,4 +9,7 @@
     <string name="back">Back</string>
     <string name="next">Next</string>
     <string name="step_two">STEP 2: IDENTIFY</string>
+    <string name="face">FACE</string>
+    <string name="thorax">THORAX</string>
+    <string name="abdomen">ABDOMEN</string>
 </resources>

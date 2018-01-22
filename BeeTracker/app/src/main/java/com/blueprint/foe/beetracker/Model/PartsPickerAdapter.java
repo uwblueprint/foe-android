@@ -1,11 +1,9 @@
 package com.blueprint.foe.beetracker.Model;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.OnBeePartSelectedListener;
 import com.blueprint.foe.beetracker.R;
@@ -26,7 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An ArrayAdapter for the fact collection. Used by LearnActivity.
+ * A RecyclerView Adapter to hold bee part images. Used by LearnActivity.
+ * Looks like a horizontal ListView with round bee part images. The images optionally have a
+ * green circle around them to indicate they are selected. In order to render them according to
+ * the design, a grey background is also generated to go behind the transparent bee resource.
  */
 public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.ViewHolder> {
     private static String TAG = PartsPickerAdapter.class.toString();
@@ -50,11 +48,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
         this.mListener = listener;
     }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         public ImageView mImageView;
         public RoundedBitmapDrawable mGreyBackground;
         public RoundedBitmapDrawable mSelected;
@@ -67,11 +61,9 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
         }
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public PartsPickerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
-        // create a new view to hold our layered image
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bee_part, parent, false);
 
@@ -94,15 +86,12 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        //holder.mTextView.setText(mDataset[position]);
-        // Round the corners of the bee part image
         final BeePart beePart = beeParts.get(position);
 
         Drawable[] layers;
         if (beePart.isSelected()) {
-            // Create a green circle to show the selected status and round the corners
+            // Stack the bee part transparent icon with a grey circular background and a green
+            // circle to indicate that it is selected.
             layers = new Drawable[3];
             layers[0] =  holder.mSelected;
             layers[1] = holder.mGreyBackground;
@@ -113,7 +102,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
             layerDrawable.setLayerInset(2, inset, inset, inset, inset);
             holder.mImageView.setImageDrawable(layerDrawable);
         } else {
-            // Stack the two drawables on top of each other
+            // Stack the two drawables (bee part and grey background) on top of each other
             layers = new Drawable[2];
             layers[0] =  holder.mGreyBackground;
             layers[1] = beePart.getDrawable();

@@ -5,9 +5,8 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
- * Created by luisa on 2017-07-15.
+ * Renders an image into a square, keeping its aspect ratio, by adding whitespace.
  */
-
 public class SquareImageView extends ImageView {
 
     public SquareImageView(Context context) {

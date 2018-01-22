@@ -2,7 +2,6 @@ package com.blueprint.foe.beetracker;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,7 +44,7 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
     public void onPause() {
         super.onPause();
         try {
-            StorageAccessor.store(this, getSubmission());
+            StorageAccessor.store(this, submission);
         } catch (IOException e) {
             e.printStackTrace();
             Log.e(TAG, "There was a problem storing your submission.");
