@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.Submission;
 
+import java.io.IOException;
+
 public class SubmissionActivity extends AppCompatActivity implements SubmissionInterface {
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final String TAG = SubmissionActivity.class.toString();
@@ -39,10 +41,35 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
         }
     }
 
-    public void setSubmission(Submission submission) {
-        this.submission = submission;
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            StorageAccessor.store(this, getSubmission());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "There was a problem storing your submission.");
+            errorAndExit("There was a problem storing your submission.");
+        }
     }
 
+    private void errorAndExit(String message) {
+        finish();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setSubmission(Submission submission) {
+        this.submission = submission;
+        try {
+            StorageAccessor.store(this, submission);
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorAndExit("Could not save submission.");
+        }
+    }
+
+    @Override
     public Submission getSubmission() {
         return submission;
     }

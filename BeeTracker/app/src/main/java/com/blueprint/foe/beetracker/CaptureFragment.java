@@ -163,13 +163,7 @@ public class CaptureFragment extends Fragment {
         Submission submission = new Submission();
         submission.setImageFilePath(imageFilePath);
         SubmissionActivity submissionActivity = (SubmissionActivity) getActivity();
-        try {
-            StorageAccessor.store(getActivity(), submission);
-            submissionActivity.setSubmission(submission);
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorAndExit("Could not save submission.");
-        }
+        submissionActivity.setSubmission(submission);
     }
 
     private void launchNextFragment() {

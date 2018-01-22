@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blueprint.foe.beetracker.OnBeePartSelectedListener;
 import com.blueprint.foe.beetracker.R;
 import com.blueprint.foe.beetracker.SubmissionActivity;
 
@@ -32,6 +33,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
     private static int SIZE = 80;
     private BeePartType type;
     private List<BeePart> beeParts;
+    private OnBeePartSelectedListener mListener;
 
     public enum BeePartType {
         Face, Abdomen, Thorax
@@ -42,15 +44,11 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
         return beeParts.size();
     }
 
-    public PartsPickerAdapter(List<BeePart> beeParts, BeePartType type) {
+    public PartsPickerAdapter(List<BeePart> beeParts, BeePartType type, OnBeePartSelectedListener listener) {
         this.type = type;
         this.beeParts = beeParts;
+        this.mListener = listener;
     }
-//    public PartsPickerAdapter(Context context, List<BeePart> beeParts, BeePartType type) {
-//        super(context, 0, beeParts);
-//        this.beeParts = beeParts;
-//        this.type = type;
-//    }
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -145,78 +143,9 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
                     beeParts.get(i).setSelection(false);
                 }
                 beePart.setSelection(!beePart.isSelected()); // toggle
+                mListener.onBeePartSelected();
                 notifyDataSetChanged();
             }
         });
     }
-
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//
-//        Log.d(TAG, "getView pos: " + position);
-//        // Get the data item for this position
-//        final BeePart beePart = getItem(position);
-//        // Check if an existing view is being reused, otherwise inflate the view
-//        if (convertView == null) {
-//            convertView = new ImageView(getContext());
-//        }
-//        ImageView view = (ImageView) convertView;
-//
-//        // Round the corners of the bee part image
-//        Bitmap beeOptionBitmap = BitmapFactory.decodeResource(getContext().getResources(),  beePart.getDrawable());
-//        final RoundedBitmapDrawable roundedBeeOptionDrawable = RoundedBitmapDrawableFactory.create(getContext().getResources(), beeOptionBitmap);
-//        roundedBeeOptionDrawable.setCircular(true);
-//        roundedBeeOptionDrawable.setAntiAlias(true);
-//
-//        // Create a grey background and round its corners
-//        Bitmap backgroundBitmap = Bitmap.createBitmap(roundedBeeOptionDrawable.getIntrinsicWidth(), roundedBeeOptionDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-//        backgroundBitmap.eraseColor(getContext().getResources().getColor(R.color.medium_grey));
-//        final RoundedBitmapDrawable roundedBackgroundDrawable = RoundedBitmapDrawableFactory.create(getContext().getResources(), backgroundBitmap);
-//        roundedBackgroundDrawable.setCircular(true);
-//        roundedBackgroundDrawable.setAntiAlias(true);
-//
-//        if (beePart.isSelected()) {
-//            // Create a green circle to show the selected status and round the corners
-//            Bitmap greenBitmap = Bitmap.createBitmap(roundedBeeOptionDrawable.getIntrinsicWidth(), roundedBeeOptionDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-//            greenBitmap.eraseColor(getContext().getResources().getColor(R.color.grassGreen));
-//            RoundedBitmapDrawable selectedDrawable = RoundedBitmapDrawableFactory.create(getContext().getResources(), greenBitmap);
-//            selectedDrawable.setCircular(true);
-//            selectedDrawable.setAntiAlias(true);
-//
-//            Drawable[] layers = new Drawable[3];
-//            layers[0] =  selectedDrawable;
-//            layers[1] = roundedBackgroundDrawable;
-//            layers[2] = roundedBeeOptionDrawable;
-//            LayerDrawable layerDrawable2 = new LayerDrawable(layers);
-//            layerDrawable2.setLayerInset(1, 5, 5, 5, 5);
-//            layerDrawable2.setLayerInset(2, 5, 5, 5, 5);
-//            view.setImageDrawable(layerDrawable2);
-//        } else {
-//            // Stack the two drawables on top of each other
-//            Drawable[] layers = new Drawable[2];
-//            layers[0] =  roundedBackgroundDrawable;
-//            layers[1] = roundedBeeOptionDrawable;
-//            LayerDrawable layerDrawable = new LayerDrawable(layers);
-//            view.setImageDrawable(layerDrawable);
-//        }
-//
-//        final int faceIndex = beePart.getIndex();
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Update submission with the user's choice
-//                SubmissionActivity activity = (SubmissionActivity) getContext();
-//                Submission submission = activity.getSubmission();
-//                submission.setFace(faceIndex);
-//                for (int i = 0; i < beeParts.size(); i++) {
-//                    beeParts.get(i).setSelection(false);
-//                }
-//                beePart.setSelection(!beePart.isSelected()); // toggle
-//                Log.d(TAG, "set selected: " + beePart.getIndex());
-//                notifyDataSetChanged();
-//            }
-//        });
-//
-//        return view;
-//    }
 }

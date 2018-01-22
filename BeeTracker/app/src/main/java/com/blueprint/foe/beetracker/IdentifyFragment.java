@@ -28,14 +28,16 @@ import java.util.List;
  * and abdomen patterns. It will also let the user review the image they selected.
  */
 
-public class IdentifyFragment extends Fragment {
+public class IdentifyFragment extends Fragment implements OnBeePartSelectedListener {
     private static final String TAG = IdentifyFragment.class.toString();
-    private enum BeePartType {FACE, ABDOMEN, THORAX};
     private PartsPickerAdapter faceAdapter;
     private PartsPickerAdapter abdomenAdapter;
     private PartsPickerAdapter thoraxAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
+    private TextView faceButton;
+    private TextView abdomenButton;
+    private TextView thoraxButton;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,14 +48,14 @@ public class IdentifyFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                SubmissionActivity submissionActivity = (SubmissionActivity) getActivity();
-                try {
-                    StorageAccessor.store(getActivity(), submissionActivity.getSubmission());
-                    submissionActivity.setSubmission(submissionActivity.getSubmission());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    errorAndExit("Could not save submission.");
-                }
+//                SubmissionActivity submissionActivity = (SubmissionActivity) getActivity();
+//                try {
+//                    StorageAccessor.store(getActivity(), submissionActivity.getSubmission());
+//                    //submissionActivity.setSubmission(submissionActivity.getSubmission());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    errorAndExit("Could not save submission.");
+//                }
                 Fragment newFragment = new ReviewFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -81,7 +83,7 @@ public class IdentifyFragment extends Fragment {
         ImageView preview = (ImageView) view.findViewById(R.id.previewImageView);
         preview.setImageBitmap(scaled);
 
-        TextView faceButton = (TextView) view.findViewById(R.id.faceButton);
+        faceButton = (TextView) view.findViewById(R.id.faceButton);
         faceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +91,7 @@ public class IdentifyFragment extends Fragment {
             }
         });
 
-        TextView abdomenButton = (TextView) view.findViewById(R.id.abdomenButton);
+        abdomenButton = (TextView) view.findViewById(R.id.abdomenButton);
         abdomenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +99,7 @@ public class IdentifyFragment extends Fragment {
             }
         });
 
-        TextView thoraxButton = (TextView) view.findViewById(R.id.thoraxButton);
+        thoraxButton = (TextView) view.findViewById(R.id.thoraxButton);
         thoraxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,9 +107,24 @@ public class IdentifyFragment extends Fragment {
             }
         });
 
+        createAdapters(submission);
+        onBeePartSelected();
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setAdapter(faceAdapter);
+
+        return view;
+    }
+
+    private void createAdapters(Submission submission) {
         int[] faceAssets = {R.drawable.face_black, R.drawable.face_yellow};
         int[] abdomenAssets = {R.drawable.ab_byb, R.drawable.ab_red_tail, R.drawable.ab_white_tail, R.drawable.ab_y_stripe, R.drawable.ab_yb, R.drawable.ab_yby, R.drawable.ab_yry, R.drawable.ab_yyy};
         int[] thoraxAssets = {R.drawable.thorax_bdot, R.drawable.thorax_whsh, R.drawable.thorax_ybb, R.drawable.thorax_yby, R.drawable.thorax_yyy};
+
         List<BeePart> faces = new ArrayList<>();
         for (int i = 0; i < faceAssets.length; i++) {
             faces.add(new BeePart(i, faceAssets[i], getActivity()));
@@ -131,22 +148,29 @@ public class IdentifyFragment extends Fragment {
             thoraxes.get(submission.getThorax()).setSelection(true);
         }
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        faceAdapter = new PartsPickerAdapter(faces, PartsPickerAdapter.BeePartType.Face);
-        thoraxAdapter = new PartsPickerAdapter(thoraxes, PartsPickerAdapter.BeePartType.Thorax);
-        abdomenAdapter = new PartsPickerAdapter(abdomens, PartsPickerAdapter.BeePartType.Abdomen);
-        mRecyclerView.setAdapter(faceAdapter);
-
-        return view;
+        faceAdapter = new PartsPickerAdapter(faces, PartsPickerAdapter.BeePartType.Face, this);
+        thoraxAdapter = new PartsPickerAdapter(thoraxes, PartsPickerAdapter.BeePartType.Thorax, this);
+        abdomenAdapter = new PartsPickerAdapter(abdomens, PartsPickerAdapter.BeePartType.Abdomen, this);
     }
 
     private void errorAndExit(String message) {
         getActivity().finish();
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void onBeePartSelected() {
+        Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+        if (submission.getFace() > -1) {
+            faceButton.setTextColor(getResources().getColor(R.color.grassGreen));
+        }
+        if (submission.getAbdomen() > -1) {
+            abdomenButton.setTextColor(getResources().getColor(R.color.grassGreen));
+        }
+        if (submission.getThorax() > -1) {
+            thoraxButton.setTextColor(getResources().getColor(R.color.grassGreen));
+        }
+    }
+
+
 }

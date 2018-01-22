@@ -3,9 +3,10 @@ package com.blueprint.foe.beetracker;
 import com.blueprint.foe.beetracker.Model.Submission;
 
 /**
- * Created by luisa on 2018-01-15.
+ * This interface allows each fragment to interact with a common Submission object stored
+ * in SubmissionActivity. It also allows fragments to tell the activity to save the current
+ * submission
  */
-
 public interface SubmissionInterface {
     void setSubmission(Submission submission);
     Submission getSubmission();
