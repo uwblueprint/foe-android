@@ -115,7 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingStart="8dp"
+        android:paddingStart="0dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"/>
     <TextView
@@ -129,7 +129,7 @@
         android:id="@+id/weather_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
+        android:paddingStart="0dp"
         android:background="@color/white"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"/>

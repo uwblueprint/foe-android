@@ -58,14 +58,14 @@ public class ReviewFragment extends Fragment {
 
         Spinner weatherSpinner = (Spinner) view.findViewById(R.id.weather_spinner);
         ArrayAdapter<CharSequence> weatherAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.weather_array, android.R.layout.simple_spinner_item);
-        weatherAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.weather_array, R.layout.spinner_item);
+        weatherAdapter.setDropDownViewResource(R.layout.spinner_item);
         weatherSpinner.setAdapter(weatherAdapter);
 
         Spinner habitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
         ArrayAdapter<CharSequence> habitatAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.habitat_array, android.R.layout.simple_spinner_item);
-        habitatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.habitat_array, R.layout.spinner_item);
+        habitatAdapter.setDropDownViewResource(R.layout.spinner_item);
         habitatSpinner.setAdapter(habitatAdapter);
 
         // TODO: https://stackoverflow.com/questions/20422802/how-to-set-dropdown-arrow-in-spinner
