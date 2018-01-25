@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="mediumGrey">#e5e5e5</color>
+    <color name="actionBarTextColour">#4f4f4f</color>
     <color name="grassGreen">#1EC063</color>
+    <color name="subheadingTextColour">#828282</color>
 </resources>

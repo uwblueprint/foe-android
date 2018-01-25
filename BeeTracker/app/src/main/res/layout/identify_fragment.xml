@@ -5,11 +5,13 @@
     android:background="@color/white">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back"
+            android:textColor="@color/actionBarTextColour"
             android:gravity="center_vertical"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="8dp"
@@ -19,6 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/actionBarTextColour"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="@string/step_two"/>
@@ -26,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next"
+            android:textColor="@color/actionBarTextColour"
             android:gravity="center_vertical"
             android:layout_alignParentRight="true"
             android:layout_marginTop="8dp"
