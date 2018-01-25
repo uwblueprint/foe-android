@@ -8,4 +8,19 @@
     <string name="cancel">Cancel</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
+    <string name="step_three">STEP 3: GEOTAG</string>
+    <string-array name="weather_array">
+        <item>Sunny</item>
+        <item>Partly Sunny</item>
+        <item>Overcast</item>
+        <item>Rainy</item>
+        <item>Foggy</item>
+    </string-array>
+    <string-array name="habitat_array">
+        <item>Flower Garden</item>
+        <item>Park</item>
+        <item>Parking Lot</item>
+        <item>Marsh</item>
+        <item>River</item>
+    </string-array>
 </resources>

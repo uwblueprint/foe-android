@@ -11,9 +11,12 @@ import android.widget.Toast;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.Submission;
 
-public class SubmissionActivity extends AppCompatActivity {
+import java.io.IOException;
+
+public class SubmissionActivity extends AppCompatActivity implements SubmissionInterface {
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final String TAG = SubmissionActivity.class.toString();
+    private Submission submission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,4 +41,24 @@ public class SubmissionActivity extends AppCompatActivity {
         }
     }
 
+    private void errorAndExit(String message) {
+        finish();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setSubmission(Submission submission) {
+        this.submission = submission;
+        try {
+            StorageAccessor.store(this, submission);
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorAndExit("Could not save submission.");
+        }
+    }
+
+    @Override
+    public Submission getSubmission() {
+        return submission;
+    }
 }
