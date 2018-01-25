@@ -7,7 +7,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,8 @@ import android.widget.ImageView;
 
 import com.blueprint.foe.beetracker.OnBeePartSelectedListener;
 import com.blueprint.foe.beetracker.R;
-import com.blueprint.foe.beetracker.SubmissionActivity;
+import com.blueprint.foe.beetracker.SubmissionInterface;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,22 +27,18 @@ import java.util.List;
 public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.ViewHolder> {
     private static String TAG = PartsPickerAdapter.class.toString();
     private static int SIZE = 80;
-    private BeePartType type;
-    private List<BeePart> beeParts;
+    private BeePart.BeePartType mType;
+    private List<BeePart> mBeeParts;
     private OnBeePartSelectedListener mListener;
-
-    public enum BeePartType {
-        Face, Abdomen, Thorax
-    }
 
     @Override
     public int getItemCount() {
-        return beeParts.size();
+        return mBeeParts.size();
     }
 
-    public PartsPickerAdapter(List<BeePart> beeParts, BeePartType type, OnBeePartSelectedListener listener) {
-        this.type = type;
-        this.beeParts = beeParts;
+    public PartsPickerAdapter(List<BeePart> beeParts, BeePart.BeePartType type, OnBeePartSelectedListener listener) {
+        this.mType = type;
+        this.mBeeParts = beeParts;
         this.mListener = listener;
     }
 
@@ -69,7 +63,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
 
         // Create a grey background and round its corners
         Bitmap backgroundBitmap = Bitmap.createBitmap(SIZE, SIZE, Bitmap.Config.ARGB_8888);
-        backgroundBitmap.eraseColor(parent.getContext().getResources().getColor(R.color.medium_grey));
+        backgroundBitmap.eraseColor(parent.getContext().getResources().getColor(R.color.mediumGrey));
         final RoundedBitmapDrawable roundedBackgroundDrawable = RoundedBitmapDrawableFactory.create(parent.getContext().getResources(), backgroundBitmap);
         roundedBackgroundDrawable.setCircular(true);
         roundedBackgroundDrawable.setAntiAlias(true);
@@ -86,7 +80,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final BeePart beePart = beeParts.get(position);
+        final BeePart beePart = mBeeParts.get(position);
 
         Drawable[] layers;
         if (beePart.isSelected()) {
@@ -114,9 +108,9 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
             @Override
             public void onClick(View view) {
                 // Update submission with the user's choice
-                SubmissionActivity activity = (SubmissionActivity) holder.mImageView.getContext();
+                SubmissionInterface activity = (SubmissionInterface) holder.mImageView.getContext();
                 Submission submission = activity.getSubmission();
-                switch(type) {
+                switch(mType) {
                     case Face:
                         submission.setFace(beePart.getIndex());
                         break;
@@ -128,8 +122,8 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
                         break;
                 }
 
-                for (int i = 0; i < beeParts.size(); i++) {
-                    beeParts.get(i).setSelection(false);
+                for (int i = 0; i < mBeeParts.size(); i++) {
+                    mBeeParts.get(i).setSelection(false);
                 }
                 beePart.setSelection(!beePart.isSelected()); // toggle
                 mListener.onBeePartSelected();

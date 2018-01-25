@@ -16,6 +16,10 @@ public class BeePart {
     private RoundedBitmapDrawable mDrawable;
     private boolean mSelected;
 
+    public enum BeePartType {
+        Face, Abdomen, Thorax
+    }
+
     public BeePart(int partIndex, int drawable, Context context) {
         this.mPartIndex = partIndex;
         this.mSelected = false;

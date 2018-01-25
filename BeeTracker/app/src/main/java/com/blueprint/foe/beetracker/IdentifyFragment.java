@@ -27,14 +27,14 @@ import java.util.List;
  */
 public class IdentifyFragment extends Fragment implements OnBeePartSelectedListener {
     private static final String TAG = IdentifyFragment.class.toString();
-    private PartsPickerAdapter faceAdapter;
-    private PartsPickerAdapter abdomenAdapter;
-    private PartsPickerAdapter thoraxAdapter;
+    private PartsPickerAdapter mFaceAdapter;
+    private PartsPickerAdapter mAbdomenAdapter;
+    private PartsPickerAdapter mThoraxAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-    private TextView faceButton;
-    private TextView abdomenButton;
-    private TextView thoraxButton;
+    private TextView mFaceButton;
+    private TextView mAbdomenButton;
+    private TextView mThoraxButton;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,34 +64,35 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
             }
         });
 
-        Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+        Submission submission = ((SubmissionInterface) getActivity()).getSubmission();
         Bitmap bitmap = BitmapFactory.decodeFile(submission.getImageFilePath());
-        int width = bitmap.getWidth();
-        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, container.getWidth(), (int)(((double)bitmap.getHeight() / (double)width) * container.getWidth()), false);
+        int scaledWidth = container.getWidth();
+        int scaledHeight = (int)(((double)bitmap.getHeight() / (double)bitmap.getWidth()) * container.getWidth());
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, false);
         ImageView preview = (ImageView) view.findViewById(R.id.previewImageView);
         preview.setImageBitmap(scaled);
 
-        faceButton = (TextView) view.findViewById(R.id.faceButton);
-        faceButton.setOnClickListener(new View.OnClickListener() {
+        mFaceButton = (TextView) view.findViewById(R.id.faceButton);
+        mFaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRecyclerView.setAdapter(faceAdapter);
+                mRecyclerView.setAdapter(mFaceAdapter);
             }
         });
 
-        abdomenButton = (TextView) view.findViewById(R.id.abdomenButton);
-        abdomenButton.setOnClickListener(new View.OnClickListener() {
+        mAbdomenButton = (TextView) view.findViewById(R.id.abdomenButton);
+        mAbdomenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRecyclerView.setAdapter(abdomenAdapter);
+                mRecyclerView.setAdapter(mAbdomenAdapter);
             }
         });
 
-        thoraxButton = (TextView) view.findViewById(R.id.thoraxButton);
-        thoraxButton.setOnClickListener(new View.OnClickListener() {
+        mThoraxButton = (TextView) view.findViewById(R.id.thoraxButton);
+        mThoraxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRecyclerView.setAdapter(thoraxAdapter);
+                mRecyclerView.setAdapter(mThoraxAdapter);
             }
         });
 
@@ -103,7 +104,7 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerView.setAdapter(faceAdapter);
+        mRecyclerView.setAdapter(mFaceAdapter);
 
         return view;
     }
@@ -136,9 +137,9 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
             thoraxes.get(submission.getThorax()).setSelection(true);
         }
 
-        faceAdapter = new PartsPickerAdapter(faces, PartsPickerAdapter.BeePartType.Face, this);
-        thoraxAdapter = new PartsPickerAdapter(thoraxes, PartsPickerAdapter.BeePartType.Thorax, this);
-        abdomenAdapter = new PartsPickerAdapter(abdomens, PartsPickerAdapter.BeePartType.Abdomen, this);
+        mFaceAdapter = new PartsPickerAdapter(faces, BeePart.BeePartType.Face, this);
+        mThoraxAdapter = new PartsPickerAdapter(thoraxes, BeePart.BeePartType.Thorax, this);
+        mAbdomenAdapter = new PartsPickerAdapter(abdomens, BeePart.BeePartType.Abdomen, this);
     }
 
     private void errorAndExit(String message) {
@@ -148,15 +149,15 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
 
     @Override
     public void onBeePartSelected() {
-        Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+        Submission submission = ((SubmissionInterface) getActivity()).getSubmission();
         if (submission.getFace() > -1) {
-            faceButton.setTextColor(getResources().getColor(R.color.grassGreen));
+            mFaceButton.setTextColor(getResources().getColor(R.color.grassGreen));
         }
         if (submission.getAbdomen() > -1) {
-            abdomenButton.setTextColor(getResources().getColor(R.color.grassGreen));
+            mAbdomenButton.setTextColor(getResources().getColor(R.color.grassGreen));
         }
         if (submission.getThorax() > -1) {
-            thoraxButton.setTextColor(getResources().getColor(R.color.grassGreen));
+            mThoraxButton.setTextColor(getResources().getColor(R.color.grassGreen));
         }
     }
 }
