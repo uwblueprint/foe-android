@@ -176,5 +176,4 @@ public class CaptureFragment extends Fragment {
         transaction.commit();
     }
 
-
 }

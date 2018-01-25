@@ -9,9 +9,9 @@ import android.util.Log;
 
 public class Submission {
     private static final String TAG = Submission.class.toString();
-    public static final int MAX_FACE = 3;
-    public static final int MAX_THORAX = 3;
-    public static final int MAX_ABDOMEN = 3;
+    public static final int MAX_FACE = 2;
+    public static final int MAX_THORAX = 5;
+    public static final int MAX_ABDOMEN = 8;
 
     private int mFace; // the index of the image chosen by user
     private int mThorax; // the index of the image chosen by user
