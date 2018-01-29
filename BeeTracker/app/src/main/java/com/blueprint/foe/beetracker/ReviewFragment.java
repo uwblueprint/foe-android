@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,7 +50,7 @@ public class ReviewFragment extends Fragment {
             }
         });
 
-        Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+        final Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
         Bitmap bitmap = BitmapFactory.decodeFile(submission.getImageFilePath());
         int width = bitmap.getWidth();
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, container.getWidth(), (int)(((double)bitmap.getHeight() / (double)width) * container.getWidth()), false);
@@ -62,13 +63,19 @@ public class ReviewFragment extends Fragment {
         weatherAdapter.setDropDownViewResource(R.layout.spinner_item);
         weatherSpinner.setAdapter(weatherAdapter);
 
-        Spinner habitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
-        ArrayAdapter<CharSequence> habitatAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.habitat_array, R.layout.spinner_item);
+        final Spinner habitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
+        final Submission.Habitat[] habitats = Submission.Habitat.values();
+        ArrayAdapter<Submission.Habitat> habitatAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.spinner_item, habitats);
         habitatAdapter.setDropDownViewResource(R.layout.spinner_item);
         habitatSpinner.setAdapter(habitatAdapter);
-
-        // TODO: https://stackoverflow.com/questions/20422802/how-to-set-dropdown-arrow-in-spinner
+        habitatSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int item = (int) habitatSpinner.getSelectedItemId();
+                submission.setHabitat(habitats[item]);
+            }
+        });
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -77,14 +84,13 @@ public class ReviewFragment extends Fragment {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName());
+                submission.setLocation(place);
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
+                // TODO: handle error
+                Log.e(TAG, "An error occurred: " + status);
             }
         });
 
