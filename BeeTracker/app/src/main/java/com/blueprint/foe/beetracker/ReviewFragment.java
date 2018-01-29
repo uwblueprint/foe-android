@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.Model.Submission;
 import com.google.android.gms.common.api.Status;
@@ -57,11 +58,20 @@ public class ReviewFragment extends Fragment {
         ImageView preview = (ImageView) view.findViewById(R.id.beeImageView);
         preview.setImageBitmap(scaled);
 
-        Spinner weatherSpinner = (Spinner) view.findViewById(R.id.weather_spinner);
-        ArrayAdapter<CharSequence> weatherAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.weather_array, R.layout.spinner_item);
+        // TODO (https://github.com/uwblueprint/foe/issues/32) : Set up an adapter that extends partsPickerAdapter
+        final Spinner weatherSpinner = (Spinner) view.findViewById(R.id.weather_spinner);
+        final Submission.Weather[] weathers = Submission.Weather.values();
+        ArrayAdapter<Submission.Weather> weatherAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.spinner_item, weathers);
         weatherAdapter.setDropDownViewResource(R.layout.spinner_item);
         weatherSpinner.setAdapter(weatherAdapter);
+        weatherSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int item = (int) weatherSpinner.getSelectedItemId();
+                submission.setWeather(weathers[item]);
+            }
+        });
 
         final Spinner habitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
         final Submission.Habitat[] habitats = Submission.Habitat.values();
@@ -77,7 +87,7 @@ public class ReviewFragment extends Fragment {
             }
         });
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         ImageView searchIcon = (ImageView)((LinearLayout)autocompleteFragment.getView()).getChildAt(0);
         searchIcon.setImageDrawable(getResources().getDrawable(R.drawable.location_search_icon));
@@ -89,7 +99,7 @@ public class ReviewFragment extends Fragment {
 
             @Override
             public void onError(Status status) {
-                // TODO: handle error
+                Toast.makeText(getActivity(), "There was an error finding your place.", Toast.LENGTH_LONG);
                 Log.e(TAG, "An error occurred: " + status);
             }
         });

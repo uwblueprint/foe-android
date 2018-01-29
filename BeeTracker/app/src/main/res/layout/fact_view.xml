@@ -9,6 +9,9 @@
         android:id="@+id/factTopBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/medium_padding"
+        android:paddingBottom="@dimen/medium_padding"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/lblFactId"
@@ -17,8 +20,6 @@
             android:textSize="@dimen/fact_number_text_size"
             android:textStyle="bold"
             android:paddingLeft="@dimen/medium_padding"
-            android:paddingTop="@dimen/medium_padding"
-            android:paddingBottom="@dimen/medium_padding"
             android:text="Fact #"
             android:layout_weight="1"/>
         <ImageView
@@ -26,8 +27,6 @@
             android:layout_height="@dimen/close_button_size"
             android:layout_marginLeft="@dimen/medium_padding"
             android:layout_marginRight="@dimen/medium_padding"
-            android:layout_marginTop="@dimen/medium_padding"
-            android:layout_marginBottom="@dimen/medium_padding"
             android:id="@+id/btnClose"
             android:src="@drawable/icon_close"/>
     </LinearLayout>
