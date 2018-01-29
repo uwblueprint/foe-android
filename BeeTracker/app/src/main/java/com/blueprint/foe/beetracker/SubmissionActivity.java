@@ -44,7 +44,7 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
     public void onPause() {
         super.onPause();
         try {
-            StorageAccessor.store(this, submission);
+            StorageAccessor.storeSubmission(this, submission);
         } catch (IOException e) {
             e.printStackTrace();
             Log.e(TAG, "There was a problem storing your submission.");
@@ -61,7 +61,7 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
     public void setSubmission(Submission submission) {
         this.submission = submission;
         try {
-            StorageAccessor.store(this, submission);
+            StorageAccessor.storeSubmission(this, submission);
         } catch (IOException e) {
             e.printStackTrace();
             errorAndExit("Could not save submission.");
