@@ -50,7 +50,7 @@
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="@dimen/fact_image_height"
-            android:background="@color/medium_grey"
+            android:background="@color/mediumGrey"
             android:layout_marginBottom="@dimen/medium_padding"/>
 
         <LinearLayout
@@ -80,7 +80,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
-            android:background="@color/medium_grey"/>
+            android:background="@color/mediumGrey"/>
         <LinearLayout
             android:id="@+id/btnCompleteFact"
             android:layout_width="wrap_content"

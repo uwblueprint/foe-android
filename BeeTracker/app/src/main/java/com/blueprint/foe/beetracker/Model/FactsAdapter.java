@@ -2,7 +2,6 @@ package com.blueprint.foe.beetracker.Model;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +78,7 @@ public class FactsAdapter extends ArrayAdapter<Fact> {
 
         if (fact.isCompleted()) {
             completeText.setText(getContext().getString(R.string.completed));
-            completeText.setTextColor(ContextCompat.getColor(getContext(), R.color.light_grey));
+            completeText.setTextColor(ContextCompat.getColor(getContext(), R.color.lightGrey));
             completeImage.setImageResource(R.drawable.icon_done_checkmark_disabled);
         } else {
             completeText.setText(getContext().getString(R.string.done));
