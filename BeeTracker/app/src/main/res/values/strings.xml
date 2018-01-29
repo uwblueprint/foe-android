@@ -8,6 +8,8 @@
     <string name="cancel">Cancel</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
+    <string name="completed">Completed</string>
+    <string name="done">Done</string>
     <string name="step_two">STEP 2: IDENTIFY</string>
     <string name="step_three">STEP 3: GEOTAG</string>
     <string name="face">FACE</string>

@@ -9,4 +9,8 @@
     <color name="actionBarTextColour">#4f4f4f</color>
     <color name="grassGreen">#1EC063</color>
     <color name="subheadingTextColour">#828282</color>
+    <color name="skyCyan">#66DAFF</color>
+    <color name="darkGrey">#333333</color>
+    <color name="lightGrey">#e0e0e0</color>
+    <color name="learnActivityBackground">#f6f6f6</color>
 </resources>
