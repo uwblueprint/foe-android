@@ -1,113 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/factView"
+    android:id="@+id/factViewContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/small_padding">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/factViewContainer"
+    android:background="@color/white">
+    <LinearLayout
+        android:id="@+id/factTopBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white">
-
-        <LinearLayout
-            android:id="@+id/factTopBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:id="@+id/lblFactId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textStyle="bold"
-                android:paddingLeft="@dimen/medium_padding"
-                android:paddingTop="@dimen/medium_padding"
-                android:paddingBottom="@dimen/medium_padding"
-                android:text=""
-                android:layout_weight="1"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:id="@+id/btnClose"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/medium_padding"
-                android:paddingRight="@dimen/medium_padding"
-                android:paddingTop="@dimen/medium_padding"
-                android:paddingBottom="@dimen/medium_padding"
-                android:background="@color/white">
-                <ImageView
-                    android:layout_width="@dimen/close_button_size"
-                    android:layout_height="@dimen/close_button_size"
-                    android:src="@drawable/icon_close"/>
-            </LinearLayout>
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/imgFactIllustration"
-            android:scaleType="centerCrop"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fact_image_height"
-            android:background="@color/mediumGrey"
-            android:layout_marginBottom="@dimen/medium_padding"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/medium_padding"
-            android:paddingRight="@dimen/medium_padding"
-            android:orientation="vertical"
-        >
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
         <TextView
-            android:id="@+id/factTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:paddingBottom="@dimen/small_padding"
-            android:text="" />
-        <TextView
-            android:id="@+id/factDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/medium_padding"
-            android:layout_weight="1"
-            android:textSize="16dp"
-            android:text="" />
-        </LinearLayout>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_height"
-            android:background="@color/mediumGrey"/>
-        <LinearLayout
-            android:id="@+id/btnCompleteFact"
+            android:id="@+id/lblFactId"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fact_number_text_size"
+            android:textStyle="bold"
             android:paddingLeft="@dimen/medium_padding"
-            android:paddingRight="@dimen/medium_padding"
             android:paddingTop="@dimen/medium_padding"
             android:paddingBottom="@dimen/medium_padding"
-
-            >
-            <ImageView
-                android:id="@+id/iconCompleteCTA"
-                android:layout_width="@dimen/medium_padding"
-                android:layout_height="@dimen/medium_padding"
-                android:layout_marginRight="@dimen/tiny_padding"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/icon_done_checkmark"/>
-            <TextView
-                android:id="@+id/lblCompleteCTA"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:textColor="@color/grassGreen"
-                android:text=""/>
-        </LinearLayout>
-
+            android:text="Fact #"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="@dimen/close_button_size"
+            android:layout_height="@dimen/close_button_size"
+            android:layout_marginLeft="@dimen/medium_padding"
+            android:layout_marginRight="@dimen/medium_padding"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:layout_marginBottom="@dimen/medium_padding"
+            android:id="@+id/btnClose"
+            android:src="@drawable/icon_close"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/imgFactIllustration"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fact_image_height"
+        android:background="@color/mediumGrey"
+        android:layout_marginBottom="@dimen/medium_padding"/>
+    <TextView
+        android:id="@+id/factTitle"
+        android:paddingLeft="@dimen/medium_padding"
+        android:paddingRight="@dimen/medium_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/fact_title_text_size"
+        android:textStyle="bold"
+        android:paddingBottom="@dimen/small_padding"
+        android:text="Fact Title" />
+    <TextView
+        android:id="@+id/factDescription"
+        android:paddingLeft="@dimen/medium_padding"
+        android:paddingRight="@dimen/medium_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/medium_padding"
+        android:layout_weight="1"
+        android:textSize="@dimen/fact_description_text_size"
+        android:text="Fact Description" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/mediumGrey"/>
+    <LinearLayout
+        android:id="@+id/btnCompleteFact"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/medium_padding"
+        android:paddingRight="@dimen/medium_padding"
+        android:paddingTop="@dimen/medium_padding"
+        android:paddingBottom="@dimen/medium_padding">
+        <ImageView
+            android:id="@+id/iconCompleteCTA"
+            android:layout_width="@dimen/medium_padding"
+            android:layout_height="@dimen/medium_padding"
+            android:layout_marginRight="@dimen/tiny_padding"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_done_checkmark"/>
+        <TextView
+            android:id="@+id/lblCompleteCTA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/fact_completed_text_size"
+            android:textColor="@color/grassGreen"
+            android:text=""/>
     </LinearLayout>
 </LinearLayout>

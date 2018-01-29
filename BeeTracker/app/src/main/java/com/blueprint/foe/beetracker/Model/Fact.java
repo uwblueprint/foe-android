@@ -62,7 +62,7 @@ public class Fact {
         return this.mTitle.equals(that.mTitle)
                 && this.mDescription.equals(that.mDescription)
                 && this.mId == that.mId
-                && this.mCategory == that.mCategory
+                && this.mCategory.equals(that.mCategory)
                 && this.mCompleted == that.mCompleted;
     }
 }

@@ -21,7 +21,7 @@ import java.io.IOException;
 public class LearnActivity extends AppCompatActivity {
     private static String TAG = LearnActivity.class.toString();
 
-    private FactCollection facts;
+    private FactCollection mFacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +29,13 @@ public class LearnActivity extends AppCompatActivity {
         setContentView(R.layout.activity_learn);
 
         try {
-            this.facts = StorageAccessor.loadFacts(this);
+            this.mFacts = StorageAccessor.loadFacts(this);
         } catch (IOException e) {
             Toast.makeText(this, "Could not load facts.", Toast.LENGTH_LONG);
-            this.facts = new FactCollection();
+            this.mFacts = new FactCollection();
         }
 
-        final FactsAdapter adapter = new FactsAdapter(this, facts.getFacts());
+        final FactsAdapter adapter = new FactsAdapter(this, mFacts.getFacts());
         ListView listView = (ListView) findViewById(R.id.factsListView);
 
         listView.setAdapter(adapter);
@@ -45,7 +45,7 @@ public class LearnActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         try {
-            StorageAccessor.storeFacts(getBaseContext(), this.facts);
+            StorageAccessor.storeFacts(getBaseContext(), this.mFacts);
         } catch (IOException e){
             Log.e(TAG, "Could not store facts: " + e.toString());
             // Fail silently, they can see all their facts again

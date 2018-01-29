@@ -20,10 +20,10 @@ import java.util.ArrayList;
 public class FactsAdapter extends ArrayAdapter<Fact> {
     private static String TAG = FactsAdapter.class.toString();
 
-    private ArrayList<Fact> facts;
+    private ArrayList<Fact> mFacts;
     public FactsAdapter(Context context, ArrayList<Fact> facts) {
         super(context, 0, facts);
-        this.facts = facts;
+        this.mFacts = facts;
     }
 
 
@@ -59,19 +59,20 @@ public class FactsAdapter extends ArrayAdapter<Fact> {
         }
 
         //set up tap event for X Close icon
-        LinearLayout closeButton = (LinearLayout) convertView.findViewById(R.id.btnClose);
+        ImageView closeButton = (ImageView) convertView.findViewById(R.id.btnClose);
 
         closeButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println( fact.getId() + " clicked!");
-                facts.remove(fact);
+                mFacts.remove(fact);
                 notifyDataSetChanged();
             }
 
         });
 
-        //set up event for completing a fact
+        // Complete button is a LinearLayout because it includes an ImageView for the checkmark as
+        // well as the TextView saying done
         LinearLayout completeButton = (LinearLayout) convertView.findViewById(R.id.btnCompleteFact);
         final TextView completeText = (TextView) convertView.findViewById(R.id.lblCompleteCTA);
         final ImageView completeImage = (ImageView) convertView.findViewById(R.id.iconCompleteCTA);
