@@ -15,6 +15,12 @@
     <string name="face">FACE</string>
     <string name="thorax">THORAX</string>
     <string name="abdomen">ABDOMEN</string>
+    <string name="identified_species_title">IDENTIFIED SPECIES</string>
+    <string name="unidentified_species">Unidentified</string>
+    <string name="unidentified_species_latin_na">N/A</string>
+    <string name="location">LOCATION</string>
+    <string name="habitat">HABITAT</string>
+    <string name="weather">WEATHER</string>
     <string-array name="weather_array">
         <item>Sunny</item>
         <item>Partly Sunny</item>

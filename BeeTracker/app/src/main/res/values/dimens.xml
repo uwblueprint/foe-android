@@ -5,10 +5,12 @@
     <dimen name="geotag_header_spacing">24dp</dimen>
     <dimen name="medium_padding">16dp</dimen>
     <dimen name="small_padding">8dp</dimen>
+    <dimen name="big_padding">24dp</dimen>
     <dimen name="close_button_size">16dp</dimen>
     <dimen name="fact_image_height">117dp</dimen>
     <dimen name="line_height">1dp</dimen>
     <dimen name="tiny_padding">4dp</dimen>
+    <dimen name="identified_species_image_height">120dp</dimen>
     <dimen name="fact_number_text_size">14sp</dimen>
     <dimen name="fact_title_text_size">20sp</dimen>
     <dimen name="fact_description_text_size">16sp</dimen>

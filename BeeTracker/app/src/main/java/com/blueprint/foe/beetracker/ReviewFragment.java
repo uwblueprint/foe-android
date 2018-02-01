@@ -26,13 +26,11 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
  * This fragment will allow the user to review the species, location, as well as add the
  * environment type and current weather.
  */
-
 public class ReviewFragment extends Fragment {
     private static final String TAG = ReviewFragment.class.toString();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "on create review");
         View view = inflater.inflate(R.layout.review_fragment, container, false);
 
         TextView submitButton = (TextView) view.findViewById(R.id.submitButton);
@@ -52,6 +50,7 @@ public class ReviewFragment extends Fragment {
             }
         });
 
+        // Set up image preview in top left corner
         final Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
         Bitmap bitmap = BitmapFactory.decodeFile(submission.getImageFilePath());
         int width = bitmap.getWidth();
@@ -59,6 +58,7 @@ public class ReviewFragment extends Fragment {
         ImageView preview = (ImageView) view.findViewById(R.id.beeImageView);
         preview.setImageBitmap(scaled);
 
+        // Set up interactive UI elements (spinner, location picker)
         // TODO (https://github.com/uwblueprint/foe/issues/32) : Set up an adapter that extends partsPickerAdapter
         final Spinner weatherSpinner = (Spinner) view.findViewById(R.id.weather_spinner);
         final Submission.Weather[] weathers = Submission.Weather.values();
