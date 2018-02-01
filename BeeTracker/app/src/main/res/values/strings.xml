@@ -14,4 +14,6 @@
     <string name="face">FACE</string>
     <string name="thorax">THORAX</string>
     <string name="abdomen">ABDOMEN</string>
+    <string name="home">Home</string>
+    <string name="learn">Learn</string>
 </resources>

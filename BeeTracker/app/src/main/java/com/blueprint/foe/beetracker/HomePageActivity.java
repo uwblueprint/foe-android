@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -15,7 +16,7 @@ public class HomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        Button submitButton = (Button) findViewById(R.id.buttonSubmit);
+        TextView submitButton = (TextView) findViewById(R.id.buttonSubmit);
         submitButton.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
                 Intent myIntent = new Intent(HomePageActivity.this,
@@ -23,7 +24,7 @@ public class HomePageActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
-        Button learnButton = (Button) findViewById(R.id.buttonLearn);
+        TextView learnButton = (TextView) findViewById(R.id.buttonLearn);
         learnButton.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
                 Intent myIntent = new Intent(HomePageActivity.this,
