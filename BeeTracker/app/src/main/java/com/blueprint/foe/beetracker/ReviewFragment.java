@@ -32,6 +32,7 @@ public class ReviewFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "on create review");
         View view = inflater.inflate(R.layout.review_fragment, container, false);
 
         TextView submitButton = (TextView) view.findViewById(R.id.submitButton);
@@ -65,11 +66,16 @@ public class ReviewFragment extends Fragment {
                 R.layout.spinner_item, weathers);
         weatherAdapter.setDropDownViewResource(R.layout.spinner_item);
         weatherSpinner.setAdapter(weatherAdapter);
-        weatherSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        weatherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int item = (int) weatherSpinner.getSelectedItemId();
                 submission.setWeather(weathers[item]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Log.d(TAG, "nothing selected");
             }
         });
 
@@ -79,12 +85,15 @@ public class ReviewFragment extends Fragment {
                 R.layout.spinner_item, habitats);
         habitatAdapter.setDropDownViewResource(R.layout.spinner_item);
         habitatSpinner.setAdapter(habitatAdapter);
-        habitatSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        habitatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int item = (int) habitatSpinner.getSelectedItemId();
                 submission.setHabitat(habitats[item]);
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)

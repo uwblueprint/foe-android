@@ -14,9 +14,10 @@
             android:textColor="@color/actionBarTextColour"
             android:gravity="center_vertical"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingStart="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"
             android:id="@+id/backButton"/>
         <TextView
             android:layout_width="wrap_content"
@@ -32,9 +33,10 @@
             android:textColor="@color/actionBarTextColour"
             android:gravity="center_vertical"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingRight="@dimen/small_padding"
             android:id="@+id/nextButton"/>
     </RelativeLayout>
 

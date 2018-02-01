@@ -49,11 +49,53 @@ public class Submission {
 
 
     public enum Habitat {
-        HouseGarden, Park, Swamp, PublicGarden, Lake, Lawn
+        Default, HouseGarden, Park, Swamp, PublicGarden, Lake, Lawn;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case Default:
+                    return "";
+                case HouseGarden:
+                    return "House Garden";
+                case Park:
+                    return "Park";
+                case Swamp:
+                    return "Swamp";
+                case PublicGarden:
+                    return "Public Garden";
+                case Lake:
+                    return "Lake";
+                case Lawn:
+                    return "Lawn";
+                default:
+                    return "There was an error.";
+            }
+        }
     }
 
     public enum Weather {
-        Sunny, PartlyCloudy, Cloudy, Raining, Hailing
+        Default, Sunny, PartlyCloudy, Cloudy, Raining, Hailing;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case Default:
+                    return "";
+                case Sunny:
+                    return "Sunny";
+                case PartlyCloudy:
+                    return "Partly Cloudy";
+                case Cloudy:
+                    return "Cloudy";
+                case Raining:
+                    return "Raining";
+                case Hailing:
+                    return "Hailing";
+                default:
+                    return "There was an error.";
+            }
+        }
     }
 
     public void reset() {

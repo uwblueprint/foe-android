@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:background="#f6f6f6"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">
@@ -15,9 +17,10 @@
             android:textColor="@color/actionBarTextColour"
             android:gravity="center_vertical"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingStart="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"
             android:id="@+id/backButton"/>
         <TextView
             android:layout_width="wrap_content"
@@ -33,15 +36,17 @@
             android:textColor="@color/grassGreen"
             android:gravity="center_vertical"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingStart="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"
             android:id="@+id/submitButton"/>
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/speciesIdentification"
+        android:layout_below="@id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <ImageView
             android:id="@+id/beeImageView"
             android:layout_width="120dp"
@@ -75,20 +80,23 @@
         </LinearLayout>
     </RelativeLayout>
     <TextView
+        android:id="@+id/locationTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/speciesIdentification"
         android:paddingTop="@dimen/geotag_header_spacing"
-        android:paddingStart="8dp"
+        android:paddingStart="@dimen/medium_padding"
         android:textColor="@color/subheadingTextColour"
         android:text="LOCATION"/>
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
+        android:layout_below="@id/locationTextView"
         android:layout_width="match_parent"
         android:background="@color/white"
-        android:paddingStart="8dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:paddingStart="@dimen/medium_padding"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/medium_padding"
         card_view:cardElevation="0dp"
         android:layout_height="wrap_content">
 
@@ -97,40 +105,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:paddingStart="8dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="@dimen/small_padding"
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
             />
     </android.support.v7.widget.CardView>
     <TextView
+        android:id="@+id/habitatTextview"
+        android:layout_below="@id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
+        android:paddingStart="@dimen/medium_padding"
         android:paddingTop="@dimen/geotag_header_spacing"
         android:textColor="@color/subheadingTextColour"
         android:text="HABITAT"/>
     <Spinner
         android:id="@+id/habitat_spinner"
+        android:layout_below="@id/habitatTextview"
+        style="@style/SpinnerTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:paddingStart="0dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"/>
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
+        android:paddingEnd="@dimen/small_padding"/>
     <TextView
+        android:id="@+id/weatherTextview"
+        android:layout_below="@id/habitat_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
+        android:paddingStart="@dimen/medium_padding"
         android:paddingTop="@dimen/geotag_header_spacing"
         android:textColor="@color/subheadingTextColour"
         android:text="WEATHER"/>
     <Spinner
         android:id="@+id/weather_spinner"
+        android:layout_below="@id/weatherTextview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="0dp"
-        android:background="@color/white"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"/>
-</LinearLayout>
+        android:paddingTop="@dimen/small_padding"
+        android:paddingEnd="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"/>
+</RelativeLayout>

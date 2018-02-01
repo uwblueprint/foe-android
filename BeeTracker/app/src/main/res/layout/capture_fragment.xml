@@ -15,9 +15,10 @@
             android:textColor="@color/actionBarTextColour"
             android:gravity="center_vertical"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
+            android:paddingBottom="@dimen/small_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingStart="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"
             android:id="@+id/cancelButton"/>
         <TextView
             android:layout_width="wrap_content"
