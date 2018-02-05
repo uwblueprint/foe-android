@@ -1,5 +1,6 @@
 package com.blueprint.foe.beetracker;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -13,19 +14,33 @@ import android.widget.Button;
  * environment type and current weather.
  */
 
-public class ReviewFragment extends Fragment {
+public class ReviewFragment extends Fragment implements BeeAlertDialog.BeeAlertDialogListener {
     private static final String TAG = ReviewFragment.class.toString();
+
+    @Override
+    public void onDialogFinishClick() {
+        // User touched the dialog's positive button
+        getActivity().finish();
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
 
         Button submitButton = (Button) view.findViewById(R.id.submitButton);
+
+        final ReviewFragment fragment = this;
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: show popup https://github.com/uwblueprint/foe/issues/28
-                getActivity().finish();
+                BeeAlertDialog dialog = new BeeAlertDialog();
+                Bundle args = new Bundle();
+                args.putInt(BeeAlertDialog.IMAGE_SRC, R.drawable.bee_image_popup);
+                args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
+                args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
+                dialog.setArguments(args);
+                dialog.setListener(fragment);
+                dialog.show(getActivity().getFragmentManager(), "SubmissionFragment");
             }
         });
 
