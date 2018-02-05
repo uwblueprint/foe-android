@@ -160,10 +160,10 @@ public class CaptureFragment extends Fragment {
     }
 
     private void saveSubmission(String imageFilePath) {
-        Submission submission = new Submission();
+        SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
+        submissionInterface.createOrResetSubmission();
+        Submission submission = submissionInterface.getSubmission();
         submission.setImageFilePath(imageFilePath);
-        SubmissionActivity submissionActivity = (SubmissionActivity) getActivity();
-        submissionActivity.setSubmission(submission);
     }
 
     private void launchNextFragment() {

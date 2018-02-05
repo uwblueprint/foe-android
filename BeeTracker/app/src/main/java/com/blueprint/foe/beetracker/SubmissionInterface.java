@@ -8,6 +8,6 @@ import com.blueprint.foe.beetracker.Model.Submission;
  * submission
  */
 public interface SubmissionInterface {
-    void setSubmission(Submission submission);
+    void createOrResetSubmission();
     Submission getSubmission();
 }

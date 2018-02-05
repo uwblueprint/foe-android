@@ -3,6 +3,8 @@ package com.blueprint.foe.beetracker.Model;
 import android.location.Location;
 import android.util.Log;
 
+import com.google.android.gms.location.places.Place;
+
 /**
  * Represents the data object that contains all information related to submission.
  */
@@ -19,7 +21,7 @@ public class Submission {
     private Species mSpecies = null;
     private Habitat mHabitat = null;
     private Weather mWeather = null;
-    private Location mLocation = null;
+    private Place mPlace = null;
     private String mImageFilePath = null;
 
     @Override
@@ -38,7 +40,7 @@ public class Submission {
                 && this.mHabitat == that.mHabitat
                 && this.mWeather == that.mWeather
                 && this.mImageFilePath == that.mImageFilePath
-                && ((this.mLocation == null && that.mLocation == null) || this.mLocation.equals(that.mLocation));
+                && ((this.mPlace == null && that.mPlace == null) || this.mPlace.equals(that.mPlace));
     }
 
     public enum Species {
@@ -47,11 +49,53 @@ public class Submission {
 
 
     public enum Habitat {
-        HouseGarden, Park, Swamp, PublicGarden, Lake, Lawn
+        Default, HouseGarden, Park, Swamp, PublicGarden, Lake, Lawn;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case Default:
+                    return "";
+                case HouseGarden:
+                    return "House Garden";
+                case Park:
+                    return "Park";
+                case Swamp:
+                    return "Swamp";
+                case PublicGarden:
+                    return "Public Garden";
+                case Lake:
+                    return "Lake";
+                case Lawn:
+                    return "Lawn";
+                default:
+                    return "There was an error.";
+            }
+        }
     }
 
     public enum Weather {
-        Sunny, PartlyCloudy, Cloudy, Raining, Hailing
+        Default, Sunny, PartlyCloudy, Cloudy, Raining, Hailing;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case Default:
+                    return "";
+                case Sunny:
+                    return "Sunny";
+                case PartlyCloudy:
+                    return "Partly Cloudy";
+                case Cloudy:
+                    return "Cloudy";
+                case Raining:
+                    return "Raining";
+                case Hailing:
+                    return "Hailing";
+                default:
+                    return "There was an error.";
+            }
+        }
     }
 
     public void reset() {
@@ -61,7 +105,7 @@ public class Submission {
         mSpecies = null;
         mHabitat = null;
         mWeather = null;
-        mLocation = null;
+        mPlace = null;
         mImageFilePath = null;
     }
 
@@ -118,12 +162,12 @@ public class Submission {
         return mWeather;
     }
 
-    public void setLocation(Location location) {
-        this.mLocation = location;
+    public void setLocation(Place place) {
+        this.mPlace = place;
     }
 
-    public Location getLocation() {
-        return mLocation;
+    public Place getLocation() {
+        return mPlace;
     }
 
     public Species getSpecies() throws IllegalArgumentException {
@@ -170,13 +214,13 @@ public class Submission {
     }
 
     public boolean isComplete() {
-        return mSpecies != null && mHabitat != null && mWeather != null && mLocation != null && mImageFilePath != null;
+        return mSpecies != null && mHabitat != null && mWeather != null && mPlace != null && mImageFilePath != null;
     }
 
     /* For debug only */
     public void print() {
         Log.d(TAG, "Face: " + mFace + ", Thorax: " + mThorax + ", Abdomen: " + mAbdomen);
         Log.d(TAG, "Species: " + mSpecies + ", Habitat: " + mHabitat + ", Weather: " + mWeather);
-        Log.d(TAG, "Location: " + mLocation);
+        Log.d(TAG, "Location: " + mPlace);
     }
 }
