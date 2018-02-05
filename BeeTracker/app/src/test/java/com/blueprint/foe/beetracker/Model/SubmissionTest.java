@@ -2,8 +2,13 @@ package com.blueprint.foe.beetracker.Model;
 
 import android.location.Location;
 
+import com.google.android.gms.location.places.Place;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -12,8 +17,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests all aspects of the Submission model
  */
-
+@RunWith(MockitoJUnitRunner.class)
 public class SubmissionTest {
+    @Mock
+    Place place;
+
     @Test
     public void correctSpecies_isCorrect() throws Exception {
         Submission submission = new Submission();
@@ -90,7 +98,6 @@ public class SubmissionTest {
         int thorax = 2;
         Submission.Weather weather = Submission.Weather.Cloudy;
         Submission.Habitat habitat = Submission.Habitat.Park;
-        Location location = new Location("Test");
 
         submission.setFace(face);
         submission.setAbdomen(abdomen);
@@ -98,14 +105,14 @@ public class SubmissionTest {
         submission.getSpecies();
         submission.setWeather(weather);
         submission.setHabitat(habitat);
-        submission.setLocation(location);
+        submission.setLocation(place);
 
         assertEquals(face, submission.getFace());
         assertEquals(abdomen, submission.getAbdomen());
         assertEquals(thorax, submission.getThorax());
         assertEquals(weather, submission.getWeather());
         assertEquals(habitat, submission.getHabitat());
-        assertEquals(location, submission.getLocation());
+        assertEquals(place, submission.getLocation());
 
     }
 
@@ -119,7 +126,7 @@ public class SubmissionTest {
         submission.getSpecies();
         submission.setWeather(Submission.Weather.Cloudy);
         submission.setHabitat(Submission.Habitat.Park);
-        submission.setLocation(new Location("Test"));
+        submission.setLocation(place);
         submission.setImageFilePath("filepath");
 
         assertEquals(true, submission.isComplete());
