@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".HomePageActivity">
+            android:name=".SplashActivity" android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -47,6 +47,7 @@
         <activity android:name=".LearnActivity" android:label="My Challenges"/>
         <activity android:name=".SubmissionActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".HomePageActivity"/>
     </application>
 
 </manifest>
