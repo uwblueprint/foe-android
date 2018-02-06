@@ -39,4 +39,5 @@
         <item>Marsh</item>
         <item>River</item>
     </string-array>
+    <string name="finish">Finish</string>
 </resources>

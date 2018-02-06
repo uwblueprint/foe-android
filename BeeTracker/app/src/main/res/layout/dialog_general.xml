@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="24dp"
         android:paddingStart="16dp"
-        android:text="Buzz Buzz!"
+        android:text="Heading"
         android:textSize="24sp"/>
     <TextView
         android:id="@+id/paragraph"
@@ -26,14 +26,14 @@
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:text="(That's thank you in bee!)"
+        android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/finish"
         android:layout_alignParentRight="true"
         android:layout_below="@id/paragraph"
-        android:text="Finish"
+        android:text="@string/finish"
         android:drawablePadding="4dp"
         android:gravity="end"
         android:textColor="@color/grassGreen"

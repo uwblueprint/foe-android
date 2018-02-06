@@ -1,6 +1,5 @@
 package com.blueprint.foe.beetracker;
 
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,15 +26,9 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
  * This fragment will allow the user to review the species, location, as well as add the
  * environment type and current weather.
  */
-public class ReviewFragment extends Fragment implements BeeAlertDialog.BeeAlertDialogListener {
+public class ReviewFragment extends Fragment  {
     private static final String TAG = ReviewFragment.class.toString();
-
-    @Override
-    public void onDialogFinishClick() {
-        // User touched the dialog's positive button
-        getActivity().finish();
-    }
-
+    
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
@@ -52,7 +45,6 @@ public class ReviewFragment extends Fragment implements BeeAlertDialog.BeeAlertD
                 args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
                 args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
                 dialog.setArguments(args);
-                dialog.setListener(fragment);
                 dialog.show(getActivity().getFragmentManager(), "SubmissionFragment");
             }
         });
