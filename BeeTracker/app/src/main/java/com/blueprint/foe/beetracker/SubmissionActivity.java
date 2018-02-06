@@ -58,13 +58,11 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
     }
 
     @Override
-    public void setSubmission(Submission submission) {
-        this.submission = submission;
-        try {
-            StorageAccessor.storeSubmission(this, submission);
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorAndExit("Could not save submission.");
+    public void createOrResetSubmission() {
+        if (this.submission == null) {
+            submission = new Submission();
+        } else {
+            submission.reset();
         }
     }
 

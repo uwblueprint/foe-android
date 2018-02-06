@@ -4,24 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/skyCyan"
     tools:context="com.blueprint.foe.beetracker.HomePageActivity">
-
-    <Button
-        android:id="@+id/buttonSubmit"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/splash_imageview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/splash_image"/>
+    <RelativeLayout
+        android:id="@+id/home_header"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="160dp"
-        android:text="submit" />
+        android:paddingBottom="@dimen/medium_padding"
+        android:paddingTop="@dimen/big_padding"
+        android:paddingStart="@dimen/medium_padding"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/great_canadian_bumble_bee_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/splashScreenGrey"
+            android:text="The Bumble Bee Count"/>
+        <TextView
+            android:id="@+id/number"
+            android:layout_below="@id/great_canadian_bumble_bee_count"
+            android:paddingTop="@dimen/medium_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:text="674"/>
+        <TextView
+            android:id="@+id/beesSighted"
+            android:paddingStart="@dimen/small_padding"
+            android:layout_toRightOf="@id/number"
+            android:layout_alignBaseline="@id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="bees sighted!"/>
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/buttonLearn"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/buttonSubmit"
-        android:layout_below="@+id/buttonSubmit"
-        android:layout_marginTop="120dp"
-        android:text="Learn" />
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home"
+            android:gravity="center_vertical"
+            android:layout_alignParentLeft="true"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingBottom="@dimen/medium_padding"
+            android:paddingEnd="@dimen/medium_padding"
+            android:paddingStart="@dimen/medium_padding"
+            android:drawableLeft="@drawable/home_icon"
+            android:drawablePadding="@dimen/small_padding"
+            android:textColor="@color/grassGreen"
+            android:id="@+id/buttonHome"/>
+        <TextView
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingBottom="@dimen/medium_padding"
+            android:paddingEnd="@dimen/medium_padding"
+            android:paddingStart="@dimen/medium_padding"
+            android:drawableLeft="@drawable/ellipse"
+            android:drawablePadding="@dimen/small_padding"
+            android:gravity="center|center_vertical"
+            android:textColor="@color/black"
+            android:text="@string/submit"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/learn"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:drawableLeft="@drawable/ellipse"
+            android:drawablePadding="@dimen/small_padding"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingBottom="@dimen/medium_padding"
+            android:paddingEnd="@dimen/medium_padding"
+            android:paddingStart="@dimen/medium_padding"
+            android:textColor="@color/black"
+            android:id="@+id/buttonLearn"/>
+    </RelativeLayout>
 </RelativeLayout>
