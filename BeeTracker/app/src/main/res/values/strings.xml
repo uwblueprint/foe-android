@@ -15,6 +15,8 @@
     <string name="face">FACE</string>
     <string name="thorax">THORAX</string>
     <string name="abdomen">ABDOMEN</string>
+    <string name="submit_dialog_heading">Buzz buzz!</string>
+    <string name="submit_dialog_paragraph">(That\'s thank you in bee!)</string>
     <string name="home">Home</string>
     <string name="learn">Learn</string>
     <string name="identified_species_title">IDENTIFIED SPECIES</string>
@@ -37,4 +39,5 @@
         <item>Marsh</item>
         <item>River</item>
     </string-array>
+    <string name="finish">Finish</string>
 </resources>

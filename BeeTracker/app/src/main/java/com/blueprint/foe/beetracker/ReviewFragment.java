@@ -28,7 +28,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
  */
 public class ReviewFragment extends Fragment {
     private static final String TAG = ReviewFragment.class.toString();
-
+    
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
@@ -37,8 +37,13 @@ public class ReviewFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: show popup https://github.com/uwblueprint/foe/issues/28
-                getActivity().finish();
+                BeeAlertDialog dialog = new BeeAlertDialog();
+                Bundle args = new Bundle();
+                args.putInt(BeeAlertDialog.IMAGE_SRC, R.drawable.bee_image_popup);
+                args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
+                args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
+                dialog.setArguments(args);
+                dialog.show(getActivity().getFragmentManager(), "SubmissionFragment");
             }
         });
 

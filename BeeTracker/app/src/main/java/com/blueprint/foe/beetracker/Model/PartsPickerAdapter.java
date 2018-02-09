@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blueprint.foe.beetracker.OnBeePartSelectedListener;
+import com.blueprint.foe.beetracker.Listeners.OnBeePartSelectedListener;
 import com.blueprint.foe.beetracker.R;
 import com.blueprint.foe.beetracker.SubmissionInterface;
 
