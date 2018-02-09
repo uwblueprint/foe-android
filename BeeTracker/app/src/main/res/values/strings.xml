@@ -40,4 +40,10 @@
         <item>River</item>
     </string-array>
     <string name="finish">Finish</string>
+    <string name="visit_foe">Visit Friends of the Earth</string>
+    <string name="visit_foe_url">http://foecanada.org/en/</string>
+    <string name="learn_about_bee_cause">Learn about the Bee Cause</string>
+    <string name="learn_about_bee_cause_url">http://foecanada.org/en/issues/the-bee-cause/</string>
+    <string name="donate">Donate</string>
+    <string name="donate_url">http://foecanada.org/en/donate/</string>
 </resources>

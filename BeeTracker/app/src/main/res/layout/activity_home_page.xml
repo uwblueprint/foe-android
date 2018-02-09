@@ -4,54 +4,123 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/skyCyan"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.blueprint.foe.beetracker.HomePageActivity">
-    <ImageView
-        android:id="@+id/splash_imageview"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/splash_image"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/rlImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/home_imageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/default_home_illustration"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/welcome"
+                    android:layout_alignTop="@id/home_imageview"
+                    android:layout_alignStart="@id/home_imageview"
+                    android:layout_alignEnd="@id/home_imageview"
+                    android:paddingTop="@dimen/big_padding"
+                    android:paddingStart="@dimen/big_padding"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:text="Welcome!" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/home_imageview"
+                    android:layout_below="@id/welcome"
+                    android:layout_alignStart="@id/home_imageview"
+                    android:layout_alignEnd="@id/home_imageview"
+                    android:paddingTop="@dimen/small_padding"
+                    android:paddingStart="@dimen/big_padding"
+                    android:paddingEnd="80dp"
+                    android:ellipsize="none"
+                    android:scrollHorizontally="false"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:text="Looks like a beautiful day to spot some bees!"/>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:paddingTop="@dimen/big_padding"
+                android:textSize="16sp"
+                android:textColor="#bdbdbd"
+                android:text="Useful Links"/>
+            <TextView
+                android:id="@+id/visit_foe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:paddingTop="@dimen/small_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:drawableEnd="@mipmap/follow_link_icon"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="@string/visit_foe"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:background="@color/mediumGrey"/>
+            <TextView
+                android:id="@+id/learn_bee_cause"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:paddingTop="@dimen/small_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:drawableEnd="@mipmap/follow_link_icon"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="@string/learn_about_bee_cause" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:background="@color/mediumGrey"/>
+            <TextView
+                android:id="@+id/donate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_padding"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:paddingTop="@dimen/small_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:drawableEnd="@mipmap/follow_link_icon"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="@string/donate"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+        </LinearLayout>
+    </ScrollView>
     <RelativeLayout
-        android:id="@+id/home_header"
-        android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:layout_alignParentTop="true"
-        android:paddingBottom="@dimen/medium_padding"
-        android:paddingTop="@dimen/big_padding"
-        android:paddingStart="@dimen/medium_padding"
-        android:background="@color/white">
-        <TextView
-            android:id="@+id/great_canadian_bumble_bee_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/splashScreenGrey"
-            android:text="The Bumble Bee Count"/>
-        <TextView
-            android:id="@+id/number"
-            android:layout_below="@id/great_canadian_bumble_bee_count"
-            android:paddingTop="@dimen/medium_padding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:text="674"/>
-        <TextView
-            android:id="@+id/beesSighted"
-            android:paddingStart="@dimen/small_padding"
-            android:layout_toRightOf="@id/number"
-            android:layout_alignBaseline="@id/number"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:text="bees sighted!"/>
-    </RelativeLayout>
-
-    <RelativeLayout
+        android:id="@+id/navBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -66,7 +135,7 @@
             android:paddingBottom="@dimen/medium_padding"
             android:paddingEnd="@dimen/medium_padding"
             android:paddingStart="@dimen/medium_padding"
-            android:drawableLeft="@drawable/home_icon"
+            android:drawableLeft="@mipmap/home_green_icon"
             android:drawablePadding="@dimen/small_padding"
             android:textColor="@color/grassGreen"
             android:id="@+id/buttonHome"/>
@@ -79,10 +148,10 @@
             android:paddingBottom="@dimen/medium_padding"
             android:paddingEnd="@dimen/medium_padding"
             android:paddingStart="@dimen/medium_padding"
-            android:drawableLeft="@drawable/ellipse"
+            android:drawableLeft="@mipmap/submit_grey_icon"
             android:drawablePadding="@dimen/small_padding"
             android:gravity="center|center_vertical"
-            android:textColor="@color/black"
+            android:textColor="@color/navBarTextGrey"
             android:text="@string/submit"/>
         <TextView
             android:layout_width="wrap_content"
@@ -90,13 +159,18 @@
             android:text="@string/learn"
             android:gravity="center_vertical"
             android:layout_alignParentEnd="true"
-            android:drawableLeft="@drawable/ellipse"
+            android:drawableLeft="@mipmap/lightbulb_grey_icon"
             android:drawablePadding="@dimen/small_padding"
             android:paddingTop="@dimen/medium_padding"
             android:paddingBottom="@dimen/medium_padding"
             android:paddingEnd="@dimen/medium_padding"
             android:paddingStart="@dimen/medium_padding"
-            android:textColor="@color/black"
+            android:textColor="@color/navBarTextGrey"
             android:id="@+id/buttonLearn"/>
     </RelativeLayout>
+    <View
+        android:layout_above="@id/navBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/mediumGrey"/>
 </RelativeLayout>
