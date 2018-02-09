@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
+
 /**
  * A generic dialog that should be modified for each type of dialog using the Bundle passed into
  * onCreateDialog.
@@ -20,10 +22,6 @@ public class BeeAlertDialog extends DialogFragment {
     public static final String HEADING = "HEADING";
     public static final String PARAGRAPH = "PARAGRAPH";
     BeeAlertDialogListener mListener;
-
-    public interface BeeAlertDialogListener {
-        void onDialogFinishClick();
-    }
 
     @Override
     public void onAttach(Context context) {

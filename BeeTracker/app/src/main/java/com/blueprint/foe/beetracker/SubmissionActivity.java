@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.Submission;
 
 import java.io.IOException;
 
-public class SubmissionActivity extends AppCompatActivity implements SubmissionInterface, BeeAlertDialog.BeeAlertDialogListener {
+public class SubmissionActivity extends AppCompatActivity implements SubmissionInterface, BeeAlertDialogListener {
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final String TAG = SubmissionActivity.class.toString();
     private Submission submission;

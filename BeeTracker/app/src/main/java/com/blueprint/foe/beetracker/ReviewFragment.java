@@ -26,14 +26,12 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
  * This fragment will allow the user to review the species, location, as well as add the
  * environment type and current weather.
  */
-public class ReviewFragment extends Fragment  {
+public class ReviewFragment extends Fragment {
     private static final String TAG = ReviewFragment.class.toString();
     
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
-
-        final ReviewFragment fragment = this;
 
         TextView submitButton = (TextView) view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {

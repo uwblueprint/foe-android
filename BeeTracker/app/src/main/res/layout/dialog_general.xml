@@ -6,8 +6,8 @@
     android:background="@color/white">
     <ImageView
         android:src="@drawable/bee_image_popup"
-        android:layout_width="327dp"
-        android:layout_height="241dp"
+        android:layout_width="@dimen/popup_image_width"
+        android:layout_height="@dimen/popup_image_height"
         android:id="@+id/dialog_image"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"/>
@@ -16,17 +16,21 @@
         android:layout_below="@id/dialog_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="24dp"
-        android:paddingStart="16dp"
-        android:text="Heading"
-        android:textSize="24sp"/>
+        android:textColor="@color/black"
+        android:paddingTop="@dimen/big_padding"
+        android:paddingStart="@dimen/big_padding"
+        android:text=""
+        android:textStyle="bold"
+        android:textSize="@dimen/popup_heading_text_size"/>
     <TextView
         android:id="@+id/paragraph"
         android:layout_below="@id/heading"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="Text"
+        android:paddingStart="@dimen/big_padding"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
+        android:text=""
+        android:textSize="@dimen/popup_text_size"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
@@ -34,14 +38,15 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/paragraph"
         android:text="@string/finish"
-        android:drawablePadding="4dp"
+        android:drawablePadding="@dimen/tiny_padding"
         android:gravity="end"
+        android:textSize="@dimen/popup_text_size"
         android:textColor="@color/grassGreen"
-        android:drawableLeft="@drawable/icon_done_popup"
-        android:paddingEnd="24dp"
-        android:paddingBottom="24dp"
-        android:paddingTop="24dp"
-        android:paddingStart="24dp"
+        android:drawableEnd="@mipmap/icon_done_checkmark_popup"
+        android:paddingEnd="@dimen/big_padding"
+        android:paddingBottom="@dimen/big_padding"
+        android:paddingTop="@dimen/big_padding"
+        android:paddingStart="@dimen/big_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>

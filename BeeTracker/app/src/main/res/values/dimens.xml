@@ -15,4 +15,8 @@
     <dimen name="fact_title_text_size">20sp</dimen>
     <dimen name="fact_description_text_size">16sp</dimen>
     <dimen name="fact_completed_text_size">16sp</dimen>
+    <dimen name="popup_image_height">241dp</dimen>
+    <dimen name="popup_image_width">327dp</dimen>
+    <dimen name="popup_heading_text_size">30sp</dimen>
+    <dimen name="popup_text_size">16sp</dimen>
 </resources>
