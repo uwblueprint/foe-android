@@ -2,6 +2,7 @@ package com.blueprint.foe.beetracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -59,6 +60,9 @@ public class LearnActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
+        TextView learnButton = (TextView) findViewById(R.id.buttonLearn);
+        learnButton.setTextColor(ContextCompat.getColor(this, R.color.grassGreen));
+        learnButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.lightbulb_green_icon), null, null, null);
 
         listView.setAdapter(adapter);
     };
