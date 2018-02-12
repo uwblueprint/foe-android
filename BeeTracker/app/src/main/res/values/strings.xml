@@ -46,4 +46,7 @@
     <string name="learn_about_bee_cause_url">http://foecanada.org/en/issues/the-bee-cause/</string>
     <string name="donate">Donate</string>
     <string name="donate_url">http://foecanada.org/en/donate/</string>
+    <string name="home_page_welcome">Welcome!</string>
+    <string name="home_page_offline_message">Looks like a beautiful day to spot some bees!</string>
+    <string name="useful_link">Useful Links</string>
 </resources>
