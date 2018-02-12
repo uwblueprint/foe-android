@@ -1,9 +1,13 @@
 package com.blueprint.foe.beetracker;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.Model.FactCollection;
@@ -37,6 +41,28 @@ public class LearnActivity extends AppCompatActivity {
 
         final FactsAdapter adapter = new FactsAdapter(this, mFacts.getFacts());
         ListView listView = (ListView) findViewById(R.id.factsListView);
+
+        TextView submitButton = (TextView) findViewById(R.id.buttonSubmit);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                Intent myIntent = new Intent(LearnActivity.this,
+                        SubmissionActivity.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                finish(); // We want submissions to go back to the home page
+                overridePendingTransition(0, 0); // no animation on activity finish
+                startActivity(myIntent);
+            }
+        });
+        TextView homeButton = (TextView) findViewById(R.id.buttonHome);
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                finish(); // Home page is already on the stack, so just go back
+                overridePendingTransition(0, 0);
+            }
+        });
+        TextView learnButton = (TextView) findViewById(R.id.buttonLearn);
+        learnButton.setTextColor(ContextCompat.getColor(this, R.color.grassGreen));
+        learnButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.lightbulb_green_icon), null, null, null);
 
         listView.setAdapter(adapter);
     };

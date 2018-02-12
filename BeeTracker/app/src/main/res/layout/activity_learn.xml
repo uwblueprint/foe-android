@@ -10,9 +10,10 @@
         android:id="@+id/factsListView"
         android:animateLayoutChanges="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:divider="@android:color/transparent"
         android:dividerHeight="@dimen/small_padding"/>
+    <include layout="@layout/navigation_bar"/>
 </RelativeLayout>
