@@ -1,14 +1,20 @@
 package com.blueprint.foe.beetracker;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
+import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -18,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BeeAlertDialogListener {
     private static final String TAG = MainActivity.class.toString();
     private CallbackManager callbackManager;
     private Callback loginCallback;
@@ -26,6 +32,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView skipButton = (TextView) findViewById(R.id.skip);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().putBoolean(getString(R.string.preference_logged_in_as_guest), true).commit();
+                navigateToHome();
+            }
+        });
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("email");
@@ -42,18 +58,17 @@ public class MainActivity extends AppCompatActivity {
                     token.enqueue(loginCallback);
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
-                    // TODO: https://github.com/uwblueprint/foe/issues/16
+                    showErrorDialog(getString(R.string.error_message));
                 }
             }
 
             @Override
-            public void onCancel() {
-                // TODO: https://github.com/uwblueprint/foe/issues/16
-            }
+            public void onCancel() {}
 
             @Override
             public void onError(FacebookException exception) {
-                // TODO: https://github.com/uwblueprint/foe/issues/16
+                Log.e(TAG, "There was an error on Facebook login. " + exception.toString());
+                showErrorDialog(getString(R.string.error_message));
             }
         });
 
@@ -61,17 +76,22 @@ public class MainActivity extends AppCompatActivity {
         loginCallback = new Callback<BeeTrackerCaller.SignupResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
-                Log.d(TAG, "got response string: " + response.body().getToken());
-                // TODO: Store returned token https://github.com/uwblueprint/foe/issues/17
-                Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
-                startActivity(intent);
-                finish();
+                Log.d(TAG, "got response string: " + response.body());
+                if (response.code() == 401 || response.body() == null ||  response.body().getToken() == null) {
+                    Log.e(TAG, "response from server is 401 + " + response.message());
+                    showErrorDialog(getString(R.string.error_message));
+                    LoginManager.getInstance().logOut();
+                    return;
+                }
+                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                sharedPref.edit().putString(getString(R.string.preference_login_token), response.body().getToken()).apply();
+                navigateToHome();
             }
 
             @Override
             public void onFailure(Call<BeeTrackerCaller.SignupResponse> call, Throwable t) {
                 Log.e(TAG, "loginCallback ERROR" + t.toString());
-                // TODO: https://github.com/uwblueprint/foe/issues/16
+                showErrorDialog(getString(R.string.error_message));
             }
         };
     }
@@ -81,4 +101,21 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
+    private void navigateToHome() {
+        Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void showErrorDialog(String message) {
+        BeeAlertErrorDialog dialog = new BeeAlertErrorDialog();
+        Bundle args = new Bundle();
+        args.putString(BeeAlertErrorDialog.ERROR_MESSAGE, message);
+        dialog.setArguments(args);
+        dialog.show(getFragmentManager(), "ErrorMessage");
+    }
+
+    @Override
+    public void onDialogFinishClick() {}
 }

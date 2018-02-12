@@ -18,7 +18,7 @@
             android:paddingStart="@dimen/medium_padding"
             android:drawableStart="@mipmap/home_grey_icon"
             android:drawablePadding="@dimen/small_padding"
-            android:textColor="@color/navBarTextGrey"
+            android:textColor="@color/mediumDarkGrey"
             android:id="@+id/buttonHome"/>
         <TextView
             android:id="@+id/buttonSubmit"
@@ -32,7 +32,7 @@
             android:drawableStart="@mipmap/submit_grey_icon"
             android:drawablePadding="@dimen/small_padding"
             android:gravity="center|center_vertical"
-            android:textColor="@color/navBarTextGrey"
+            android:textColor="@color/mediumDarkGrey"
             android:text="@string/submit"/>
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
             android:paddingBottom="@dimen/medium_padding"
             android:paddingEnd="@dimen/medium_padding"
             android:paddingStart="@dimen/medium_padding"
-            android:textColor="@color/navBarTextGrey"
+            android:textColor="@color/mediumDarkGrey"
             android:id="@+id/buttonLearn"/>
     </RelativeLayout>
     <View

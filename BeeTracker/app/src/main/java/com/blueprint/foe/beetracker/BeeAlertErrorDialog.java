@@ -3,12 +3,10 @@ package com.blueprint.foe.beetracker;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
@@ -17,10 +15,8 @@ import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
  * A generic dialog that should be modified for each type of dialog using the Bundle passed into
  * onCreateDialog.
  */
-public class BeeAlertDialog extends DialogFragment {
-    public static final String IMAGE_SRC = "IMAGE_SRC";
-    public static final String HEADING = "HEADING";
-    public static final String PARAGRAPH = "ERROR_MESSAGE";
+public class BeeAlertErrorDialog extends DialogFragment {
+    public static final String ERROR_MESSAGE = "ERROR_MESSAGE";
     BeeAlertDialogListener mListener;
 
     @Override
@@ -42,27 +38,20 @@ public class BeeAlertDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_general, null);
+        View view = inflater.inflate(R.layout.dialog_error, null);
 
         Bundle b = getArguments();
-        int providedImageDrawable = b.getInt(IMAGE_SRC);
-        String providedHeading = b.getString(HEADING);
-        String providedParagraph = b.getString(PARAGRAPH);
+        String providedErrorMessage = b.getString(ERROR_MESSAGE);
 
-        ImageView ivImage = (ImageView) view.findViewById(R.id.dialog_image);
-        ivImage.setImageResource(providedImageDrawable);
+        TextView tvErrorMessage = (TextView) view.findViewById(R.id.errorMessage);
+        tvErrorMessage.setText(providedErrorMessage);
 
-        TextView tvHeading = (TextView) view.findViewById(R.id.heading);
-        tvHeading.setText(providedHeading);
-
-        TextView tvParagraph = (TextView) view.findViewById(R.id.paragraph);
-        tvParagraph.setText(providedParagraph);
-
-        TextView tvDoneButton = (TextView) view.findViewById(R.id.finish);
+        TextView tvDoneButton = (TextView) view.findViewById(R.id.close);
         tvDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onDialogFinishClick();
+                dismiss();
             }
         });
         builder.setView(view);
