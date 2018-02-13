@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         loginCallback = new Callback<BeeTrackerCaller.SignupResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
-                Log.d(TAG, "got response string: " + response.body());
                 if (response.code() == 401 || response.body() == null ||  response.body().getToken() == null) {
                     Log.e(TAG, "response from server is 401 + " + response.message());
                     showErrorDialog(getString(R.string.error_message));

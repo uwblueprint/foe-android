@@ -21,36 +21,34 @@
         android:layout_marginTop="@dimen/big_padding"
         android:layout_below="@id/beeAppLogo"
         android:textColor="@color/black"
-        android:text="Friends of the Earth" />
+        android:text="@string/foe" />
     <TextView
         android:id="@+id/greatCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:text="The Great Canadian Bumble Bee Count"
+        android:text="@string/great_canadian"
         android:gravity="center_horizontal"
         android:layout_below="@id/foe"/>
     <android.support.v7.widget.CardView
         android:id="@+id/loginCardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/facebook_button_top_margin"
         android:layout_marginBottom="@dimen/small_padding"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/greatCount"
-        app:cardCornerRadius="24dp">
+        app:cardCornerRadius="@dimen/big_padding">
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             xmlns:facebook="http://schemas.android.com/apk/res-auto"
-            facebook:com_facebook_login_text="Login with Facebook"
-            facebook:paddingStart="54dp"
-            facebook:paddingEnd="54dp"
+            facebook:com_facebook_login_text="@string/login_with_facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="54dp"
-            android:paddingRight="54dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:paddingLeft="@dimen/facebook_login_side_padding"
+            android:paddingRight="@dimen/facebook_login_side_padding"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingBottom="@dimen/medium_padding"
             android:layout_gravity="center_horizontal" />
     </android.support.v7.widget.CardView>
     <TextView
@@ -61,5 +59,5 @@
         android:padding="@dimen/medium_padding"
         android:layout_below="@id/loginCardView"
         android:textColor="@color/mediumDarkGrey"
-        android:text="Continue as guest" />
+        android:text="@string/continue_as_guest" />
 </RelativeLayout>

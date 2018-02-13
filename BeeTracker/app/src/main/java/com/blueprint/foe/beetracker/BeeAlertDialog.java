@@ -14,13 +14,13 @@ import android.widget.TextView;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 
 /**
- * A generic dialog that should be modified for each type of dialog using the Bundle passed into
- * onCreateDialog.
+ * A generic error dialog that should be modified for each type of dialog using the Bundle passed
+ * into onCreateDialog.
  */
 public class BeeAlertDialog extends DialogFragment {
     public static final String IMAGE_SRC = "IMAGE_SRC";
     public static final String HEADING = "HEADING";
-    public static final String PARAGRAPH = "ERROR_MESSAGE";
+    public static final String PARAGRAPH = "PARAGRAPH";
     BeeAlertDialogListener mListener;
 
     @Override
