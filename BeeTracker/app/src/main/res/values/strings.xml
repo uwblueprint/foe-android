@@ -49,4 +49,7 @@
     <string name="home_page_welcome">Welcome!</string>
     <string name="home_page_offline_message">Looks like a beautiful day to spot some bees!</string>
     <string name="useful_link">Useful Links</string>
+    <string name="identify_popup_heading">Which bee?</string>
+    <string name="identify_popup_message">Tap the patterns below to determine which species your bee is.</string>
+    <string name="identify_popup_finish">Got it</string>
 </resources>

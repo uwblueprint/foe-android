@@ -13,7 +13,7 @@ import com.blueprint.foe.beetracker.Model.Submission;
 
 import java.io.IOException;
 
-public class SubmissionActivity extends AppCompatActivity implements SubmissionInterface, BeeAlertDialogListener {
+public class SubmissionActivity extends AppCompatActivity implements SubmissionInterface {
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final String TAG = SubmissionActivity.class.toString();
     private Submission submission;
@@ -72,7 +72,6 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
         return submission;
     }
 
-    @Override
     public void onDialogFinishClick() {
         // User touched the dialog's finish button
         finish();
