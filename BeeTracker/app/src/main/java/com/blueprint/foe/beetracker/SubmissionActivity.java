@@ -71,9 +71,4 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
     public Submission getSubmission() {
         return submission;
     }
-
-    public void onDialogFinishClick() {
-        // User touched the dialog's finish button
-        finish();
-    }
 }
