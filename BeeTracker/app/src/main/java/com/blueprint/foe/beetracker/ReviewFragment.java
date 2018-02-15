@@ -43,7 +43,6 @@ public class ReviewFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "submit");
                 // check all fields are completed
                 SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
                 Submission submission = submissionInterface.getSubmission();
@@ -90,7 +89,6 @@ public class ReviewFragment extends Fragment {
         mWeatherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(TAG, "weather");
                 int item = (int) mWeatherSpinner.getSelectedItemId();
                 submission.setWeather(weathers[item]);
                 setErrorFields(submission);
@@ -112,7 +110,6 @@ public class ReviewFragment extends Fragment {
         mHabitatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(TAG, "habitat");
                 int item = (int) mHabitatSpinner.getSelectedItemId();
                 submission.setHabitat(habitats[item]);
                 setErrorFields(submission);
@@ -126,11 +123,10 @@ public class ReviewFragment extends Fragment {
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         ImageView searchIcon = (ImageView)((LinearLayout) autocompleteFragment.getView()).getChildAt(0);
-        searchIcon.setImageDrawable(getResources().getDrawable(R.drawable.location_search_icon));
+        searchIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.mipmap.icon_location));
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                Log.d(TAG, "place");
                 submission.setLocation(place);
                 setErrorFields(submission);
             }
