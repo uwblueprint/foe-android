@@ -85,13 +85,12 @@ public class ReviewFragment extends Fragment {
                 R.layout.spinner_item, weathers);
         weatherAdapter.setDropDownViewResource(R.layout.spinner_item);
         mWeatherSpinner.setAdapter(weatherAdapter);
-        mWeatherSpinner.setSelection(0, false); // prevent onItemSelected from running on activity load
         mWeatherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int item = (int) mWeatherSpinner.getSelectedItemId();
                 submission.setWeather(weathers[item]);
-                setErrorFields(submission);
+                resetErrorFields(submission);
             }
 
             @Override
@@ -106,13 +105,12 @@ public class ReviewFragment extends Fragment {
                 R.layout.spinner_item, habitats);
         habitatAdapter.setDropDownViewResource(R.layout.spinner_item);
         mHabitatSpinner.setAdapter(habitatAdapter);
-        mHabitatSpinner.setSelection(0, false); // prevent onItemSelected from firing on activity load
         mHabitatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int item = (int) mHabitatSpinner.getSelectedItemId();
                 submission.setHabitat(habitats[item]);
-                setErrorFields(submission);
+                resetErrorFields(submission);
             }
 
             @Override
@@ -128,7 +126,7 @@ public class ReviewFragment extends Fragment {
             @Override
             public void onPlaceSelected(Place place) {
                 submission.setLocation(place);
-                setErrorFields(submission);
+                resetErrorFields(submission);
             }
 
             @Override
@@ -145,14 +143,9 @@ public class ReviewFragment extends Fragment {
 
     // Method to set textfields to red as appropriate or reset them
     private void setErrorFields(Submission submission) {
-        if (submission.isComplete()) {
-            mErrorMessage.setVisibility(View.GONE);
-            mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background);
-            mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background);
-            mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-            return;
+        if (!submission.isComplete()) {
+            mErrorMessage.setVisibility(View.VISIBLE);
         }
-        mErrorMessage.setVisibility(View.VISIBLE);
         if (submission.getHabitat() == null || submission.getHabitat() == Submission.Habitat.Default) {
             mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background_error);
         }
@@ -161,6 +154,21 @@ public class ReviewFragment extends Fragment {
         }
         if (submission.getLocation() == null) {
             mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.errorRed));
+        }
+    }
+
+    private void resetErrorFields(Submission submission) {
+        if (submission.isComplete()) {
+            mErrorMessage.setVisibility(View.GONE);
+        }
+        if (submission.getHabitat() != null && submission.getHabitat() != Submission.Habitat.Default) {
+            mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background);
+        }
+        if (submission.getWeather() != null && submission.getWeather() != Submission.Weather.Default) {
+            mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background);
+        }
+        if (submission.getLocation() != null) {
+            mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
         }
     }
 }
