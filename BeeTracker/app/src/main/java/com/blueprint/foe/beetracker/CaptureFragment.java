@@ -181,7 +181,6 @@ public class CaptureFragment extends Fragment {
     }
 
     private void saveAndLaunchNextFragment(String imageFilePath) {
-        Log.d(TAG, imageFilePath);
         saveSubmission(imageFilePath);
         launchNextFragment();
     }
