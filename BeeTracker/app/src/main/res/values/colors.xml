@@ -15,4 +15,5 @@
     <color name="skyCyan">#66DAFF</color>
     <color name="learnActivityBackground">#f6f6f6</color>
     <color name="beeYellow">#FFFF01</color>
+    <color name="errorRed">#fddada</color>
 </resources>

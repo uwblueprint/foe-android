@@ -3,7 +3,7 @@
     <item>
         <layer-list>
             <item>
-                <color android:color="@android:color/white"/>
+                <color android:color="@color/errorRed"/>
             </item>
             <item android:end="@dimen/medium_padding">
                 <bitmap

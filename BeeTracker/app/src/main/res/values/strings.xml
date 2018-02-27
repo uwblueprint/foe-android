@@ -49,4 +49,5 @@
     <string name="home_page_welcome">Welcome!</string>
     <string name="home_page_offline_message">Looks like a beautiful day to spot some bees!</string>
     <string name="useful_link">Useful Links</string>
+    <string name="geotag_error_message">Please enter the following fields.</string>
 </resources>
