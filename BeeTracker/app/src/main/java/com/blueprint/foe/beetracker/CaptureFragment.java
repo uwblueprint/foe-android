@@ -4,11 +4,16 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,8 @@ import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
 
+import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -30,6 +37,8 @@ import java.io.IOException;
  */
 public class CaptureFragment extends Fragment {
     private static final String TAG = CaptureFragment.class.toString();
+    static final int REQUEST_IMAGE_GET = 1;
+
     private CameraView mCameraView;
 
     @Override
@@ -89,12 +98,29 @@ public class CaptureFragment extends Fragment {
                     }
                 }
         );
+
+        ImageView libraryButton = (ImageView) view.findViewById(R.id.buttonLibrary);
+        libraryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
         return view;
     }
 
     private void errorAndExit(String message) {
         getActivity().finish();
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+    }
+
+    public void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE_GET);
+        }
     }
 
     @Override
@@ -174,6 +200,31 @@ public class CaptureFragment extends Fragment {
         transaction.addToBackStack(null);
 
         transaction.commit();
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getActivity().getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
+            Uri fullPhotoUri = data.getData();
+            String filename = "";
+            try {
+                Bitmap image = getBitmapFromUri(fullPhotoUri);
+                filename = StorageAccessor.saveBitmapExternally(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+                errorAndExit("There was a problem saving your image externally.");
+            }
+            saveAndLaunchNextFragment(filename);
+        }
     }
 
 }
