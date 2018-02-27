@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Model.Submission;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -28,7 +29,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
  * This fragment will allow the user to review the species, location, as well as add the
  * environment type and current weather.
  */
-public class ReviewFragment extends Fragment {
+public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     private static final String TAG = ReviewFragment.class.toString();
     private Spinner mHabitatSpinner;
     private Spinner mWeatherSpinner;
@@ -39,6 +40,7 @@ public class ReviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
 
+        final ReviewFragment fragment = this;
         TextView submitButton = (TextView) view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,12 +54,13 @@ public class ReviewFragment extends Fragment {
                 }
 
                 BeeAlertDialog dialog = new BeeAlertDialog();
+                dialog.setTargetFragment(fragment, 1);
                 Bundle args = new Bundle();
                 args.putInt(BeeAlertDialog.IMAGE_SRC, R.drawable.bee_image_popup);
                 args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
                 args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
                 dialog.setArguments(args);
-                dialog.show(getActivity().getFragmentManager(), "SubmissionFragment");
+                dialog.show(getActivity().getFragmentManager(), "SubmissionPopup");
             }
         });
 
@@ -139,6 +142,12 @@ public class ReviewFragment extends Fragment {
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
 
         return view;
+    }
+
+    @Override
+    public void onDialogFinishClick() {
+        // User touched the dialog's finish button
+        getActivity().finish();
     }
 
     // Method to set textfields to red as appropriate or reset them

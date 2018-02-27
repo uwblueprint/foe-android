@@ -21,6 +21,7 @@ public class BeeAlertDialog extends DialogFragment {
     public static final String IMAGE_SRC = "IMAGE_SRC";
     public static final String HEADING = "HEADING";
     public static final String PARAGRAPH = "PARAGRAPH";
+    public static final String FINISH = "FINISH";
     BeeAlertDialogListener mListener;
 
     @Override
@@ -29,7 +30,7 @@ public class BeeAlertDialog extends DialogFragment {
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (BeeAlertDialogListener) context;
+            mListener = (BeeAlertDialogListener) getTargetFragment();
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()
@@ -48,6 +49,7 @@ public class BeeAlertDialog extends DialogFragment {
         int providedImageDrawable = b.getInt(IMAGE_SRC);
         String providedHeading = b.getString(HEADING);
         String providedParagraph = b.getString(PARAGRAPH);
+        String providedFinishText = b.getString(FINISH, "");
 
         ImageView ivImage = (ImageView) view.findViewById(R.id.dialog_image);
         ivImage.setImageResource(providedImageDrawable);
@@ -59,10 +61,14 @@ public class BeeAlertDialog extends DialogFragment {
         tvParagraph.setText(providedParagraph);
 
         TextView tvDoneButton = (TextView) view.findViewById(R.id.finish);
+        if (!providedFinishText.isEmpty()) {
+            tvDoneButton.setText(providedFinishText);
+        }
         tvDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onDialogFinishClick();
+                dismiss();
             }
         });
         builder.setView(view);

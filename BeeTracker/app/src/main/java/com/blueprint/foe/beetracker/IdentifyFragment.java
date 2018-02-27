@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Listeners.OnBeePartSelectedListener;
 import com.blueprint.foe.beetracker.Model.BeePart;
 import com.blueprint.foe.beetracker.Model.PartsPickerAdapter;
@@ -26,7 +27,7 @@ import java.util.List;
  * This fragment will allow the user to identify a bee species based on its head, thorax
  * and abdomen patterns. It will also let the user review the image they selected.
  */
-public class IdentifyFragment extends Fragment implements OnBeePartSelectedListener {
+public class IdentifyFragment extends Fragment implements OnBeePartSelectedListener, BeeAlertDialogListener {
     private static final String TAG = IdentifyFragment.class.toString();
     private PartsPickerAdapter mFaceAdapter;
     private PartsPickerAdapter mAbdomenAdapter;
@@ -40,6 +41,17 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.identify_fragment, container, false);
+
+        // Launch popup to explain to user how to identify bee parts
+        BeeAlertDialog dialog = new BeeAlertDialog();
+        dialog.setTargetFragment(this, 1);
+        Bundle args = new Bundle();
+        args.putInt(BeeAlertDialog.IMAGE_SRC, R.mipmap.picker_illustration);
+        args.putString(BeeAlertDialog.HEADING, getString(R.string.identify_popup_heading));
+        args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.identify_popup_message));
+        args.putString(BeeAlertDialog.FINISH, getString(R.string.identify_popup_finish));
+        dialog.setArguments(args);
+        dialog.show(getActivity().getFragmentManager(), "IdentifyPopup");
 
         TextView nextButton = (TextView) view.findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -160,5 +172,10 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         if (submission.getThorax() > -1) {
             mThoraxButton.setTextColor(getResources().getColor(R.color.grassGreen));
         }
+    }
+
+    @Override
+    public void onDialogFinishClick() {
+        // User touched the dialog's finish button. Do nothing.
     }
 }
