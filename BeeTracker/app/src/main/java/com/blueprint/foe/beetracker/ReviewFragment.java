@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,10 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
  */
 public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     private static final String TAG = ReviewFragment.class.toString();
+    private Spinner mHabitatSpinner;
+    private Spinner mWeatherSpinner;
+    private CardView mCardView;
+    private TextView mErrorMessage;
     
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,6 +45,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // check all fields are completed
+                SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
+                Submission submission = submissionInterface.getSubmission();
+                if (!submission.isComplete()) {
+                    setErrorFields(submission);
+                    return;
+                }
+
                 BeeAlertDialog dialog = new BeeAlertDialog();
                 dialog.setTargetFragment(fragment, 1);
                 Bundle args = new Bundle();
@@ -68,17 +82,18 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
 
         // Set up interactive UI elements (spinner, location picker)
         // TODO (https://github.com/uwblueprint/foe/issues/32) : Set up an adapter that extends partsPickerAdapter
-        final Spinner weatherSpinner = (Spinner) view.findViewById(R.id.weather_spinner);
+        mWeatherSpinner = (Spinner) view.findViewById(R.id.weather_spinner);
         final Submission.Weather[] weathers = Submission.Weather.values();
         ArrayAdapter<Submission.Weather> weatherAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.spinner_item, weathers);
         weatherAdapter.setDropDownViewResource(R.layout.spinner_item);
-        weatherSpinner.setAdapter(weatherAdapter);
-        weatherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mWeatherSpinner.setAdapter(weatherAdapter);
+        mWeatherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int item = (int) weatherSpinner.getSelectedItemId();
+                int item = (int) mWeatherSpinner.getSelectedItemId();
                 submission.setWeather(weathers[item]);
+                resetErrorFields(submission);
             }
 
             @Override
@@ -87,31 +102,34 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             }
         });
 
-        final Spinner habitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
+        mHabitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
         final Submission.Habitat[] habitats = Submission.Habitat.values();
         ArrayAdapter<Submission.Habitat> habitatAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.spinner_item, habitats);
         habitatAdapter.setDropDownViewResource(R.layout.spinner_item);
-        habitatSpinner.setAdapter(habitatAdapter);
-        habitatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mHabitatSpinner.setAdapter(habitatAdapter);
+        mHabitatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int item = (int) habitatSpinner.getSelectedItemId();
+                int item = (int) mHabitatSpinner.getSelectedItemId();
                 submission.setHabitat(habitats[item]);
+                resetErrorFields(submission);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        mCardView = (CardView) view.findViewById(R.id.card_view);
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        ImageView searchIcon = (ImageView)((LinearLayout)autocompleteFragment.getView()).getChildAt(0);
-        searchIcon.setImageDrawable(getResources().getDrawable(R.drawable.location_search_icon));
+        ImageView searchIcon = (ImageView)((LinearLayout) autocompleteFragment.getView()).getChildAt(0);
+        searchIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.mipmap.icon_location));
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 submission.setLocation(place);
+                resetErrorFields(submission);
             }
 
             @Override
@@ -121,6 +139,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             }
         });
 
+        mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
+
         return view;
     }
 
@@ -128,5 +148,36 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     public void onDialogFinishClick() {
         // User touched the dialog's finish button
         getActivity().finish();
+    }
+
+    // Method to set textfields to red as appropriate or reset them
+    private void setErrorFields(Submission submission) {
+        if (!submission.isComplete()) {
+            mErrorMessage.setVisibility(View.VISIBLE);
+        }
+        if (submission.getHabitat() == null || submission.getHabitat() == Submission.Habitat.Default) {
+            mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background_error);
+        }
+        if (submission.getWeather() == null || submission.getWeather() == Submission.Weather.Default) {
+            mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background_error);
+        }
+        if (submission.getLocation() == null) {
+            mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.errorRed));
+        }
+    }
+
+    private void resetErrorFields(Submission submission) {
+        if (submission.isComplete()) {
+            mErrorMessage.setVisibility(View.GONE);
+        }
+        if (submission.getHabitat() != null && submission.getHabitat() != Submission.Habitat.Default) {
+            mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background);
+        }
+        if (submission.getWeather() != null && submission.getWeather() != Submission.Weather.Default) {
+            mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background);
+        }
+        if (submission.getLocation() != null) {
+            mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+        }
     }
 }
