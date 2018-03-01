@@ -42,9 +42,20 @@
             android:paddingEnd="@dimen/small_padding"
             android:id="@+id/submitButton"/>
     </RelativeLayout>
+    <TextView
+        android:id="@+id/review_error_message"
+        android:layout_below="@id/review_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
+        android:background="@color/errorRed"
+        android:visibility="gone"
+        android:text="@string/geotag_error_message"/>
     <RelativeLayout
         android:id="@+id/review_species_identification"
-        android:layout_below="@id/review_header"
+        android:layout_below="@id/review_error_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
