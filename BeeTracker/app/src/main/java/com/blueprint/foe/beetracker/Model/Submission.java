@@ -1,5 +1,6 @@
 package com.blueprint.foe.beetracker.Model;
 
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.util.Log;
 
@@ -23,6 +24,7 @@ public class Submission {
     private Weather mWeather = null;
     private Place mPlace = null;
     private String mImageFilePath = null;
+    private transient Bitmap mBitmap = null;
 
     @Override
     public boolean equals(Object other) {
@@ -40,6 +42,7 @@ public class Submission {
                 && this.mHabitat == that.mHabitat
                 && this.mWeather == that.mWeather
                 && this.mImageFilePath == that.mImageFilePath
+                && this.mBitmap.equals(that.mBitmap)
                 && ((this.mPlace == null && that.mPlace == null) || this.mPlace.equals(that.mPlace));
     }
 
@@ -211,6 +214,15 @@ public class Submission {
 
     public void setImageFilePath(String imageFilePath) {
         mImageFilePath = imageFilePath;
+    }
+
+    public Bitmap getBitmap() {
+        // if mBitmap is null, load it from image file path?
+        return mBitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        mBitmap = bitmap;
     }
 
     public boolean isComplete() {

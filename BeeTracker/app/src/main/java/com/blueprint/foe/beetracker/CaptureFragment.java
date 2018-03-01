@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.support.media.ExifInterface;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -27,10 +29,13 @@ import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This fragment will allow the user to take a picture in-app.
@@ -55,33 +60,28 @@ public class CaptureFragment extends Fragment {
             }
         });
 
+        checkForPermissions(getActivity());
+
         mCameraView = (CameraView) view.findViewById(R.id.camera);
 
         mCameraView.addCameraListener(new CameraListener() {
             @Override
-            public void onPictureTaken(byte[] picture) {
+            public void onPictureTaken(final byte[] picture) {
                 // CameraUtils will generate image, with correct EXIF orientation, in a worker thread.
+                final File file = StorageAccessor.getOutputMediaFile(StorageAccessor.MEDIA_TYPE_IMAGE);
                 CameraUtils.decodeBitmap(picture, new CameraUtils.BitmapCallback() {
                     @Override
-                    public void onBitmapReady(Bitmap bitmap) {
-                        if (checkForPermissions(getActivity())) {
-                            String filename = null;
-                            try {
-                                filename = StorageAccessor.saveBitmapExternally(bitmap);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                                errorAndExit("There was a problem saving your image externally.");
+                    public void onBitmapReady(final Bitmap bitmap) {
+                        new Thread(new Runnable() {
+                            public void run() {
+                                try {
+                                    StorageAccessor.saveBitmapExternally(bitmap, file);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            saveAndLaunchNextFragment(filename);
-                        } else {
-                            // Once permission is granted, image will be read from internal storage and saved externally
-                            try {
-                                StorageAccessor.saveBitmapInternally(bitmap, getActivity());
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                                errorAndExit("There was a problem saving your image internally.");
-                            }
-                        }
+                        }).start();
+                        saveAndLaunchNextFragment(bitmap, file.getAbsolutePath());
                     }
                 });
             }
@@ -94,6 +94,7 @@ public class CaptureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         // get an image from the camera
+                        Log.d(TAG, "Capture button clicked!");
                         mCameraView.capturePicture();
                     }
                 }
@@ -114,6 +115,7 @@ public class CaptureFragment extends Fragment {
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
+    // Get the user to select an image from their gallery. The return is handled in onActivityResult
     public void selectImage() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
@@ -146,26 +148,19 @@ public class CaptureFragment extends Fragment {
         mCameraView.destroy();
     }
 
+    // Gets triggered when the user has chosen to grant permission or not
     public void permissionResult(int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            String filename = null;
-            try {
-                Bitmap image = StorageAccessor.readInternalBitmap(getActivity());
-                filename = StorageAccessor.saveBitmapExternally(image);
-                StorageAccessor.deleteInternalBitmap(getActivity());
-            } catch (IOException e) {
-                e.printStackTrace();
-                errorAndExit("There was a problem saving your image externally.");
-            }
-            saveAndLaunchNextFragment(filename);
         } else {
-            StorageAccessor.deleteInternalBitmap(getActivity());
             errorAndExit("The app cannot continue without permission to save externally.");
         }
     }
 
+    // Verify whether the user has enabled the permission required for CaptureFragment
+    // If not, launch the request for this permission. The return from this request is handled in
+    // permissionResult above
     private boolean checkForPermissions(Activity context) {
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -180,16 +175,17 @@ public class CaptureFragment extends Fragment {
         return true;
     }
 
-    private void saveAndLaunchNextFragment(String imageFilePath) {
-        saveSubmission(imageFilePath);
+    private void saveAndLaunchNextFragment(Bitmap image, String filepath) {
+        saveSubmission(image, filepath);
         launchNextFragment();
     }
 
-    private void saveSubmission(String imageFilePath) {
+    private void saveSubmission(Bitmap image, String filepath) {
         SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
         submissionInterface.createOrResetSubmission();
         Submission submission = submissionInterface.getSubmission();
-        submission.setImageFilePath(imageFilePath);
+        submission.setBitmap(image);
+        submission.setImageFilePath(filepath);
     }
 
     private void launchNextFragment() {
@@ -202,6 +198,8 @@ public class CaptureFragment extends Fragment {
         transaction.commit();
     }
 
+    // The user chose to open an image from their gallery. This intent returns a URI. We need to
+    // convert this URI to a bitmap
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
         ParcelFileDescriptor parcelFileDescriptor =
                 getActivity().getContentResolver().openFileDescriptor(uri, "r");
@@ -211,20 +209,27 @@ public class CaptureFragment extends Fragment {
         return image;
     }
 
+    // This method gets triggered when the user selects a specific image from their gallery
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
-            Uri fullPhotoUri = data.getData();
-            String filename = "";
+            final File file = StorageAccessor.getOutputMediaFile(StorageAccessor.MEDIA_TYPE_IMAGE);
+            final Uri fullPhotoUri = data.getData();
             try {
-                Bitmap image = getBitmapFromUri(fullPhotoUri);
-                filename = StorageAccessor.saveBitmapExternally(image);
+                final Bitmap image = getBitmapFromUri(fullPhotoUri);
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            StorageAccessor.saveBitmapExternally(image, file);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+                saveAndLaunchNextFragment(image, file.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
-                errorAndExit("There was a problem saving your image externally.");
             }
-            saveAndLaunchNextFragment(filename);
         }
     }
-
 }

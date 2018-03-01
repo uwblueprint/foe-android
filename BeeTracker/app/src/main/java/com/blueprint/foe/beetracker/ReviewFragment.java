@@ -74,7 +74,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
 
         // Set up image preview in top left corner
         final Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
-        Bitmap bitmap = BitmapFactory.decodeFile(submission.getImageFilePath());
+        Bitmap bitmap = submission.getBitmap();
         int width = bitmap.getWidth();
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, container.getWidth(), (int)(((double)bitmap.getHeight() / (double)width) * container.getWidth()), false);
         ImageView preview = (ImageView) view.findViewById(R.id.beeImageView);
