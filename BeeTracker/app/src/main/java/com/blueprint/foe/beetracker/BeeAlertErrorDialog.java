@@ -12,12 +12,12 @@ import android.widget.TextView;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 
 /**
- * A generic dialog that should be modified for each type of dialog using the Bundle passed into
- * onCreateDialog.
+ * A generic error dialog that should be modified for each type of dialog using the Bundle passed
+ * into onCreateDialog.
  */
 public class BeeAlertErrorDialog extends DialogFragment {
-    public static final String ERROR_MESSAGE = "ERROR_MESSAGE";
-    BeeAlertDialogListener mListener;
+    public static final String ERROR_MESSAGE_KEY = "ERROR_MESSAGE_KEY";
+    private BeeAlertDialogListener mListener;
 
     @Override
     public void onAttach(Context context) {
@@ -41,7 +41,7 @@ public class BeeAlertErrorDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_error, null);
 
         Bundle b = getArguments();
-        String providedErrorMessage = b.getString(ERROR_MESSAGE);
+        String providedErrorMessage = b.getString(ERROR_MESSAGE_KEY);
 
         TextView tvErrorMessage = (TextView) view.findViewById(R.id.errorMessage);
         tvErrorMessage.setText(providedErrorMessage);

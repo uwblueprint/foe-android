@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     token.enqueue(loginCallback);
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
+                    e.printStackTrace();
                     showErrorDialog(getString(R.string.error_message));
                 }
             }
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             @Override
             public void onError(FacebookException exception) {
                 Log.e(TAG, "There was an error on Facebook login. " + exception.toString());
+                exception.printStackTrace();
                 showErrorDialog(getString(R.string.error_message));
             }
         });
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             @Override
             public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
                 if (response.code() == 401 || response.body() == null ||  response.body().getToken() == null) {
-                    Log.e(TAG, "response from server is 401 + " + response.message());
+                    Log.e(TAG, "The response from the server is 401 + " + response.message());
                     showErrorDialog(getString(R.string.error_message));
                     LoginManager.getInstance().logOut();
                     return;
@@ -89,8 +91,10 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
 
             @Override
             public void onFailure(Call<BeeTrackerCaller.SignupResponse> call, Throwable t) {
-                Log.e(TAG, "loginCallback ERROR" + t.toString());
+                Log.e(TAG, "There was an error with the loginCallback + " + t.toString());
+                t.printStackTrace();
                 showErrorDialog(getString(R.string.error_message));
+                LoginManager.getInstance().logOut();
             }
         };
     }
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
     private void showErrorDialog(String message) {
         BeeAlertErrorDialog dialog = new BeeAlertErrorDialog();
         Bundle args = new Bundle();
-        args.putString(BeeAlertErrorDialog.ERROR_MESSAGE, message);
+        args.putString(BeeAlertErrorDialog.ERROR_MESSAGE_KEY, message);
         dialog.setArguments(args);
         dialog.show(getFragmentManager(), "ErrorMessage");
     }

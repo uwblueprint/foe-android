@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 
 /**
- * A generic error dialog that should be modified for each type of dialog using the Bundle passed
+ * A generic dialog that should be modified for each type of dialog using the Bundle passed
  * into onCreateDialog.
  */
 public class BeeAlertDialog extends DialogFragment {
