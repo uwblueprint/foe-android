@@ -43,7 +43,6 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.identify_fragment, container, false);
 
-        Log.d(TAG, "Identify Fragment created");
         // Launch popup to explain to user how to identify bee parts
         BeeAlertDialog dialog = new BeeAlertDialog();
         dialog.setTargetFragment(this, 1);

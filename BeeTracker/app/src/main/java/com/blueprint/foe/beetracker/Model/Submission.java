@@ -110,6 +110,7 @@ public class Submission {
         mWeather = null;
         mPlace = null;
         mImageFilePath = null;
+        mBitmap = null;
     }
 
     public Submission() {
@@ -217,7 +218,7 @@ public class Submission {
     }
 
     public Bitmap getBitmap() {
-        // if mBitmap is null, load it from image file path?
+
         return mBitmap;
     }
 

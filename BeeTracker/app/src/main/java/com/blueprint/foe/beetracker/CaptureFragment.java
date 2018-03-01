@@ -8,11 +8,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.support.media.ExifInterface;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -29,13 +27,9 @@ import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This fragment will allow the user to take a picture in-app.
@@ -49,6 +43,8 @@ public class CaptureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        checkForPermissions(getActivity());
+
         View view = inflater.inflate(R.layout.capture_fragment, container, false);
 
         TextView cancelTextView = (TextView) view.findViewById(R.id.cancelButton);
@@ -60,7 +56,6 @@ public class CaptureFragment extends Fragment {
             }
         });
 
-        checkForPermissions(getActivity());
 
         mCameraView = (CameraView) view.findViewById(R.id.camera);
 
@@ -68,20 +63,11 @@ public class CaptureFragment extends Fragment {
             @Override
             public void onPictureTaken(final byte[] picture) {
                 // CameraUtils will generate image, with correct EXIF orientation, in a worker thread.
-                final File file = StorageAccessor.getOutputMediaFile(StorageAccessor.MEDIA_TYPE_IMAGE);
+
                 CameraUtils.decodeBitmap(picture, new CameraUtils.BitmapCallback() {
                     @Override
                     public void onBitmapReady(final Bitmap bitmap) {
-                        new Thread(new Runnable() {
-                            public void run() {
-                                try {
-                                    StorageAccessor.saveBitmapExternally(bitmap, file);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
-                        saveAndLaunchNextFragment(bitmap, file.getAbsolutePath());
+                        saveAndLaunchNextFragment(bitmap);
                     }
                 });
             }
@@ -94,7 +80,6 @@ public class CaptureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         // get an image from the camera
-                        Log.d(TAG, "Capture button clicked!");
                         mCameraView.capturePicture();
                     }
                 }
@@ -109,6 +94,7 @@ public class CaptureFragment extends Fragment {
         });
         return view;
     }
+
 
     private void errorAndExit(String message) {
         getActivity().finish();
@@ -162,21 +148,33 @@ public class CaptureFragment extends Fragment {
     // If not, launch the request for this permission. The return from this request is handled in
     // permissionResult above
     private boolean checkForPermissions(Activity context) {
-        if (ContextCompat.checkSelfPermission(context,
+        boolean hasWritePermission = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(context, "BeeTracker needs permission to save to storage so you can access the image later.", Toast.LENGTH_LONG);
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    SubmissionActivity.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-
-            return false;
+                == PackageManager.PERMISSION_GRANTED;
+        if (hasWritePermission) {
+            return true;
         }
-        return true;
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                SubmissionActivity.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        return false;
     }
 
-    private void saveAndLaunchNextFragment(Bitmap image, String filepath) {
-        saveSubmission(image, filepath);
+    // Store the image externally in a separate thread
+    private void saveAndLaunchNextFragment(final Bitmap image) {
+        final File file = StorageAccessor.getOutputMediaFile(StorageAccessor.MEDIA_TYPE_IMAGE);
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    StorageAccessor.saveBitmapExternally(image, file);
+                } catch (IOException e) {
+                    // Fail silently, we don't need the image to post a submission, it's just a nice
+                    // to have for the user
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        saveSubmission(image, file.getAbsolutePath());
         launchNextFragment();
     }
 
@@ -213,20 +211,10 @@ public class CaptureFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
-            final File file = StorageAccessor.getOutputMediaFile(StorageAccessor.MEDIA_TYPE_IMAGE);
             final Uri fullPhotoUri = data.getData();
             try {
-                final Bitmap image = getBitmapFromUri(fullPhotoUri);
-                new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            StorageAccessor.saveBitmapExternally(image, file);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-                saveAndLaunchNextFragment(image, file.getAbsolutePath());
+                Bitmap image = getBitmapFromUri(fullPhotoUri);
+                saveAndLaunchNextFragment(image);
             } catch (IOException e) {
                 e.printStackTrace();
             }
