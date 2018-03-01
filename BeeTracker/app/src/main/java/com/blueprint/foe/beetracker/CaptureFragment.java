@@ -61,7 +61,7 @@ public class CaptureFragment extends Fragment {
 
         mCameraView.addCameraListener(new CameraListener() {
             @Override
-            public void onPictureTaken(final byte[] picture) {
+            public void onPictureTaken(byte[] picture) {
                 // CameraUtils will generate image, with correct EXIF orientation, in a worker thread.
 
                 CameraUtils.decodeBitmap(picture, new CameraUtils.BitmapCallback() {
@@ -94,7 +94,6 @@ public class CaptureFragment extends Fragment {
         });
         return view;
     }
-
 
     private void errorAndExit(String message) {
         getActivity().finish();

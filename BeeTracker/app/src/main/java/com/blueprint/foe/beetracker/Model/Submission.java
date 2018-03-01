@@ -42,8 +42,10 @@ public class Submission {
                 && this.mHabitat == that.mHabitat
                 && this.mWeather == that.mWeather
                 && this.mImageFilePath == that.mImageFilePath
-                && this.mBitmap.equals(that.mBitmap)
-                && ((this.mPlace == null && that.mPlace == null) || this.mPlace.equals(that.mPlace));
+                && ((this.mBitmap == null && that.mBitmap == null)
+                    || this.mBitmap != null && that.mBitmap != null && this.mBitmap.equals(that.mBitmap))
+                && ((this.mPlace == null && that.mPlace == null)
+                    || this.mPlace != null && that.mPlace != null && this.mPlace.equals(that.mPlace));
     }
 
     public enum Species {
@@ -218,7 +220,6 @@ public class Submission {
     }
 
     public Bitmap getBitmap() {
-
         return mBitmap;
     }
 
