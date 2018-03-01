@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/error_dialog_width"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingStart="@dimen/big_padding"
+    android:paddingEnd="@dimen/big_padding">
+    <TextView
+        android:id="@+id/errorHeading"
+        android:paddingTop="@dimen/big_padding"
+        android:paddingBottom="@dimen/tiny_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="@string/error"
+        android:textColor="@color/black"
+        android:textSize="@dimen/error_dialog_title_text_size"/>
+    <TextView
+        android:id="@+id/errorMessage"
+        android:text="@string/error_message"
+        android:textSize="@dimen/popup_text_size"
+        android:textColor="@color/black"
+        android:paddingTop="@dimen/tiny_padding"
+        android:paddingBottom="@dimen/tiny_padding"
+        android:layout_below="@id/errorHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/close"
+        android:layout_below="@id/errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:paddingTop="@dimen/big_padding"
+        android:paddingEnd="@dimen/big_padding"
+        android:paddingStart="@dimen/big_padding"
+        android:paddingBottom="@dimen/big_padding"
+        android:textSize="@dimen/popup_text_size"
+        android:text="@string/close"
+        android:textColor="@color/poppyRed"
+        android:drawablePadding="@dimen/small_padding"
+        android:drawableEnd="@mipmap/icon_close"/>
+</RelativeLayout>

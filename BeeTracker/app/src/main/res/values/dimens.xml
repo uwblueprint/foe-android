@@ -22,4 +22,8 @@
     <dimen name="homepage_normal_text_size">16sp</dimen>
     <dimen name="homepage_welcome_message_right_padding">80dp</dimen>
     <dimen name="homepage_welcome_message_text_size">20sp</dimen>
+    <dimen name="facebook_login_side_padding">54dp</dimen>
+    <dimen name="facebook_button_top_margin">40dp</dimen>
+    <dimen name="error_dialog_title_text_size">40sp</dimen>
+    <dimen name="error_dialog_width">327dp</dimen>
 </resources>

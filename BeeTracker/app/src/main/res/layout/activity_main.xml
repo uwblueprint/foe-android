@@ -3,23 +3,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:gravity="center_vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     tools:context="com.blueprint.foe.beetracker.MainActivity">
-
+    <ImageView
+        android:id="@+id/beeAppLogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/bee_app_logo"
+        android:gravity="center_horizontal"/>
     <TextView
+        android:id="@+id/foe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/big_padding"
+        android:layout_below="@id/beeAppLogo"
+        android:textColor="@color/black"
+        android:text="@string/foe" />
+    <TextView
+        android:id="@+id/greatCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="@string/great_canadian"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/foe"/>
+    <android.support.v7.widget.CardView
+        android:id="@+id/loginCardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/facebook_button_top_margin"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/greatCount"
+        app:cardCornerRadius="@dimen/big_padding">
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            xmlns:facebook="http://schemas.android.com/apk/res-auto"
+            facebook:com_facebook_login_text="@string/login_with_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/facebook_login_side_padding"
+            android:paddingRight="@dimen/facebook_login_side_padding"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingBottom="@dimen/medium_padding"
+            android:layout_gravity="center_horizontal" />
+    </android.support.v7.widget.CardView>
+    <TextView
+        android:id="@+id/skip"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
+        android:gravity="center_horizontal"
+        android:padding="@dimen/medium_padding"
+        android:layout_below="@id/loginCardView"
+        android:textColor="@color/mediumDarkGrey"
+        android:text="@string/continue_as_guest" />
 </RelativeLayout>
