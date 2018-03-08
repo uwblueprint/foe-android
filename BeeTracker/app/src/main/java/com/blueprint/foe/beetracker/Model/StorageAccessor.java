@@ -32,7 +32,7 @@ public class StorageAccessor {
     private static final String FACTS_FILENAME = "facts";
     private static final String STATIC_FACTS_FILENAME = "facts";
     private static final String TEMPORARY_IMAGE_FILENAME = "TemporaryImageFile";
-    private static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int MEDIA_TYPE_IMAGE = 1;
 
     public static void storeSubmission(Context context, Submission submission) throws IOException {
         Gson gson = new Gson();
@@ -104,8 +104,7 @@ public class StorageAccessor {
         return loadFacts(fis);
     }
 
-    public static String saveBitmapExternally(Bitmap bitmap) throws FileNotFoundException {
-        File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+    public static String saveBitmapExternally(Bitmap bitmap, File pictureFile) throws FileNotFoundException {
         FileOutputStream out = null;
 
         try {
@@ -123,47 +122,8 @@ public class StorageAccessor {
         }
     }
 
-    public static String saveBitmapInternally(Bitmap bitmap, Context context) throws FileNotFoundException {
-        FileOutputStream fos = null;
-        try {
-            fos = context.openFileOutput(TEMPORARY_IMAGE_FILENAME, Context.MODE_PRIVATE);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            return TEMPORARY_IMAGE_FILENAME;
-        } finally {
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void deleteInternalBitmap(Context context) {
-        context.deleteFile(TEMPORARY_IMAGE_FILENAME);
-    }
-
-    public static Bitmap readInternalBitmap(Context context) throws IOException{
-        FileInputStream fis = null;
-        try {
-            fis = context.openFileInput(TEMPORARY_IMAGE_FILENAME);
-            byte arr[] = new byte[(int) fis.getChannel().size()];
-            fis.read(arr);
-            return BitmapFactory.decodeByteArray(arr, 0, arr.length);
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(int type){
+    public static File getOutputMediaFile(int type){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 

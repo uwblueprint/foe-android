@@ -123,12 +123,4 @@ public class StorageAccessorTest {
         FactCollection facts = StorageAccessor.loadFacts(fis);
         assertTrue(correctFacts.equals(facts));
     }
-
-    @Test
-    public void saveBitmapInternally_isCorrect() throws Exception {
-        when(context.openFileOutput("TemporaryImageFile", Context.MODE_PRIVATE)).thenReturn(fos);
-        String result = StorageAccessor.saveBitmapInternally(bitmap, context);
-        verify(bitmap, times(1)).compress(Bitmap.CompressFormat.JPEG, 100, fos);
-        assertEquals("TemporaryImageFile", result);
-    }
 }

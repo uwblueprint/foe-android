@@ -29,7 +29,6 @@ import com.otaliastudios.cameraview.CameraView;
 
 import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -44,6 +43,8 @@ public class CaptureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        checkForPermissions(getActivity());
+
         View view = inflater.inflate(R.layout.capture_fragment, container, false);
 
         TextView cancelTextView = (TextView) view.findViewById(R.id.cancelButton);
@@ -55,33 +56,18 @@ public class CaptureFragment extends Fragment {
             }
         });
 
+
         mCameraView = (CameraView) view.findViewById(R.id.camera);
 
         mCameraView.addCameraListener(new CameraListener() {
             @Override
             public void onPictureTaken(byte[] picture) {
                 // CameraUtils will generate image, with correct EXIF orientation, in a worker thread.
+
                 CameraUtils.decodeBitmap(picture, new CameraUtils.BitmapCallback() {
                     @Override
-                    public void onBitmapReady(Bitmap bitmap) {
-                        if (checkForPermissions(getActivity())) {
-                            String filename = null;
-                            try {
-                                filename = StorageAccessor.saveBitmapExternally(bitmap);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                                errorAndExit("There was a problem saving your image externally.");
-                            }
-                            saveAndLaunchNextFragment(filename);
-                        } else {
-                            // Once permission is granted, image will be read from internal storage and saved externally
-                            try {
-                                StorageAccessor.saveBitmapInternally(bitmap, getActivity());
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                                errorAndExit("There was a problem saving your image internally.");
-                            }
-                        }
+                    public void onBitmapReady(final Bitmap bitmap) {
+                        saveAndLaunchNextFragment(bitmap);
                     }
                 });
             }
@@ -114,6 +100,7 @@ public class CaptureFragment extends Fragment {
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
+    // Get the user to select an image from their gallery. The return is handled in onActivityResult
     public void selectImage() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
@@ -146,50 +133,56 @@ public class CaptureFragment extends Fragment {
         mCameraView.destroy();
     }
 
+    // Gets triggered when the user has chosen to grant permission or not
     public void permissionResult(int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            String filename = null;
-            try {
-                Bitmap image = StorageAccessor.readInternalBitmap(getActivity());
-                filename = StorageAccessor.saveBitmapExternally(image);
-                StorageAccessor.deleteInternalBitmap(getActivity());
-            } catch (IOException e) {
-                e.printStackTrace();
-                errorAndExit("There was a problem saving your image externally.");
-            }
-            saveAndLaunchNextFragment(filename);
         } else {
-            StorageAccessor.deleteInternalBitmap(getActivity());
             errorAndExit("The app cannot continue without permission to save externally.");
         }
     }
 
+    // Verify whether the user has enabled the permission required for CaptureFragment
+    // If not, launch the request for this permission. The return from this request is handled in
+    // permissionResult above
     private boolean checkForPermissions(Activity context) {
-        if (ContextCompat.checkSelfPermission(context,
+        boolean hasWritePermission = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(context, "BeeTracker needs permission to save to storage so you can access the image later.", Toast.LENGTH_LONG);
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    SubmissionActivity.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-
-            return false;
+                == PackageManager.PERMISSION_GRANTED;
+        if (hasWritePermission) {
+            return true;
         }
-        return true;
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                SubmissionActivity.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        return false;
     }
 
-    private void saveAndLaunchNextFragment(String imageFilePath) {
-        saveSubmission(imageFilePath);
+    // Store the image externally in a separate thread
+    private void saveAndLaunchNextFragment(final Bitmap image) {
+        final File file = StorageAccessor.getOutputMediaFile(StorageAccessor.MEDIA_TYPE_IMAGE);
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    StorageAccessor.saveBitmapExternally(image, file);
+                } catch (IOException e) {
+                    // Fail silently, we don't need the image to post a submission, it's just a nice
+                    // to have for the user
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        saveSubmission(image, file.getAbsolutePath());
         launchNextFragment();
     }
 
-    private void saveSubmission(String imageFilePath) {
+    private void saveSubmission(Bitmap image, String filepath) {
         SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
         submissionInterface.createOrResetSubmission();
         Submission submission = submissionInterface.getSubmission();
-        submission.setImageFilePath(imageFilePath);
+        submission.setBitmap(image);
+        submission.setImageFilePath(filepath);
     }
 
     private void launchNextFragment() {
@@ -202,6 +195,8 @@ public class CaptureFragment extends Fragment {
         transaction.commit();
     }
 
+    // The user chose to open an image from their gallery. This intent returns a URI. We need to
+    // convert this URI to a bitmap
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
         ParcelFileDescriptor parcelFileDescriptor =
                 getActivity().getContentResolver().openFileDescriptor(uri, "r");
@@ -211,20 +206,17 @@ public class CaptureFragment extends Fragment {
         return image;
     }
 
+    // This method gets triggered when the user selects a specific image from their gallery
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
-            Uri fullPhotoUri = data.getData();
-            String filename = "";
+            final Uri fullPhotoUri = data.getData();
             try {
                 Bitmap image = getBitmapFromUri(fullPhotoUri);
-                filename = StorageAccessor.saveBitmapExternally(image);
+                saveAndLaunchNextFragment(image);
             } catch (IOException e) {
                 e.printStackTrace();
-                errorAndExit("There was a problem saving your image externally.");
             }
-            saveAndLaunchNextFragment(filename);
         }
     }
-
 }

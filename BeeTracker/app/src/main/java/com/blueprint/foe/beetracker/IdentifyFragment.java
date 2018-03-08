@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +79,7 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         });
 
         Submission submission = ((SubmissionInterface) getActivity()).getSubmission();
-        Bitmap bitmap = BitmapFactory.decodeFile(submission.getImageFilePath());
+        Bitmap bitmap = submission.getBitmap();
         int scaledWidth = container.getWidth();
         int scaledHeight = (int)(((double)bitmap.getHeight() / (double)bitmap.getWidth()) * container.getWidth());
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, false);

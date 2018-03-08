@@ -15,6 +15,7 @@ import java.io.IOException;
 
 public class SubmissionActivity extends AppCompatActivity implements SubmissionInterface {
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+
     private static final String TAG = SubmissionActivity.class.toString();
     private Submission submission;
 
