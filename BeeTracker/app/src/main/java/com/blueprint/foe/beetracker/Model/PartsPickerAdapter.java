@@ -69,7 +69,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
         roundedBackgroundDrawable.setAntiAlias(true);
 
         // Create a green circle to show the selected status and round the corners
-        Bitmap greenBitmap = BitmapFactory.decodeResource(parent.getContext().getResources(), R.drawable.selection_outline);
+        Bitmap greenBitmap = BitmapFactory.decodeResource(parent.getContext().getResources(), R.mipmap.selection_outline);
         RoundedBitmapDrawable selectedDrawable = RoundedBitmapDrawableFactory.create(parent.getContext().getResources(), greenBitmap);
         selectedDrawable.setCircular(true);
         selectedDrawable.setAntiAlias(true);

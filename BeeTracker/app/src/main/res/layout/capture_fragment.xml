@@ -56,7 +56,7 @@
             android:layout_height="50dp"
             android:gravity="center_vertical"
             android:layout_centerInParent="true"
-            android:src="@drawable/capture_icon"
+            android:src="@mipmap/capture_icon"
             android:background="@null"/>
     </RelativeLayout>
 </RelativeLayout>
