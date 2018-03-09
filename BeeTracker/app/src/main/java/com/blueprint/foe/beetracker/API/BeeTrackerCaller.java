@@ -85,9 +85,9 @@ public class BeeTrackerCaller {
         Sighting(Submission submission) {
             this.image = new Image(StorageAccessor.convertImageToStringForServer(submission.getBitmap()), submission.getImageFilePath());
             this.location = new Location(submission.getLocation().getLatLng().latitude, submission.getLocation().getLatLng().longitude);
-            this.weather = submission.getWeather().toString();
-            this.habitat = submission.getHabitat().toString();
-            this.species = submission.getSpecies().toString();
+            this.weather = submission.getWeather().name();
+            this.habitat = submission.getHabitat().name();
+            this.species = null; //submission.getSpecies().toString();
         }
     }
 
@@ -164,6 +164,6 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.submitSighting(token, new SubmissionRequest(submission));
+        return service.submitSighting("Token " + token, new SubmissionRequest(submission));
     }
 }

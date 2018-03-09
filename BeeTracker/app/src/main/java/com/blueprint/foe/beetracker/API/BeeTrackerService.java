@@ -16,5 +16,5 @@ public interface  BeeTrackerService {
     Call<BeeTrackerCaller.SignupResponse> facebookAuth(@Body BeeTrackerCaller.SignupRequest token);
 
     @POST("/sightings")
-    Call<BeeTrackerCaller.SubmissionResponse> submitSighting(@Header("Authorization:") String authorization, @Body BeeTrackerCaller.SubmissionRequest token);
+    Call<BeeTrackerCaller.SubmissionResponse> submitSighting(@Header("Authorization") String authorization, @Body BeeTrackerCaller.SubmissionRequest token);
 }

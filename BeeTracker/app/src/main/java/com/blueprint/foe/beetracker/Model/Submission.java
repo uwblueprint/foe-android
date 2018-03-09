@@ -1,7 +1,6 @@
 package com.blueprint.foe.beetracker.Model;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.location.places.Place;
@@ -54,25 +53,33 @@ public class Submission {
 
 
     public enum Habitat {
-        Default, HouseGarden, Park, Swamp, PublicGarden, Lake, Lawn;
+        Default, back_yard, community_garden, city_park, rural, golf_course, roadside, woodland, farmland, school_grounds, other;
 
         @Override
         public String toString() {
             switch (this) {
                 case Default:
                     return "";
-                case HouseGarden:
-                    return "House Garden";
-                case Park:
-                    return "Park";
-                case Swamp:
-                    return "Swamp";
-                case PublicGarden:
-                    return "Public Garden";
-                case Lake:
-                    return "Lake";
-                case Lawn:
-                    return "Lawn";
+                case back_yard:
+                    return "Back Yard";
+                case community_garden:
+                    return "Community Garden";
+                case city_park:
+                    return "City Park";
+                case rural:
+                    return "Rural";
+                case golf_course:
+                    return "Golf Course";
+                case roadside:
+                    return "Roadside";
+                case woodland:
+                    return "Woodland";
+                case farmland:
+                    return "Farmland";
+                case school_grounds:
+                    return "School Grounds";
+                case other:
+                    return "Other";
                 default:
                     return "There was an error.";
             }
@@ -80,23 +87,25 @@ public class Submission {
     }
 
     public enum Weather {
-        Default, Sunny, PartlyCloudy, Cloudy, Raining, Hailing;
+        Default, sunny, partly_cloudy, cloudy, rain, windy, other;
 
         @Override
         public String toString() {
             switch (this) {
                 case Default:
                     return "";
-                case Sunny:
+                case sunny:
                     return "Sunny";
-                case PartlyCloudy:
+                case partly_cloudy:
                     return "Partly Cloudy";
-                case Cloudy:
+                case cloudy:
                     return "Cloudy";
-                case Raining:
+                case rain:
                     return "Raining";
-                case Hailing:
+                case windy:
                     return "Hailing";
+                case other:
+                    return "Other";
                 default:
                     return "There was an error.";
             }
