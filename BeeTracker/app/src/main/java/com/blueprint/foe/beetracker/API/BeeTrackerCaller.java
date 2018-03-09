@@ -85,8 +85,8 @@ public class BeeTrackerCaller {
         Sighting(Submission submission) {
             this.image = new Image(StorageAccessor.convertImageToStringForServer(submission.getBitmap()), submission.getImageFilePath());
             this.location = new Location(submission.getLocation().getLatLng().latitude, submission.getLocation().getLatLng().longitude);
-            this.weather = submission.getWeather().name();
-            this.habitat = submission.getHabitat().name();
+            this.weather = submission.getWeather().name().toLowerCase();
+            this.habitat = submission.getHabitat().name().toLowerCase();
             this.species = null; //submission.getSpecies().toString();
         }
     }
