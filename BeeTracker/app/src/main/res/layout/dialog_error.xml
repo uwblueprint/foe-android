@@ -17,7 +17,7 @@
         android:textSize="@dimen/error_dialog_title_text_size"/>
     <TextView
         android:id="@+id/errorMessage"
-        android:text="@string/error_message"
+        android:text="@string/error_message_login"
         android:textSize="@dimen/popup_text_size"
         android:textColor="@color/black"
         android:paddingTop="@dimen/tiny_padding"

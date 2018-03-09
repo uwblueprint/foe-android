@@ -50,7 +50,7 @@ public class BeeAlertErrorDialog extends DialogFragment {
         tvDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onDialogFinishClick();
+                mListener.onDialogFinishClick(BeeAlertDialogListener.ERROR_DIALOG);
                 dismiss();
             }
         });

@@ -176,7 +176,7 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
     }
 
     @Override
-    public void onDialogFinishClick() {
+    public void onDialogFinishClick(int id) {
         // User touched the dialog's finish button. Do nothing.
     }
 }

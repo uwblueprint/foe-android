@@ -182,17 +182,23 @@ public class Submission {
         }
 
         if (mFace < 0) {
-            throw new IllegalArgumentException("Face is missing");
+            Log.e(TAG, "Face is missing");
+            return Species.Unknown;
         } else if (mThorax < 0) {
-            throw new IllegalArgumentException("Thorax is missing");
+            Log.e(TAG, "Thorax is missing");
+            return Species.Unknown;
         } else if (mAbdomen < 0) {
-            throw new IllegalArgumentException("Abdomen is missing");
+            Log.e(TAG, "Abdomen is missing");
+            return Species.Unknown;
         } else if (mFace > MAX_FACE) {
-            throw new IllegalArgumentException("Invalid face value");
+            Log.e(TAG, "Invalid face value");
+            return Species.Unknown;
         } else if (mThorax > MAX_THORAX) {
-            throw new IllegalArgumentException("Invalid thorax value");
+            Log.e(TAG, "Invalid thorax value");
+            return Species.Unknown;
         } else if (mAbdomen > MAX_ABDOMEN) {
-            throw new IllegalArgumentException("Invalid abdomen value");
+            Log.e(TAG, "Invalid abdomen value");
+            return Species.Unknown;
         }
 
         if (mFace == 0 && mThorax == 0 && mAbdomen == 0)

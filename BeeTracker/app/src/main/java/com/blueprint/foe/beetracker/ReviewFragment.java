@@ -1,8 +1,9 @@
 package com.blueprint.foe.beetracker;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -18,12 +19,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Model.Submission;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * This fragment will allow the user to review the species, location, as well as add the
@@ -35,12 +44,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     private Spinner mWeatherSpinner;
     private CardView mCardView;
     private TextView mErrorMessage;
-    
+    private Callback loginCallback;
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
 
-        final ReviewFragment fragment = this;
+        final ReviewFragment f2 = this;
         TextView submitButton = (TextView) view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,15 +63,9 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                     setErrorFields(submission);
                     return;
                 }
+                //launchPopup(f2);
+                submitToServer();
 
-                BeeAlertDialog dialog = new BeeAlertDialog();
-                dialog.setTargetFragment(fragment, 1);
-                Bundle args = new Bundle();
-                args.putInt(BeeAlertDialog.IMAGE_SRC, R.drawable.bee_image_popup);
-                args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
-                args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
-                dialog.setArguments(args);
-                dialog.show(getActivity().getFragmentManager(), "SubmissionPopup");
             }
         });
 
@@ -140,14 +145,55 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         });
 
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
+        final ReviewFragment fragment = this;
+        loginCallback = new Callback<BeeTrackerCaller.SignupResponse>() {
+            @Override
+            public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
+                if (response.code() == 401 || response.code() == 422 || response.body() == null ||  response.body().getToken() == null) {
+                    Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
+                    showErrorDialog(getString(R.string.error_message_submit));
+                    return;
+                }
+                Log.d(TAG, "The response body: " + response.body());
+                fragment.launchPopup(fragment);
+            }
+
+            @Override
+            public void onFailure(Call<BeeTrackerCaller.SignupResponse> call, Throwable t) {
+                Log.e(TAG, "There was an error with the submitCallback + " + t.toString());
+                t.printStackTrace();
+                showErrorDialog(getString(R.string.error_message_submit));
+            }
+        };
 
         return view;
     }
 
-    @Override
-    public void onDialogFinishClick() {
-        // User touched the dialog's finish button
-        getActivity().finish();
+    public void launchPopup(ReviewFragment fragment) {
+        BeeAlertDialog dialog = new BeeAlertDialog();
+        dialog.setTargetFragment(this, 1);
+        Bundle args = new Bundle();
+        args.putInt(BeeAlertDialog.IMAGE_SRC, R.drawable.bee_image_popup);
+        args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
+        args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
+        dialog.setArguments(args);
+        dialog.show(getActivity().getFragmentManager(), "SubmissionPopup");
+    }
+
+    private void submitToServer() {
+        BeeTrackerCaller caller = new BeeTrackerCaller();
+        try {
+            SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            String accessToken = sharedPref.getString(getString(R.string.preference_login_token), null);
+            Log.d(TAG, "Access token: " + accessToken);
+            Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+            Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken);
+            token.enqueue(loginCallback);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+            e.printStackTrace();
+            showErrorDialog(getString(R.string.error_message_login));
+        }
     }
 
     // Method to set textfields to red as appropriate or reset them
@@ -178,6 +224,24 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         }
         if (submission.getLocation() != null) {
             mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+        }
+    }
+
+    private void showErrorDialog(String message) {
+        BeeAlertErrorDialog dialog = new BeeAlertErrorDialog();
+        dialog.setTargetFragment(this, 1);
+        Bundle args = new Bundle();
+        args.putString(BeeAlertErrorDialog.ERROR_MESSAGE_KEY, message);
+        dialog.setArguments(args);
+        dialog.show(getFragmentManager(), "ErrorMessage");
+    }
+
+    @Override
+    public void onDialogFinishClick(int id) {
+        if (id == ERROR_DIALOG) {
+            // Do nothing
+        } else if (id == NORMAL_DIALOG) {
+            // Should never be triggered.
         }
     }
 }

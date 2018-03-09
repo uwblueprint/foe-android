@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
                     e.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message));
+                    showErrorDialog(getString(R.string.error_message_login));
                 }
             }
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             public void onError(FacebookException exception) {
                 Log.e(TAG, "There was an error on Facebook login. " + exception.toString());
                 exception.printStackTrace();
-                showErrorDialog(getString(R.string.error_message));
+                showErrorDialog(getString(R.string.error_message_login));
             }
         });
 
@@ -80,12 +80,13 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
                 if (response.code() == 401 || response.body() == null ||  response.body().getToken() == null) {
                     Log.e(TAG, "The response from the server is 401 + " + response.message());
-                    showErrorDialog(getString(R.string.error_message));
+                    showErrorDialog(getString(R.string.error_message_login));
                     LoginManager.getInstance().logOut();
                     return;
                 }
-                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-                sharedPref.edit().putString(getString(R.string.preference_login_token), response.body().getToken()).apply();
+                Log.d(TAG, "token: " + response.body().getToken());
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().putString(getString(R.string.preference_login_token), response.body().getToken()).commit();
                 navigateToHome();
             }
 
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             public void onFailure(Call<BeeTrackerCaller.SignupResponse> call, Throwable t) {
                 Log.e(TAG, "There was an error with the loginCallback + " + t.toString());
                 t.printStackTrace();
-                showErrorDialog(getString(R.string.error_message));
+                showErrorDialog(getString(R.string.error_message_login));
                 LoginManager.getInstance().logOut();
             }
         };
@@ -120,5 +121,5 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
     }
 
     @Override
-    public void onDialogFinishClick() {}
+    public void onDialogFinishClick(int id) {}
 }
