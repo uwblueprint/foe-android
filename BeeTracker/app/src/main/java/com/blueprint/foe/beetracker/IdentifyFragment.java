@@ -144,7 +144,7 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
                 R.drawable.griseocollis, R.drawable.perplexus, R.drawable.borealis, R.drawable.rufocinctus,
                 R.drawable.mixtus, R.drawable.centralis}; // Missing bohemicus? and have ternarius instead of tenarius
         List<Species> westernSpecies = Arrays.asList(
-                Species.occidentalis, Species.melanopygus, Species.bifarius1,
+                Species.occidentalis, Species.melanopygus, Species.bifarius,
                 Species.impatiens, Species.huntii, Species.ternarius, Species.terricola,
                 Species.nevadensis, Species.vosnesenski, Species.cryptarum, Species.flavifrons,
                 Species.griseocollis, Species.perplexus, Species.borealis, Species.rufocinctus,

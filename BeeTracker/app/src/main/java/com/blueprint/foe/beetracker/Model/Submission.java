@@ -47,7 +47,7 @@ public class Submission {
         impatiens, ternarius, rufocinctus, bimaculatus, borealis, vagans, affinis,
         griseocollis, citrinus, perplexus, pensylvanicus, sylvicola, sandersoni,
         nevadensis, auricomus, terricola, fervidus, flavifrons, occidentalis, melanopygus,
-        bifarius1, huntii, vosnesenski, cryptarum, mixtus, centralis
+        bifarius, huntii, vosnesenski, cryptarum, mixtus, centralis
     } // Missing bohemicus
 
 
