@@ -3,6 +3,8 @@ package com.blueprint.foe.beetracker;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,11 +26,7 @@ import static com.blueprint.foe.beetracker.Model.Submission.Species;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.blueprint.foe.beetracker.Model.Submission.Species.impatiens;
 
 /**
  * This fragment will allow the user to identify a bee species based on its head, thorax
@@ -95,6 +93,8 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
             @Override
             public void onClick(View view) {
                 mRecyclerView.setAdapter(mEasternAdapter);
+                mEasternButton.setPaintFlags(mEasternButton.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+                mWesternButton.setPaintFlags(Typeface.NORMAL);
             }
         });
 
@@ -103,11 +103,13 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
             @Override
             public void onClick(View view) {
                 mRecyclerView.setAdapter(mWesternAdapter);
+                mWesternButton.setPaintFlags(mWesternButton.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+                mEasternButton.setPaintFlags(Typeface.NORMAL);
             }
         });
 
         createAdapters(submission);
-        onBeePartSelected();
+        onBeeSpeciesSelected();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -115,6 +117,7 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setAdapter(mEasternAdapter);
+        mEasternButton.setPaintFlags(mEasternButton.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 
         return view;
     }
@@ -177,14 +180,18 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
     }
 
     @Override
-    public void onBeePartSelected() {
+    public void onBeeSpeciesSelected() {
         Submission submission = ((SubmissionInterface) getActivity()).getSubmission();
         if (submission.getSpeciesType() == Submission.BeeSpeciesType.Eastern) {
             mEasternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.grassGreen));
             mWesternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.subheadingTextColour));
+            mWesternAdapter.unselectAllItems();
+            mWesternAdapter.notifyDataSetChanged(); // to reset selection to unselected
         } else if (submission.getSpeciesType() == Submission.BeeSpeciesType.Western) {
             mWesternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.grassGreen));
             mEasternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.subheadingTextColour));
+            mEasternAdapter.unselectAllItems();
+            mEasternAdapter.notifyDataSetChanged(); // to reset selection to unselected
         }
     }
 

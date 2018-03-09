@@ -113,9 +113,15 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
                     mBeeSpeciesDrawables.get(i).setSelection(false);
                 }
                 beeSpeciesDrawable.setSelection(!beeSpeciesDrawable.isSelected()); // toggle
-                mListener.onBeePartSelected();
+                mListener.onBeeSpeciesSelected();
                 notifyDataSetChanged();
             }
         });
+    }
+
+    public void unselectAllItems() {
+        for (int i = 0; i < mBeeSpeciesDrawables.size(); i++) {
+            mBeeSpeciesDrawables.get(i).setSelection(false);
+        }
     }
 }

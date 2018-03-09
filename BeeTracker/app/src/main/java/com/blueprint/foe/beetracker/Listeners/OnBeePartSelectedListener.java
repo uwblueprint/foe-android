@@ -6,5 +6,5 @@ package com.blueprint.foe.beetracker.Listeners;
  * selection has been made.
  */
 public interface OnBeePartSelectedListener {
-    void onBeePartSelected();
+    void onBeeSpeciesSelected();
 }

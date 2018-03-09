@@ -48,7 +48,7 @@ public class Submission {
         griseocollis, citrinus, perplexus, pensylvanicus, sylvicola, sandersoni,
         nevadensis, auricomus, terricola, fervidus, flavifrons, occidentalis, melanopygus,
         bifarius1, huntii, vosnesenski, cryptarum, mixtus, centralis
-    }
+    } // Missing bohemicus
 
 
     public enum Habitat {
