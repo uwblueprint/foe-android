@@ -27,7 +27,6 @@ import java.util.List;
 public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.ViewHolder> {
     private static String TAG = PartsPickerAdapter.class.toString();
     private static int SIZE = 80;
-    private BeeSpeciesDrawable.BeePartType mType;
     private List<BeeSpeciesDrawable> mBeeSpeciesDrawables;
     private OnBeePartSelectedListener mListener;
 
@@ -36,8 +35,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
         return mBeeSpeciesDrawables.size();
     }
 
-    public PartsPickerAdapter(List<BeeSpeciesDrawable> beeSpeciesDrawables, BeeSpeciesDrawable.BeePartType type, OnBeePartSelectedListener listener) {
-        this.mType = type;
+    public PartsPickerAdapter(List<BeeSpeciesDrawable> beeSpeciesDrawables, OnBeePartSelectedListener listener) {
         this.mBeeSpeciesDrawables = beeSpeciesDrawables;
         this.mListener = listener;
     }
@@ -46,7 +44,6 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
         public ImageView mImageView;
         public RoundedBitmapDrawable mGreyBackground;
         public RoundedBitmapDrawable mSelected;
-        public RoundedBitmapDrawable mBeeImage;
         public ViewHolder(View v, RoundedBitmapDrawable selected, RoundedBitmapDrawable greyBackground) {
             super(v);
             mImageView = (ImageView) v.findViewById(R.id.layeredImage);
@@ -89,7 +86,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
             layers = new Drawable[3];
             layers[0] =  holder.mSelected;
             layers[1] = holder.mGreyBackground;
-            layers[2] = beeSpeciesDrawable.getDrawable();
+            layers[2] = beeSpeciesDrawable.getDrawable(holder.mImageView.getContext());
             LayerDrawable layerDrawable = new LayerDrawable(layers);
             int inset = 30;
             layerDrawable.setLayerInset(1, inset, inset, inset, inset);
@@ -99,7 +96,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
             // Stack the two drawables (bee part and grey background) on top of each other
             layers = new Drawable[2];
             layers[0] =  holder.mGreyBackground;
-            layers[1] = beeSpeciesDrawable.getDrawable();
+            layers[1] = beeSpeciesDrawable.getDrawable(holder.mImageView.getContext());
             LayerDrawable layerDrawable = new LayerDrawable(layers);
             holder.mImageView.setImageDrawable(layerDrawable);
         }
@@ -110,17 +107,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
                 // Update submission with the user's choice
                 SubmissionInterface activity = (SubmissionInterface) holder.mImageView.getContext();
                 Submission submission = activity.getSubmission();
-                switch(mType) {
-                    case Face:
-                        submission.setFace(beeSpeciesDrawable.getIndex());
-                        break;
-                    case Thorax:
-                        submission.setThorax(beeSpeciesDrawable.getIndex());
-                        break;
-                    default:
-                        submission.setAbdomen(beeSpeciesDrawable.getIndex());
-                        break;
-                }
+                submission.setSpecies(beeSpeciesDrawable.getSpecies(), beeSpeciesDrawable.getSpeciesType());
 
                 for (int i = 0; i < mBeeSpeciesDrawables.size(); i++) {
                     mBeeSpeciesDrawables.get(i).setSelection(false);

@@ -44,7 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/previewImageView"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -55,8 +54,8 @@
             android:gravity="center"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:id="@+id/faceButton"
-            android:text="@string/face"/>
+            android:id="@+id/easternButton"
+            android:text="@string/eastern"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -64,17 +63,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:id="@+id/thoraxButton"
-            android:text="@string/thorax"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/abdomenButton"
-            android:text="@string/abdomen"/>
+            android:id="@+id/westernButton"
+            android:text="@string/western"/>
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"

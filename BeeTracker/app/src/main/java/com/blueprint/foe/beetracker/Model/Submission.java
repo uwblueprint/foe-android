@@ -1,7 +1,6 @@
 package com.blueprint.foe.beetracker.Model;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.location.places.Place;
@@ -16,6 +15,7 @@ public class Submission {
     public static final int MAX_THORAX = 5;
     public static final int MAX_ABDOMEN = 8;
 
+    private BeeSpeciesType mSpeciesType = null;
     private Species mSpecies = null;
     private Habitat mHabitat = null;
     private Weather mWeather = null;
@@ -33,6 +33,7 @@ public class Submission {
         Submission that = (Submission) other;
 
         return this.mSpecies == that.mSpecies
+                && this.mSpeciesType == that.mSpeciesType
                 && this.mHabitat == that.mHabitat
                 && this.mWeather == that.mWeather
                 && this.mImageFilePath == that.mImageFilePath
@@ -43,7 +44,10 @@ public class Submission {
     }
 
     public enum Species {
-        Apidae, Andrenidae, Halictidae, Megachilidae, Colletidae, Unknown
+        impatiens, ternarius, rufocinctus, bimaculatus, borealis, vagans, affinis,
+        griseocollis, citrinus, perplexus, pensylvanicus, sylvicola, sandersoni,
+        nevadensis, auricomus, terricola, fervidus, flavifrons, occidentalis, melanopygus,
+        bifarius1, huntii, vosnesenski, cryptarum, mixtus, centralis
     }
 
 
@@ -98,6 +102,7 @@ public class Submission {
     }
 
     public void reset() {
+        mSpeciesType = null;
         mSpecies = null;
         mHabitat = null;
         mWeather = null;
@@ -134,8 +139,17 @@ public class Submission {
         return mPlace;
     }
 
+    public BeeSpeciesType getSpeciesType() {
+        return mSpeciesType;
+    }
+
     public Species getSpecies() {
         return mSpecies;
+    }
+
+    public void setSpecies(Species species, BeeSpeciesType isEastern) {
+        mSpeciesType = isEastern;
+        mSpecies = species;
     }
 
     public String getImageFilePath() {
@@ -162,5 +176,9 @@ public class Submission {
     public void print() {
         Log.d(TAG, "Species: " + mSpecies + ", Habitat: " + mHabitat + ", Weather: " + mWeather);
         Log.d(TAG, "Location: " + mPlace);
+    }
+
+    public enum BeeSpeciesType {
+        Eastern, Western
     }
 }
