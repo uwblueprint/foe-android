@@ -3,11 +3,9 @@ package com.blueprint.foe.beetracker;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,7 @@ import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Listeners.OnBeePartSelectedListener;
-import com.blueprint.foe.beetracker.Model.BeePart;
+import com.blueprint.foe.beetracker.Model.BeeSpeciesDrawable;
 import com.blueprint.foe.beetracker.Model.PartsPickerAdapter;
 import com.blueprint.foe.beetracker.Model.Submission;
 
@@ -124,36 +122,39 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
     }
 
     private void createAdapters(Submission submission) {
+        int[] easternAssets = {R.drawable.impatiens, R.drawable.ternarius, R.drawable.rufocinctus,
+                R.drawable.bimaculatus, R.drawable.borealis, R.drawable.vagans, R.drawable.affinis,
+                R.drawable.griseocollis, R.drawable.citrinus, R.drawable.perplexus,
+                R.drawable.pensylvanicus, R.drawable.sylvicola, R.drawable.sandersoni,
+                R.drawable.nevadensis, R.drawable.auricomus, R.drawable.terricola,
+                R.drawable.fervidus, R.drawable.flavifrons};
+        int[] westernAssets = {R.drawable.occidentalis, R.drawable.melanopygus, R.drawable.bifarius1,
+                R.drawable.impatiens, R.drawable.huntii, R.drawable.ternarius, R.drawable.terricola,
+                R.drawable.nevadensis, R.drawable.vosnesenski, R.drawable.cryptarum, R.drawable.flavifrons,
+                R.drawable.griseocollis, R.drawable.perplexus, R.drawable.borealis, R.drawable.rufocinctus,
+                R.drawable.mixtus, R.drawable.centralis}; // Missing bohemicus? and have ternarius instead of tenarius
         int[] faceAssets = {R.drawable.face_black, R.drawable.face_yellow};
         int[] abdomenAssets = {R.drawable.ab_byb, R.drawable.ab_red_tail, R.drawable.ab_white_tail, R.drawable.ab_y_stripe, R.drawable.ab_yb, R.drawable.ab_yby, R.drawable.ab_yry, R.drawable.ab_yyy};
         int[] thoraxAssets = {R.drawable.thorax_bdot, R.drawable.thorax_whsh, R.drawable.thorax_ybb, R.drawable.thorax_yby, R.drawable.thorax_yyy};
 
-        List<BeePart> faces = new ArrayList<>();
-        for (int i = 0; i < faceAssets.length; i++) {
-            faces.add(new BeePart(i, faceAssets[i], getActivity()));
-        }
-        List<BeePart> abdomens = new ArrayList<>();
-        for (int i = 0; i < abdomenAssets.length; i++) {
-            abdomens.add(new BeePart(i, abdomenAssets[i], getActivity()));
-        }
-        List<BeePart> thoraxes = new ArrayList<>();
-        for (int i = 0; i < thoraxAssets.length; i++) {
-            thoraxes.add(new BeePart(i, thoraxAssets[i], getActivity()));
+        List<BeeSpeciesDrawable> easternSpecies = new ArrayList<>();
+        for (int i = 0; i < easternAssets.length; i++) {
+            easternSpecies.add(new BeeSpeciesDrawable(i, easternAssets[i], getActivity()));
         }
 
-        if (submission.getFace() > -1) {
-            faces.get(submission.getFace()).setSelection(true);
-        }
-        if (submission.getAbdomen() > -1) {
-            abdomens.get(submission.getAbdomen()).setSelection(true);
-        }
-        if (submission.getThorax() > -1) {
-            thoraxes.get(submission.getThorax()).setSelection(true);
+        List<BeeSpeciesDrawable> westernSpecies = new ArrayList<>();
+        for (int i = 0; i < westernAssets.length; i++) {
+            westernSpecies.add(new BeeSpeciesDrawable(i, westernAssets[i], getActivity()));
         }
 
-        mFaceAdapter = new PartsPickerAdapter(faces, BeePart.BeePartType.Face, this);
-        mThoraxAdapter = new PartsPickerAdapter(thoraxes, BeePart.BeePartType.Thorax, this);
-        mAbdomenAdapter = new PartsPickerAdapter(abdomens, BeePart.BeePartType.Abdomen, this);
+//        if (submission.getSpecies() != null) {
+//            // determine if eastern or western
+//            if (submission.isE)
+//        }
+//
+//        mFaceAdapter = new PartsPickerAdapter(faces, BeeSpeciesDrawable.BeePartType.Face, this);
+//        mThoraxAdapter = new PartsPickerAdapter(thoraxes, BeeSpeciesDrawable.BeePartType.Thorax, this);
+//        mAbdomenAdapter = new PartsPickerAdapter(abdomens, BeeSpeciesDrawable.BeePartType.Abdomen, this);
     }
 
     private void errorAndExit(String message) {

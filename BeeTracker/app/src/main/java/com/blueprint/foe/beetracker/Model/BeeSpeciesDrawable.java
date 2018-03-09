@@ -11,16 +11,16 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
  * its index and the drawable image to be loaded into the UI component.
  */
 
-public class BeePart {
+public class BeeSpeciesDrawable {
     private int mPartIndex;
     private RoundedBitmapDrawable mDrawable;
     private boolean mSelected;
 
     public enum BeePartType {
-        Face, Abdomen, Thorax
+        Eastern, Western
     }
 
-    public BeePart(int partIndex, int drawable, Context context) {
+    public BeeSpeciesDrawable(int partIndex, int drawable, Context context) {
         this.mPartIndex = partIndex;
         this.mSelected = false;
         Bitmap beeOptionBitmap = BitmapFactory.decodeResource(context.getResources(),  drawable);
