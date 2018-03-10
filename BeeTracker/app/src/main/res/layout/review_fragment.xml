@@ -79,11 +79,13 @@
                 android:textColor="@color/subheadingTextColour"
                 android:layout_marginBottom="@dimen/small_padding"/>
             <TextView
+                android:id="@+id/englishName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold|italic"
                 android:text="@string/unidentified_species"/>
             <TextView
+                android:id="@+id/latinName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/subheadingTextColour"

@@ -25,6 +25,8 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
+import org.w3c.dom.Text;
+
 /**
  * This fragment will allow the user to review the species, location, as well as add the
  * environment type and current weather.
@@ -35,7 +37,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     private Spinner mWeatherSpinner;
     private CardView mCardView;
     private TextView mErrorMessage;
-    
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
@@ -141,7 +143,28 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
 
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
 
+        TextView latinSpecies = (TextView) view.findViewById(R.id.latinName);
+        latinSpecies.setText("Bombus " + submission.getSpecies().toString());
+
+        TextView englishSpecies = (TextView) view.findViewById(R.id.englishName);
+        englishSpecies.setText(getEnglishName(submission.getSpecies()));
+
         return view;
+    }
+
+    private String getEnglishName(Submission.Species species) {
+        String[] names = {
+               "Common eastern bumble bee", "Tri-coloured bumble bee",  "Red-belted bumble bee",
+                "Two-spotted bumble bee", "Northern amber bumble bee", "Half-black bumble bee",
+                "Rusty-patched bumble bee", "Brown-belted bumble bee", "Lemon cuckoo bumble bee",
+                "Confusing bumble bee", "American bumble bee", "Forest bumble bee",
+                "Sanderson bumble bee", "Nevada bumble bee", "Black and gold bumble bee",
+                "Yellow-banded bumble bee", "Yellow bumble bee", "Yellow head bumble bee",
+                "Common western bumble bee", "Black tail bumble bee", "Two-form bumble bee",
+                "Hunt bumble bee", "Vosnensky bumble bee", "Cryptic bumble bee",
+                "Fuzzy-horned bumble bee", "Central bumble bee",
+        }; // Missing "Gypso cuckoo bumble bee"
+        return names[species.ordinal()];
     }
 
     @Override
