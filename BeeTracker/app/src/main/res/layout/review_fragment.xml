@@ -62,7 +62,7 @@
             android:id="@+id/beeImageView"
             android:layout_width="@dimen/identified_species_image_height"
             android:layout_height="@dimen/identified_species_image_height"
-            app:srcCompat="@drawable/capture_icon"/>
+            app:srcCompat="@drawable/speciesunknown"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="@dimen/identified_species_image_height"

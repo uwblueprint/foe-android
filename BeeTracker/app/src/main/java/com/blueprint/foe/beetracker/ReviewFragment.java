@@ -58,7 +58,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                 BeeAlertDialog dialog = new BeeAlertDialog();
                 dialog.setTargetFragment(fragment, 1);
                 Bundle args = new Bundle();
-                args.putInt(BeeAlertDialog.IMAGE_SRC, R.drawable.bee_image_popup);
+                args.putInt(BeeAlertDialog.IMAGE_SRC, R.mipmap.bee_image_popup);
                 args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
                 args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
                 dialog.setArguments(args);

@@ -80,11 +80,11 @@ public class FactsAdapter extends ArrayAdapter<Fact> {
         if (fact.isCompleted()) {
             completeText.setText(getContext().getString(R.string.completed));
             completeText.setTextColor(ContextCompat.getColor(getContext(), R.color.lightGrey));
-            completeImage.setImageResource(R.drawable.icon_done_checkmark_disabled);
+            completeImage.setImageResource(R.mipmap.icon_done_checkmark_disabled);
         } else {
             completeText.setText(getContext().getString(R.string.done));
             completeText.setTextColor(ContextCompat.getColor(getContext(), R.color.grassGreen));
-            completeImage.setImageResource(R.drawable.icon_done_checkmark);
+            completeImage.setImageResource(R.mipmap.icon_done_checkmark);
         }
 
         completeButton.setOnClickListener( new View.OnClickListener() {
