@@ -169,7 +169,7 @@ public class Submission {
     }
 
     public boolean isComplete() {
-        return mHabitat != null && mWeather != null && mPlace != null && mImageFilePath != null;
+        return mHabitat != null && mWeather != null && mPlace != null && mBitmap != null;
     }
 
     /* For debug only */

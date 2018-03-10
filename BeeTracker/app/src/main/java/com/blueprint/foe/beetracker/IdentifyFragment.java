@@ -162,7 +162,6 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         }
 
         if (submission.getSpecies() != null) {
-            // determine if eastern or western
             if (submission.getSpeciesType() == Submission.BeeSpeciesType.Eastern) {
                 easternDrawables.get(easternSpecies.indexOf(submission.getSpecies())).setSelection(true);
             } else {
