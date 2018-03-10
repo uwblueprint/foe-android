@@ -158,9 +158,13 @@ public class StorageAccessor {
     public static String convertImageToStringForServer(Bitmap imageBitmap){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         if (imageBitmap != null) {
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 60, stream);
+            Bitmap compressedBmap = Bitmap.createScaledBitmap(imageBitmap, 50, 50, false);
+            compressedBmap.compress(Bitmap.CompressFormat.PNG, 60, stream);
+            Log.d(TAG, "bmap size" + compressedBmap.getByteCount());
             byte[] byteArray = stream.toByteArray();
-            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+            String encodedString = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+            Log.d(TAG, encodedString.substring(0, 50));
+            return "data:image/png;base64," + encodedString;
         } else {
             return null;
         }

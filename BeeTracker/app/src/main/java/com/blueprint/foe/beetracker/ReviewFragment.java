@@ -45,7 +45,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     private CardView mCardView;
     private TextView mErrorMessage;
     private Callback loginCallback;
-
+    private SpinningIconDialog spinningIconDialog;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,6 +65,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                 }
                 //launchPopup(f2);
                 submitToServer();
+                spinningIconDialog = new SpinningIconDialog();
+                spinningIconDialog.show(getActivity().getFragmentManager(), "SpinningPopup");
 
             }
         });
@@ -149,6 +151,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         loginCallback = new Callback<BeeTrackerCaller.SignupResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
+                spinningIconDialog.dismiss();
                 if (response.code() == 401 || response.code() == 422 || response.body() == null ||  response.body().getToken() == null) {
                     Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
                     showErrorDialog(getString(R.string.error_message_submit));
@@ -162,6 +165,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             public void onFailure(Call<BeeTrackerCaller.SignupResponse> call, Throwable t) {
                 Log.e(TAG, "There was an error with the submitCallback + " + t.toString());
                 t.printStackTrace();
+                spinningIconDialog.dismiss();
                 showErrorDialog(getString(R.string.error_message_submit));
             }
         };

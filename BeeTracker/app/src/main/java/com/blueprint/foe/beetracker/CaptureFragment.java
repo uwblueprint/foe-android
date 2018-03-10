@@ -37,6 +37,7 @@ import java.io.IOException;
 public class CaptureFragment extends Fragment {
     private static final String TAG = CaptureFragment.class.toString();
     static final int REQUEST_IMAGE_GET = 1;
+    private SpinningIconDialog spinningIconDialog;
 
     private CameraView mCameraView;
 
@@ -81,6 +82,8 @@ public class CaptureFragment extends Fragment {
                     public void onClick(View v) {
                         // get an image from the camera
                         mCameraView.capturePicture();
+                        spinningIconDialog = new SpinningIconDialog();
+                        spinningIconDialog.show(getActivity().getFragmentManager(), "SpinningPopup");
                     }
                 }
         );
@@ -186,6 +189,7 @@ public class CaptureFragment extends Fragment {
     }
 
     private void launchNextFragment() {
+        spinningIconDialog.dismiss();
         Fragment newFragment = new IdentifyFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 

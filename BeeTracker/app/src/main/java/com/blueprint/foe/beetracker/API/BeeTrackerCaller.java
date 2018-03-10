@@ -1,5 +1,7 @@
 package com.blueprint.foe.beetracker.API;
 
+import android.util.Log;
+
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.Submission;
 import com.facebook.AccessToken;
@@ -7,6 +9,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -17,6 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class BeeTrackerCaller {
+    private static final String TAG = BeeTrackerCaller.class.toString();
 
     public class SignupRequest {
         @SerializedName("code")
@@ -44,12 +49,13 @@ public class BeeTrackerCaller {
         @SerializedName("file")
         String file;
 
-        @SerializedName("filename")
-        String filename;
+//        @SerializedName("filename")
+//        String filename;
 
         public Image(String file, String filename) {
+            Log.d(TAG, file.substring(0, 50));
             this.file = file;
-            this.filename = filename;
+            //this.filename = filename;
         }
     }
 
@@ -73,6 +79,9 @@ public class BeeTrackerCaller {
         @SerializedName("habitat")
         String habitat;
 
+        @SerializedName("date")
+        String date;
+
         @SerializedName("species")
         String species;
 
@@ -88,6 +97,7 @@ public class BeeTrackerCaller {
             this.weather = submission.getWeather().name().toLowerCase();
             this.habitat = submission.getHabitat().name().toLowerCase();
             this.species = null; //submission.getSpecies().toString();
+            this.date = "2017-07-03";
         }
     }
 
@@ -158,9 +168,20 @@ public class BeeTrackerCaller {
     }
 
     public Call<SubmissionResponse> submit(Submission submission, String token) throws IOException{
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        // set your desired log level
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+// add your other interceptors …
+
+// add logging as last interceptor
+        httpClient.addInterceptor(logging);  // <-- this is the important line!
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
