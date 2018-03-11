@@ -143,11 +143,13 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
 
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
 
-        TextView latinSpecies = (TextView) view.findViewById(R.id.latinName);
-        latinSpecies.setText("Bombus " + submission.getSpecies().toString());
+        if (submission.getSpecies() != null) {
+            TextView latinSpecies = (TextView) view.findViewById(R.id.latinName);
+            latinSpecies.setText("Bombus " + submission.getSpecies().toString());
 
-        TextView englishSpecies = (TextView) view.findViewById(R.id.englishName);
-        englishSpecies.setText(getEnglishName(submission.getSpecies()));
+            TextView englishSpecies = (TextView) view.findViewById(R.id.englishName);
+            englishSpecies.setText(getEnglishName(submission.getSpecies()));
+        }
 
         return view;
     }
