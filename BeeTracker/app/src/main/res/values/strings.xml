@@ -59,7 +59,7 @@
     <string name="error">Error</string>
     <string name="close">Close</string>
     <string name="identify_popup_heading">Which bee?</string>
-    <string name="identify_popup_message">Tap the headers to view species of different regions of Canada. Tap the patterns to select which species your bee is.</string>
+    <string name="identify_popup_message">Tap the headers to view bee species of different regions of Canada. Select the species that best matches your bee!</string>
     <string name="identify_popup_finish">Got it</string>
     <string name="geotag_error_message">Please enter the following fields.</string>
 </resources>

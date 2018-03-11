@@ -169,7 +169,7 @@ public class Submission {
     }
 
     public boolean isComplete() {
-        return mHabitat != null && mWeather != null && mPlace != null && mBitmap != null;
+        return mHabitat != null && mHabitat != Habitat.Default && mWeather != null && mWeather != Weather.Default && mPlace != null && mBitmap != null;
     }
 
     /* For debug only */

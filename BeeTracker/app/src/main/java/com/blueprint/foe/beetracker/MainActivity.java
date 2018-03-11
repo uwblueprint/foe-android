@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     LoginManager.getInstance().logOut();
                     return;
                 }
-                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 sharedPref.edit().putString(getString(R.string.preference_login_token), response.body().getToken()).apply();
                 navigateToHome();
             }
