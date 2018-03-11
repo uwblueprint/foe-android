@@ -12,8 +12,8 @@
     <string name="done">Done</string>
     <string name="step_two">STEP 2: IDENTIFY</string>
     <string name="step_three">STEP 3: GEOTAG</string>
-    <string name="eastern">EASTERN SPECIES</string>
-    <string name="western">WESTERN SPECIES</string>
+    <string name="eastern">Eastern Species</string>
+    <string name="western">Western Species</string>
     <string name="submit_dialog_heading">Buzz buzz!</string>
     <string name="submit_dialog_paragraph">(That\'s thank you in bee!)</string>
     <string name="home">Home</string>

@@ -55,7 +55,7 @@
             android:id="@+id/easternButton"
             android:textColor="@color/mediumDarkGrey"
             android:fontFamily="sans-serif-medium"
-            android:text="Eastern Species"/>
+            android:text="@string/eastern"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             android:gravity="center"
             android:textColor="@color/mediumDarkGrey"
             android:id="@+id/westernButton"
-            android:text="Western Species"/>
+            android:text="@string/western"/>
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
