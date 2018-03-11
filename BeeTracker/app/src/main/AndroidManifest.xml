@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity" android:theme="@style/SplashTheme">
+            android:name=".SplashActivity" android:theme="@style/SplashTheme" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,9 +33,11 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -44,10 +46,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".LearnActivity" android:label="My Challenges"/>
-        <activity android:name=".SubmissionActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".HomePageActivity"/>
+        <activity android:name=".LearnActivity" android:label="My Challenges" android:screenOrientation="portrait"/>
+        <activity android:name=".SubmissionActivity" android:screenOrientation="portrait" />
+        <activity android:name=".MainActivity" android:screenOrientation="portrait" />
+        <activity android:name=".HomePageActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

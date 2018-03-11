@@ -6,18 +6,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:padding="@dimen/small_padding">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back"
-            android:textColor="@color/actionBarTextColour"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/grassGreen"
             android:gravity="center_vertical"
             android:layout_alignParentLeft="true"
-            android:paddingBottom="@dimen/small_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingStart="@dimen/small_padding"
-            android:paddingEnd="@dimen/small_padding"
+            android:padding="@dimen/small_padding"
             android:id="@+id/backButton"/>
         <TextView
             android:layout_width="wrap_content"
@@ -30,19 +29,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next"
-            android:textColor="@color/actionBarTextColour"
+            android:textColor="@color/grassGreen"
             android:gravity="center_vertical"
             android:layout_alignParentRight="true"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingBottom="@dimen/small_padding"
-            android:paddingLeft="@dimen/small_padding"
-            android:paddingRight="@dimen/small_padding"
+            android:padding="@dimen/small_padding"
+            android:fontFamily="sans-serif-medium"
             android:id="@+id/nextButton"/>
     </RelativeLayout>
 
     <com.blueprint.foe.beetracker.SquareImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/learnActivityBackground"
         android:id="@+id/previewImageView"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,19 +50,23 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:layout_marginBottom="@dimen/medium_padding"
             android:id="@+id/easternButton"
-            android:text="@string/eastern"/>
+            android:textColor="@color/mediumDarkGrey"
+            android:fontFamily="sans-serif-medium"
+            android:text="Eastern Species"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/medium_padding"
             android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center"
+            android:textColor="@color/mediumDarkGrey"
             android:id="@+id/westernButton"
-            android:text="@string/western"/>
+            android:text="Western Species"/>
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
