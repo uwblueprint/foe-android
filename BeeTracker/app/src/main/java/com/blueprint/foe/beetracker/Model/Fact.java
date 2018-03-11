@@ -50,6 +50,11 @@ public class Fact {
         this.mCompleted = true;
     }
 
+    // TODO: remove this https://github.com/uwblueprint/foe/issues/53
+    public void toggleCompleted() {
+        this.mCompleted = !mCompleted;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null || !(other instanceof Fact)) {
