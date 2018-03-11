@@ -65,7 +65,7 @@ public class FactsAdapter extends ArrayAdapter<Fact> {
             @Override
             public void onClick(View v) {
                 System.out.println( fact.getId() + " clicked!");
-                mFacts.remove(fact);
+                // mFacts.remove(fact); TODO: reverse this https://github.com/uwblueprint/foe/issues/53
                 notifyDataSetChanged();
             }
 
@@ -90,7 +90,7 @@ public class FactsAdapter extends ArrayAdapter<Fact> {
         completeButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fact.setCompleted();
+                fact.toggleCompleted(); // TODO reverse this https://github.com/uwblueprint/foe/issues/53
                 notifyDataSetChanged();
             }
 
