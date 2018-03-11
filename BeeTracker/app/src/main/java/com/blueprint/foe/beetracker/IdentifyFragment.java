@@ -93,8 +93,8 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
             @Override
             public void onClick(View view) {
                 mRecyclerView.setAdapter(mEasternAdapter);
-                mEasternButton.setPaintFlags(mEasternButton.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-                mWesternButton.setPaintFlags(Typeface.NORMAL);
+                mEasternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.grassGreen));
+                mWesternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.subheadingTextColour));
             }
         });
 
@@ -103,8 +103,8 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
             @Override
             public void onClick(View view) {
                 mRecyclerView.setAdapter(mWesternAdapter);
-                mWesternButton.setPaintFlags(mWesternButton.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-                mEasternButton.setPaintFlags(Typeface.NORMAL);
+                mWesternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.grassGreen));
+                mEasternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.subheadingTextColour));
             }
         });
 
@@ -117,7 +117,7 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setAdapter(mEasternAdapter);
-        mEasternButton.setPaintFlags(mEasternButton.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        mEasternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.grassGreen));
 
         return view;
     }
@@ -182,13 +182,9 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
     public void onBeeSpeciesSelected() {
         Submission submission = ((SubmissionInterface) getActivity()).getSubmission();
         if (submission.getSpeciesType() == Submission.BeeSpeciesType.Eastern) {
-            mEasternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.grassGreen));
-            mWesternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.subheadingTextColour));
             mWesternAdapter.unselectAllItems();
             mWesternAdapter.notifyDataSetChanged(); // to reset selection to unselected
         } else if (submission.getSpeciesType() == Submission.BeeSpeciesType.Western) {
-            mWesternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.grassGreen));
-            mEasternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.subheadingTextColour));
             mEasternAdapter.unselectAllItems();
             mEasternAdapter.notifyDataSetChanged(); // to reset selection to unselected
         }
