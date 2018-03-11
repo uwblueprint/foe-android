@@ -56,7 +56,6 @@ public class CaptureFragment extends Fragment {
             }
         });
 
-
         mCameraView = (CameraView) view.findViewById(R.id.camera);
 
         mCameraView.addCameraListener(new CameraListener() {

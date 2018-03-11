@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -22,6 +24,18 @@ public class HomePageActivity extends AppCompatActivity {
         TextView homeButton = (TextView) findViewById(R.id.buttonHome);
         homeButton.setTextColor(ContextCompat.getColor(this, R.color.grassGreen));
         homeButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.home_green_icon), null, null, null);
+
+        //set status bar color
+        Window window = getWindow();
+
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.mediumSkyCyan));
 
         TextView submitButton = (TextView) findViewById(R.id.buttonSubmit);
         submitButton.setOnClickListener(new OnClickListener() {

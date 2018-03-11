@@ -12,8 +12,8 @@
     <string name="done">Done</string>
     <string name="step_two">STEP 2: IDENTIFY</string>
     <string name="step_three">STEP 3: GEOTAG</string>
-    <string name="eastern">EASTERN SPECIES</string>
-    <string name="western">WESTERN SPECIES</string>
+    <string name="eastern">Eastern Species</string>
+    <string name="western">Western Species</string>
     <string name="submit_dialog_heading">Buzz buzz!</string>
     <string name="submit_dialog_paragraph">(That\'s thank you in bee!)</string>
     <string name="home">Home</string>
@@ -59,7 +59,7 @@
     <string name="error">Error</string>
     <string name="close">Close</string>
     <string name="identify_popup_heading">Which bee?</string>
-    <string name="identify_popup_message">Tap the headers to view bee species of different regions of Canada. Select the species that best matches your bee!</string>
+    <string name="identify_popup_message">Select from the species below that best matches the one in your photo.</string>
     <string name="identify_popup_finish">Got it</string>
     <string name="geotag_error_message">Please enter the following fields.</string>
 </resources>

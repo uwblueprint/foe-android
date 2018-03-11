@@ -88,7 +88,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
             layers[1] = holder.mGreyBackground;
             layers[2] = beeSpeciesDrawable.getDrawable(holder.mImageView.getContext());
             LayerDrawable layerDrawable = new LayerDrawable(layers);
-            int inset = 30;
+            int inset = 90;
             layerDrawable.setLayerInset(1, inset, inset, inset, inset);
             layerDrawable.setLayerInset(2, inset, inset, inset, inset);
             holder.mImageView.setImageDrawable(layerDrawable);

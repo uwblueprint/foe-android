@@ -9,18 +9,17 @@
         android:id="@+id/review_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/small_padding"
         android:background="@color/white">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back"
-            android:textColor="@color/actionBarTextColour"
+            android:textColor="@color/grassGreen"
             android:gravity="center_vertical"
             android:layout_alignParentStart="true"
-            android:paddingBottom="@dimen/small_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingStart="@dimen/small_padding"
-            android:paddingEnd="@dimen/small_padding"
+            android:padding="@dimen/small_padding"
+            android:fontFamily="sans-serif-medium"
             android:id="@+id/backButton"/>
         <TextView
             android:layout_width="wrap_content"
@@ -36,10 +35,8 @@
             android:textColor="@color/grassGreen"
             android:gravity="center_vertical"
             android:layout_alignParentEnd="true"
-            android:paddingBottom="@dimen/small_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingStart="@dimen/small_padding"
-            android:paddingEnd="@dimen/small_padding"
+            android:padding="@dimen/small_padding"
+            android:fontFamily="sans-serif-medium"
             android:id="@+id/submitButton"/>
     </RelativeLayout>
     <TextView
@@ -52,6 +49,7 @@
         android:paddingBottom="@dimen/small_padding"
         android:background="@color/errorRed"
         android:visibility="gone"
+        android:textColor="@color/poppyRed"
         android:text="@string/geotag_error_message"/>
     <RelativeLayout
         android:id="@+id/review_species_identification"
@@ -83,12 +81,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold|italic"
+                android:textColor="@color/darkGrey"
                 android:text="@string/unidentified_species"/>
             <TextView
                 android:id="@+id/latinName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/subheadingTextColour"
+                android:textColor="@color/darkGrey"
                 android:text="@string/unidentified_species_latin_na"/>
         </LinearLayout>
     </RelativeLayout>
@@ -98,6 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/review_species_identification"
         android:paddingTop="@dimen/geotag_header_spacing"
+        android:paddingBottom="@dimen/small_padding"
         android:paddingStart="@dimen/medium_padding"
         android:textColor="@color/subheadingTextColour"
         android:text="@string/location"/>
@@ -129,6 +129,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/medium_padding"
         android:paddingTop="@dimen/geotag_header_spacing"
+        android:paddingBottom="@dimen/small_padding"
         android:textColor="@color/subheadingTextColour"
         android:text="@string/habitat"/>
     <Spinner
@@ -148,6 +149,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/medium_padding"
         android:paddingTop="@dimen/geotag_header_spacing"
+        android:paddingBottom="@dimen/small_padding"
         android:textColor="@color/subheadingTextColour"
         android:text="@string/weather"/>
     <Spinner
