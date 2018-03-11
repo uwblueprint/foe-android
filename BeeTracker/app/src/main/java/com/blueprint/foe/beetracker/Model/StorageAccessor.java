@@ -135,7 +135,7 @@ public class StorageAccessor {
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
-                Log.d("BeeTracker", "failed to create directory");
+                Log.e(TAG, "failed to create directory");
                 return null;
             }
         }

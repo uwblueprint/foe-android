@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bee Tracker</string>
+    <string name="app_name">Bee.</string>
     <string name="facebook_app_id">221233091726222</string>
     <string name="fb_login_protocol_scheme">fb221233091726222</string>
     <string name="title_activity_submission">SubmissionActivity</string>
@@ -24,20 +24,6 @@
     <string name="location">LOCATION</string>
     <string name="habitat">HABITAT</string>
     <string name="weather">WEATHER</string>
-    <string-array name="weather_array">
-        <item>Sunny</item>
-        <item>Partly Sunny</item>
-        <item>Overcast</item>
-        <item>Rainy</item>
-        <item>Foggy</item>
-    </string-array>
-    <string-array name="habitat_array">
-        <item>Flower Garden</item>
-        <item>Park</item>
-        <item>Parking Lot</item>
-        <item>Marsh</item>
-        <item>River</item>
-    </string-array>
     <string name="finish">Finish</string>
     <string name="visit_foe">Visit Friends of the Earth</string>
     <string name="visit_foe_url">http://foecanada.org/en/</string>

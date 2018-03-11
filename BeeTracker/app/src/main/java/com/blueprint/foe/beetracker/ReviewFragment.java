@@ -100,7 +100,6 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Log.d(TAG, "nothing selected");
             }
         });
 
