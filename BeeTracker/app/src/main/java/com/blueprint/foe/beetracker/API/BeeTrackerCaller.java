@@ -1,5 +1,6 @@
 package com.blueprint.foe.beetracker.API;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
@@ -8,6 +9,7 @@ import com.facebook.AccessToken;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
+import java.util.Date;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -49,26 +51,9 @@ public class BeeTrackerCaller {
         @SerializedName("file")
         String file;
 
-//        @SerializedName("filename")
-//        String filename;
-
         public Image(String file, String filename) {
             Log.d(TAG, file.substring(0, 50));
             this.file = file;
-            //this.filename = filename;
-        }
-    }
-
-    public class Location {
-        @SerializedName("latitude")
-        double latitude;
-
-        @SerializedName("longitude")
-        double longitude;
-
-        public Location(double latitude, double longitude) {
-            this.latitude = latitude;
-            this.longitude = longitude;
         }
     }
 
@@ -88,16 +73,23 @@ public class BeeTrackerCaller {
         @SerializedName("image")
         Image image;
 
-        @SerializedName("location")
-        Location location;
+        @SerializedName("latitude")
+        double latitude;
+
+        @SerializedName("longitude")
+        double longitude;
 
         Sighting(Submission submission) {
             this.image = new Image(StorageAccessor.convertImageToStringForServer(submission.getBitmap()), submission.getImageFilePath());
-            this.location = new Location(submission.getLocation().getLatLng().latitude, submission.getLocation().getLatLng().longitude);
+            this.latitude = submission.getLocation().getLatLng().latitude;
+            this.longitude = submission.getLocation().getLatLng().longitude;
             this.weather = submission.getWeather().name().toLowerCase();
             this.habitat = submission.getHabitat().name().toLowerCase();
-            this.species = null; //submission.getSpecies().toString();
-            this.date = "2017-07-03";
+            this.species = null;
+            if (submission.getSpecies() != null) {
+                this.species = submission.getSpecies().toString().toLowerCase();
+            }
+            this.date = DateFormat.format("yyyy-MM-dd", (new Date()).getTime()).toString();
         }
     }
 
@@ -126,8 +118,11 @@ public class BeeTrackerCaller {
         @SerializedName("image")
         Image image;
 
-        @SerializedName("location")
-        Location location;
+        @SerializedName("latitude")
+        double latitude;
+
+        @SerializedName("longitude")
+        double longitude;
 
         @SerializedName("date")
         String date;
@@ -169,14 +164,9 @@ public class BeeTrackerCaller {
 
     public Call<SubmissionResponse> submit(Submission submission, String token) throws IOException{
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-// add your other interceptors …
-
-// add logging as last interceptor
-        httpClient.addInterceptor(logging);  // <-- this is the important line!
+        httpClient.addInterceptor(logging);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
