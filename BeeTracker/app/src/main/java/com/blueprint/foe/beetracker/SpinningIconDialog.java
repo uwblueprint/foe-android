@@ -27,7 +27,9 @@ public class SpinningIconDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.spinning_icon_dialog, null);
 
         builder.setView(view);
-        return builder.create();
+        Dialog ret = builder.create();
+        ret.getWindow().setLayout(100, 200);
+        return ret;
     }
 }
 

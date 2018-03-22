@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Model.Submission;
-import com.facebook.login.LoginManager;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -44,7 +43,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     private Spinner mWeatherSpinner;
     private CardView mCardView;
     private TextView mErrorMessage;
-    private Callback loginCallback;
+    private Callback submitCallback;
     private SpinningIconDialog spinningIconDialog;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -148,21 +147,21 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
 
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
         final ReviewFragment fragment = this;
-        loginCallback = new Callback<BeeTrackerCaller.SignupResponse>() {
+        submitCallback = new Callback<BeeTrackerCaller.SubmissionResponse>() {
             @Override
-            public void onResponse(Call<BeeTrackerCaller.SignupResponse> call, Response<BeeTrackerCaller.SignupResponse> response) {
+            public void onResponse(Call<BeeTrackerCaller.SubmissionResponse> call, Response<BeeTrackerCaller.SubmissionResponse> response) {
                 spinningIconDialog.dismiss();
-                if (response.code() == 401 || response.code() == 422 || response.body() == null ||  response.body().getToken() == null) {
+                if (response.code() == 401 || response.code() == 422 || response.body() == null) {
                     Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
                     showErrorDialog(getString(R.string.error_message_submit));
                     return;
                 }
                 Log.d(TAG, "The response body: " + response.body());
-                fragment.launchPopup(fragment);
+                fragment.launchPopup();
             }
 
             @Override
-            public void onFailure(Call<BeeTrackerCaller.SignupResponse> call, Throwable t) {
+            public void onFailure(Call<BeeTrackerCaller.SubmissionResponse> call, Throwable t) {
                 Log.e(TAG, "There was an error with the submitCallback + " + t.toString());
                 t.printStackTrace();
                 spinningIconDialog.dismiss();
@@ -173,7 +172,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         return view;
     }
 
-    public void launchPopup(ReviewFragment fragment) {
+    public void launchPopup() {
         BeeAlertDialog dialog = new BeeAlertDialog();
         dialog.setTargetFragment(this, 1);
         Bundle args = new Bundle();
@@ -192,7 +191,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             Log.d(TAG, "Access token: " + accessToken);
             Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
             Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken);
-            token.enqueue(loginCallback);
+            token.enqueue(submitCallback);
         } catch (IOException e) {
             Log.e(TAG, e.toString());
             e.printStackTrace();
@@ -245,7 +244,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         if (id == ERROR_DIALOG) {
             // Do nothing
         } else if (id == NORMAL_DIALOG) {
-            // Should never be triggered.
+            getActivity().finish();
         }
     }
 }

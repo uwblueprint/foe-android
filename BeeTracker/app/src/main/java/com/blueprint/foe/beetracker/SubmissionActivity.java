@@ -78,7 +78,8 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
         if (id == ERROR_DIALOG) {
             // Do nothing
         } else if (id == NORMAL_DIALOG) {
-            finish();
+            // Should never trigger this
+            Log.e(TAG, "Normal dialog should not trigger in submission activity");
         }
     }
 }

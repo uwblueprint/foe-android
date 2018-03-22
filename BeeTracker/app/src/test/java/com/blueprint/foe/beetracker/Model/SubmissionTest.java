@@ -97,7 +97,7 @@ public class SubmissionTest {
         int abdomen = 1;
         int thorax = 2;
         Submission.Weather weather = Submission.Weather.Cloudy;
-        Submission.Habitat habitat = Submission.Habitat.Park;
+        Submission.Habitat habitat = Submission.Habitat.Back_Yard;
 
         submission.setFace(face);
         submission.setAbdomen(abdomen);
@@ -125,7 +125,7 @@ public class SubmissionTest {
         submission.setThorax(0);
         submission.getSpecies();
         submission.setWeather(Submission.Weather.Cloudy);
-        submission.setHabitat(Submission.Habitat.Park);
+        submission.setHabitat(Submission.Habitat.Back_Yard);
         submission.setLocation(place);
         submission.setImageFilePath("filepath");
 
@@ -142,7 +142,7 @@ public class SubmissionTest {
         submission.setThorax(0);
         submission.getSpecies();
         submission.setWeather(Submission.Weather.Cloudy);
-        submission.setHabitat(Submission.Habitat.Park);
+        submission.setHabitat(Submission.Habitat.Back_Yard);
         submission.setImageFilePath("filepath");
 
         assertEquals(false, submission.isComplete());
@@ -158,7 +158,7 @@ public class SubmissionTest {
         submission.setThorax(0);
         submission.getSpecies();
         submission.setWeather(Submission.Weather.Cloudy);
-        submission.setHabitat(Submission.Habitat.Park);
+        submission.setHabitat(Submission.Habitat.Back_Yard);
 
         Submission submission1 = new Submission();
         submission1.setFace(0);
@@ -166,7 +166,7 @@ public class SubmissionTest {
         submission1.setThorax(0);
         submission1.getSpecies();
         submission1.setWeather(Submission.Weather.Cloudy);
-        submission1.setHabitat(Submission.Habitat.Park);
+        submission1.setHabitat(Submission.Habitat.Back_Yard);
 
         assertTrue(submission.equals(submission1));
         assertTrue(submission1.equals(submission));
@@ -179,14 +179,14 @@ public class SubmissionTest {
         submission.setFace(0);
         submission.setAbdomen(0);
         submission.setThorax(0);
-        submission.setHabitat(Submission.Habitat.Park);
+        submission.setHabitat(Submission.Habitat.Back_Yard);
 
         Submission submission1 = new Submission();
         submission1.setFace(0);
         submission1.setAbdomen(0);
         submission1.setThorax(0);
         submission1.setWeather(Submission.Weather.Cloudy); // other has no weather
-        submission1.setHabitat(Submission.Habitat.Park);
+        submission1.setHabitat(Submission.Habitat.Back_Yard);
 
         assertFalse(submission.equals(submission1));
         assertFalse(submission1.equals(submission));
