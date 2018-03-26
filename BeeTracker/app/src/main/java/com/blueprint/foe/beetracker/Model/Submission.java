@@ -100,9 +100,9 @@ public class Submission {
                 case Cloudy:
                     return "Cloudy";
                 case Rain:
-                    return "Raining";
+                    return "Rain";
                 case Windy:
-                    return "Hailing";
+                    return "Windy";
                 case Other:
                     return "Other";
                 default:
