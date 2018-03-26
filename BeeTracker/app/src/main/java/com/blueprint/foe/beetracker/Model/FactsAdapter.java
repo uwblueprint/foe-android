@@ -65,7 +65,7 @@ public class FactsAdapter extends ArrayAdapter<Fact> {
             @Override
             public void onClick(View v) {
                 System.out.println( fact.getId() + " clicked!");
-                mFacts.remove(fact);
+                // mFacts.remove(fact); TODO: reverse this https://github.com/uwblueprint/foe/issues/53
                 notifyDataSetChanged();
             }
 
@@ -80,17 +80,17 @@ public class FactsAdapter extends ArrayAdapter<Fact> {
         if (fact.isCompleted()) {
             completeText.setText(getContext().getString(R.string.completed));
             completeText.setTextColor(ContextCompat.getColor(getContext(), R.color.lightGrey));
-            completeImage.setImageResource(R.drawable.icon_done_checkmark_disabled);
+            completeImage.setImageResource(R.mipmap.icon_done_checkmark_disabled);
         } else {
             completeText.setText(getContext().getString(R.string.done));
             completeText.setTextColor(ContextCompat.getColor(getContext(), R.color.grassGreen));
-            completeImage.setImageResource(R.drawable.icon_done_checkmark);
+            completeImage.setImageResource(R.mipmap.icon_done_checkmark);
         }
 
         completeButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fact.setCompleted();
+                fact.toggleCompleted(); // TODO reverse this https://github.com/uwblueprint/foe/issues/53
                 notifyDataSetChanged();
             }
 

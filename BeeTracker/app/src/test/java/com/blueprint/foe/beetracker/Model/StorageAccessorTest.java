@@ -38,16 +38,14 @@ public class StorageAccessorTest {
     @Test
     public void storeSubmission_isCorrect() throws Exception {
         Submission submission = new Submission();
-        submission.setAbdomen(0);
-        submission.setThorax(0);
-        submission.setFace(0);
-        submission.getSpecies();
-        String correctJson = "{\"mFace\":0,\"mThorax\":0,\"mAbdomen\":0,\"mSpecies\":\"Apidae\"}";
+        submission.setWeather(Submission.Weather.Cloudy);
+        submission.setHabitat(Submission.Habitat.Back_Yard);
+        submission.setBitmap(bitmap); // transient so shouldn't be stored
+        String correctJson = "{\"mHabitat\":\"Back_Yard\",\"mWeather\":\"Cloudy\"}";
         ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
 
         when(context.openFileOutput("submission", Context.MODE_PRIVATE)).thenReturn(fos);
 
-        //assertEquals("John", argument.getValue().getName());
         StorageAccessor.storeSubmission(context, submission);
         verify(fos).write(argument.capture());
         String string = new String(argument.getValue());
@@ -57,11 +55,9 @@ public class StorageAccessorTest {
     @Test
     public void loadSubmission_isCorrect() throws Exception {
         Submission correctSubmission = new Submission();
-        correctSubmission.setAbdomen(0);
-        correctSubmission.setThorax(0);
-        correctSubmission.setFace(0);
-        correctSubmission.getSpecies();
-        String inputJson = "{\"mFace\":0,\"mThorax\":0,\"mAbdomen\":0,\"mSpecies\":\"Apidae\"}";
+        correctSubmission.setWeather(Submission.Weather.Cloudy);
+        correctSubmission.setHabitat(Submission.Habitat.Back_Yard);
+        String inputJson = "{\"mWeather\":\"Cloudy\",\"mHabitat\":\"Back_Yard\"}";
         InputStream fis = new ByteArrayInputStream(inputJson.getBytes(StandardCharsets.UTF_8));
 
         Submission submission = StorageAccessor.loadSubmission(fis);

@@ -39,5 +39,5 @@
         android:text="@string/close"
         android:textColor="@color/poppyRed"
         android:drawablePadding="@dimen/small_padding"
-        android:drawableEnd="@mipmap/icon_close"/>
+        android:drawableEnd="@mipmap/icon_close_red"/>
 </RelativeLayout>

@@ -50,7 +50,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
 
-        final ReviewFragment f2 = this;
+        final ReviewFragment fragment = this;
         TextView submitButton = (TextView) view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +62,10 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                     setErrorFields(submission);
                     return;
                 }
-                //launchPopup(f2);
-                submitToServer();
                 spinningIconDialog = new SpinningIconDialog();
                 spinningIconDialog.show(getActivity().getFragmentManager(), "SpinningPopup");
 
+                submitToServer();
             }
         });
 
@@ -146,7 +145,6 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         });
 
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
-        final ReviewFragment fragment = this;
         submitCallback = new Callback<BeeTrackerCaller.SubmissionResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.SubmissionResponse> call, Response<BeeTrackerCaller.SubmissionResponse> response) {
@@ -169,6 +167,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             }
         };
 
+        if (submission.getSpecies() != null) {
+            TextView latinSpecies = (TextView) view.findViewById(R.id.latinName);
+            latinSpecies.setText("Bombus " + submission.getSpecies().toString());
+
+            TextView englishSpecies = (TextView) view.findViewById(R.id.englishName);
+            englishSpecies.setText(getEnglishName(submission.getSpecies()));
+        }
+
         return view;
     }
 
@@ -176,7 +182,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         BeeAlertDialog dialog = new BeeAlertDialog();
         dialog.setTargetFragment(this, 1);
         Bundle args = new Bundle();
-        args.putInt(BeeAlertDialog.IMAGE_SRC, R.drawable.bee_image_popup);
+        args.putInt(BeeAlertDialog.IMAGE_SRC, R.mipmap.bee_image_popup);
         args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
         args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
         dialog.setArguments(args);
@@ -188,7 +194,6 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         try {
             SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
             String accessToken = sharedPref.getString(getString(R.string.preference_login_token), null);
-            Log.d(TAG, "Access token: " + accessToken);
             Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
             Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken);
             token.enqueue(submitCallback);
@@ -197,6 +202,21 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             e.printStackTrace();
             showErrorDialog(getString(R.string.error_message_login));
         }
+    }
+
+    private String getEnglishName(Submission.Species species) {
+        String[] names = {
+               "Common eastern bumble bee", "Tri-coloured bumble bee",  "Red-belted bumble bee",
+                "Two-spotted bumble bee", "Northern amber bumble bee", "Half-black bumble bee",
+                "Rusty-patched bumble bee", "Brown-belted bumble bee", "Lemon cuckoo bumble bee",
+                "Confusing bumble bee", "American bumble bee", "Forest bumble bee",
+                "Sanderson bumble bee", "Nevada bumble bee", "Black and gold bumble bee",
+                "Yellow-banded bumble bee", "Yellow bumble bee", "Yellow head bumble bee",
+                "Common western bumble bee", "Black tail bumble bee", "Two-form bumble bee",
+                "Hunt bumble bee", "Vosnensky bumble bee", "Cryptic bumble bee",
+                "Fuzzy-horned bumble bee", "Central bumble bee",
+        }; // Missing "Gypso cuckoo bumble bee"
+        return names[species.ordinal()];
     }
 
     // Method to set textfields to red as appropriate or reset them

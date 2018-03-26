@@ -28,7 +28,7 @@
             android:layout_marginLeft="@dimen/medium_padding"
             android:layout_marginRight="@dimen/medium_padding"
             android:id="@+id/btnClose"
-            android:src="@drawable/icon_close"/>
+            android:src="@mipmap/icon_close_grey"/>
     </LinearLayout>
     <ImageView
         android:id="@+id/imgFactIllustration"
@@ -76,7 +76,7 @@
             android:layout_height="@dimen/medium_padding"
             android:layout_marginRight="@dimen/tiny_padding"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/icon_done_checkmark"/>
+            android:src="@mipmap/icon_done_checkmark"/>
         <TextView
             android:id="@+id/lblCompleteCTA"
             android:layout_width="wrap_content"
