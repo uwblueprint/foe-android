@@ -1,8 +1,9 @@
 package com.blueprint.foe.beetracker;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Model.Submission;
 import com.google.android.gms.common.api.Status;
@@ -25,7 +27,11 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
-import org.w3c.dom.Text;
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * This fragment will allow the user to review the species, location, as well as add the
@@ -37,6 +43,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     private Spinner mWeatherSpinner;
     private CardView mCardView;
     private TextView mErrorMessage;
+    private Callback submitCallback;
+    private SpinningIconDialog spinningIconDialog;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,15 +62,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                     setErrorFields(submission);
                     return;
                 }
-
-                BeeAlertDialog dialog = new BeeAlertDialog();
-                dialog.setTargetFragment(fragment, 1);
-                Bundle args = new Bundle();
-                args.putInt(BeeAlertDialog.IMAGE_SRC, R.mipmap.bee_image_popup);
-                args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
-                args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
-                dialog.setArguments(args);
-                dialog.show(getActivity().getFragmentManager(), "SubmissionPopup");
+                fragment.launchSpinnerPopup();
+                submitToServer();
             }
         });
 
@@ -142,6 +143,27 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         });
 
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
+        submitCallback = new Callback<BeeTrackerCaller.SubmissionResponse>() {
+            @Override
+            public void onResponse(Call<BeeTrackerCaller.SubmissionResponse> call, Response<BeeTrackerCaller.SubmissionResponse> response) {
+                spinningIconDialog.dismiss();
+                if (response.code() == 401 || response.code() == 422 || response.body() == null) {
+                    Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
+                    showErrorDialog(getString(R.string.error_message_submit));
+                    return;
+                }
+                Log.d(TAG, "The response body: " + response.body());
+                fragment.launchPopup();
+            }
+
+            @Override
+            public void onFailure(Call<BeeTrackerCaller.SubmissionResponse> call, Throwable t) {
+                Log.e(TAG, "There was an error with the submitCallback + " + t.toString());
+                t.printStackTrace();
+                spinningIconDialog.dismiss();
+                showErrorDialog(getString(R.string.error_message_submit));
+            }
+        };
 
         if (submission.getSpecies() != null) {
             TextView latinSpecies = (TextView) view.findViewById(R.id.latinName);
@@ -152,6 +174,37 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         }
 
         return view;
+    }
+
+    public void launchPopup() {
+        BeeAlertDialog dialog = new BeeAlertDialog();
+        dialog.setTargetFragment(this, 1);
+        Bundle args = new Bundle();
+        args.putInt(BeeAlertDialog.IMAGE_SRC, R.mipmap.bee_image_popup);
+        args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
+        args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
+        dialog.setArguments(args);
+        dialog.show(getActivity().getFragmentManager(), "SubmissionPopup");
+    }
+
+    private void launchSpinnerPopup() {
+        spinningIconDialog = new SpinningIconDialog();
+        spinningIconDialog.show(getActivity().getFragmentManager(), "SpinningPopup");
+    }
+
+    private void submitToServer() {
+        BeeTrackerCaller caller = new BeeTrackerCaller();
+        try {
+            SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            String accessToken = sharedPref.getString(getString(R.string.preference_login_token), null);
+            Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+            Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken);
+            token.enqueue(submitCallback);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+            e.printStackTrace();
+            showErrorDialog(getString(R.string.error_message_login));
+        }
     }
 
     private String getEnglishName(Submission.Species species) {
@@ -167,12 +220,6 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                 "Fuzzy-horned bumble bee", "Central bumble bee",
         }; // Missing "Gypso cuckoo bumble bee"
         return names[species.ordinal()];
-    }
-
-    @Override
-    public void onDialogFinishClick() {
-        // User touched the dialog's finish button
-        getActivity().finish();
     }
 
     // Method to set textfields to red as appropriate or reset them
@@ -203,6 +250,24 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         }
         if (submission.getLocation() != null) {
             mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+        }
+    }
+
+    private void showErrorDialog(String message) {
+        BeeAlertErrorDialog dialog = new BeeAlertErrorDialog();
+        dialog.setTargetFragment(this, 1);
+        Bundle args = new Bundle();
+        args.putString(BeeAlertErrorDialog.ERROR_MESSAGE_KEY, message);
+        dialog.setArguments(args);
+        dialog.show(getFragmentManager(), "ErrorMessage");
+    }
+
+    @Override
+    public void onDialogFinishClick(int id) {
+        if (id == ERROR_DIALOG) {
+            // Do nothing
+        } else if (id == NORMAL_DIALOG) {
+            getActivity().finish();
         }
     }
 }

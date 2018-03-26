@@ -52,25 +52,33 @@ public class Submission {
 
 
     public enum Habitat {
-        Default, HouseGarden, Park, Swamp, PublicGarden, Lake, Lawn;
+        Default, Back_Yard, Community_Garden, City_Park, Rural, Golf_Course, Roadside, Woodland, Farmland, School_Grounds, Other;
 
         @Override
         public String toString() {
             switch (this) {
                 case Default:
                     return "";
-                case HouseGarden:
-                    return "House Garden";
-                case Park:
-                    return "Park";
-                case Swamp:
-                    return "Swamp";
-                case PublicGarden:
-                    return "Public Garden";
-                case Lake:
-                    return "Lake";
-                case Lawn:
-                    return "Lawn";
+                case Back_Yard:
+                    return "Back Yard";
+                case Community_Garden:
+                    return "Community Garden";
+                case City_Park:
+                    return "City Park";
+                case Rural:
+                    return "Rural";
+                case Golf_Course:
+                    return "Golf Course";
+                case Roadside:
+                    return "Roadside";
+                case Woodland:
+                    return "Woodland";
+                case Farmland:
+                    return "Farmland";
+                case School_Grounds:
+                    return "School Grounds";
+                case Other:
+                    return "Other";
                 default:
                     return "There was an error.";
             }
@@ -78,7 +86,7 @@ public class Submission {
     }
 
     public enum Weather {
-        Default, Sunny, PartlyCloudy, Cloudy, Raining, Hailing;
+        Default, Sunny, Partly_Cloudy, Cloudy, Rain, Windy, Other;
 
         @Override
         public String toString() {
@@ -87,14 +95,16 @@ public class Submission {
                     return "";
                 case Sunny:
                     return "Sunny";
-                case PartlyCloudy:
+                case Partly_Cloudy:
                     return "Partly Cloudy";
                 case Cloudy:
                     return "Cloudy";
-                case Raining:
-                    return "Raining";
-                case Hailing:
-                    return "Hailing";
+                case Rain:
+                    return "Rain";
+                case Windy:
+                    return "Windy";
+                case Other:
+                    return "Other";
                 default:
                     return "There was an error.";
             }
