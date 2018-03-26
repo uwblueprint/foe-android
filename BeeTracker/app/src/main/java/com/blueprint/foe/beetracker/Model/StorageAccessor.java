@@ -4,12 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 
 import com.blueprint.foe.beetracker.R;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,8 +32,6 @@ public class StorageAccessor {
     private static final String TAG = StorageAccessor.class.toString();
     private static final String FILENAME = "submission";
     private static final String FACTS_FILENAME = "facts";
-    private static final String STATIC_FACTS_FILENAME = "facts";
-    private static final String TEMPORARY_IMAGE_FILENAME = "TemporaryImageFile";
     public static final int MEDIA_TYPE_IMAGE = 1;
 
     public static void storeSubmission(Context context, Submission submission) throws IOException {
@@ -151,5 +151,22 @@ public class StorageAccessor {
         }
 
         return mediaFile;
+    }
+
+    public static String convertImageToStringForServer(Bitmap imageBitmap){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        if (imageBitmap != null) {
+            int width = 500;
+            double ratio = (double) imageBitmap.getWidth() / imageBitmap.getHeight();
+            int height = (int) (width / ratio);
+            Bitmap compressedBmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+            compressedBmap.compress(Bitmap.CompressFormat.PNG, 60, stream);
+            byte[] byteArray = stream.toByteArray();
+            String encodedString = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+            Log.d(TAG, encodedString.substring(0, 50));
+            return "data:image/png;base64," + encodedString;
+        } else {
+            return null;
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.blueprint.foe.beetracker.Model;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 
 import com.google.android.gms.location.places.Place;
 
@@ -30,7 +29,7 @@ public class SubmissionTest {
     public void gettersAndSetters() throws Exception {
         Submission submission = new Submission();
         Submission.Weather weather = Submission.Weather.Cloudy;
-        Submission.Habitat habitat = Submission.Habitat.Park;
+        Submission.Habitat habitat = Submission.Habitat.Back_Yard;
 
         submission.setSpecies(Submission.Species.affinis, Submission.BeeSpeciesType.Eastern);
         submission.setWeather(weather);
@@ -51,7 +50,7 @@ public class SubmissionTest {
 
         submission.setBitmap(bitmap);
         submission.setWeather(Submission.Weather.Cloudy);
-        submission.setHabitat(Submission.Habitat.Park);
+        submission.setHabitat(Submission.Habitat.Back_Yard);
         submission.setLocation(place);
 
         assertEquals(true, submission.isComplete()); // Species is not needed for completeness
@@ -63,7 +62,8 @@ public class SubmissionTest {
 
         submission.setBitmap(bitmap);
         submission.setWeather(Submission.Weather.Cloudy);
-        submission.setHabitat(Submission.Habitat.Park);
+        submission.setHabitat(Submission.Habitat.Back_Yard);
+        // Missing Location
 
         assertEquals(false, submission.isComplete());
     }
@@ -73,13 +73,12 @@ public class SubmissionTest {
         Submission submission = new Submission();
 
         submission.setWeather(Submission.Weather.Cloudy);
-        submission.setHabitat(Submission.Habitat.Park);
+        submission.setHabitat(Submission.Habitat.Back_Yard);
         submission.setSpecies(Submission.Species.affinis, Submission.BeeSpeciesType.Eastern);
 
         Submission submission1 = new Submission();
-
         submission1.setWeather(Submission.Weather.Cloudy);
-        submission1.setHabitat(Submission.Habitat.Park);
+        submission1.setHabitat(Submission.Habitat.Back_Yard);
         submission1.setSpecies(Submission.Species.affinis, Submission.BeeSpeciesType.Eastern);
 
         assertTrue(submission.equals(submission1));
@@ -90,11 +89,11 @@ public class SubmissionTest {
     public void submission_isNotEqual() throws Exception {
         Submission submission = new Submission();
 
-        submission.setHabitat(Submission.Habitat.Park);
+        submission.setHabitat(Submission.Habitat.Back_Yard);
 
         Submission submission1 = new Submission();
         submission1.setWeather(Submission.Weather.Cloudy); // other has no weather
-        submission1.setHabitat(Submission.Habitat.Park);
+        submission1.setHabitat(Submission.Habitat.Back_Yard);
 
         assertFalse(submission.equals(submission1));
         assertFalse(submission1.equals(submission));
