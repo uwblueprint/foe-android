@@ -32,8 +32,6 @@ public class StorageAccessor {
     private static final String TAG = StorageAccessor.class.toString();
     private static final String FILENAME = "submission";
     private static final String FACTS_FILENAME = "facts";
-    private static final String STATIC_FACTS_FILENAME = "facts";
-    private static final String TEMPORARY_IMAGE_FILENAME = "TemporaryImageFile";
     public static final int MEDIA_TYPE_IMAGE = 1;
 
     public static void storeSubmission(Context context, Submission submission) throws IOException {
@@ -158,9 +156,11 @@ public class StorageAccessor {
     public static String convertImageToStringForServer(Bitmap imageBitmap){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         if (imageBitmap != null) {
-            Bitmap compressedBmap = Bitmap.createScaledBitmap(imageBitmap, 50, 50, false);
+            int width = 500;
+            double ratio = (double) imageBitmap.getWidth() / imageBitmap.getHeight();
+            int height = (int) (width / ratio);
+            Bitmap compressedBmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
             compressedBmap.compress(Bitmap.CompressFormat.PNG, 60, stream);
-            Log.d(TAG, "bmap size" + compressedBmap.getByteCount());
             byte[] byteArray = stream.toByteArray();
             String encodedString = Base64.encodeToString(byteArray, Base64.NO_WRAP);
             Log.d(TAG, encodedString.substring(0, 50));

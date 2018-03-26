@@ -62,9 +62,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                     setErrorFields(submission);
                     return;
                 }
-                spinningIconDialog = new SpinningIconDialog();
-                spinningIconDialog.show(getActivity().getFragmentManager(), "SpinningPopup");
-
+                fragment.launchSpinnerPopup();
                 submitToServer();
             }
         });
@@ -187,6 +185,11 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
         dialog.setArguments(args);
         dialog.show(getActivity().getFragmentManager(), "SubmissionPopup");
+    }
+
+    private void launchSpinnerPopup() {
+        spinningIconDialog = new SpinningIconDialog();
+        spinningIconDialog.show(getActivity().getFragmentManager(), "SpinningPopup");
     }
 
     private void submitToServer() {
