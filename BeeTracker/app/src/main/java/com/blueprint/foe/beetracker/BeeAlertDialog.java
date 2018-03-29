@@ -1,5 +1,6 @@
 package com.blueprint.foe.beetracker;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -24,16 +25,26 @@ public class BeeAlertDialog extends DialogFragment {
     public static final String FINISH = "FINISH";
     BeeAlertDialogListener mListener;
 
+    // Consider changing all fragments to v4 support so that we don't need the duplicate onAttach
+    // methods. onAttack(context) only became available in API 23
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (BeeAlertDialogListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getTargetFragment().toString()
+                    + " must implement BeeAlertDialogListener");
+        }
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        // Verify that the host activity implements the callback interface
         try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
             mListener = (BeeAlertDialogListener) getTargetFragment();
         } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(context.toString()
+            throw new ClassCastException(getTargetFragment().toString()
                     + " must implement BeeAlertDialogListener");
         }
     }

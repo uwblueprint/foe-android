@@ -2,6 +2,8 @@ package com.blueprint.foe.beetracker;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -45,16 +47,22 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.identify_fragment, container, false);
 
-        // Launch popup to explain to user how to identify bee parts
-        BeeAlertDialog dialog = new BeeAlertDialog();
-        dialog.setTargetFragment(this, 1);
-        Bundle args = new Bundle();
-        args.putInt(BeeAlertDialog.IMAGE_SRC, R.mipmap.picker_illustration);
-        args.putString(BeeAlertDialog.HEADING, getString(R.string.identify_popup_heading));
-        args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.identify_popup_message));
-        args.putString(BeeAlertDialog.FINISH, getString(R.string.identify_popup_finish));
-        dialog.setArguments(args);
-        dialog.show(getActivity().getFragmentManager(), "IdentifyPopup");
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        boolean firstTime = sharedPref.getBoolean(getString(R.string.preference_first_time_identifying), true);
+        if (firstTime) {
+            // Launch popup to explain to user how to identify bee parts
+            BeeAlertDialog dialog = new BeeAlertDialog();
+            dialog.setTargetFragment(this, 1);
+            Bundle args = new Bundle();
+            args.putInt(BeeAlertDialog.IMAGE_SRC, R.mipmap.picker_illustration);
+            args.putString(BeeAlertDialog.HEADING, getString(R.string.identify_popup_heading));
+            args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.identify_popup_message));
+            args.putString(BeeAlertDialog.FINISH, getString(R.string.identify_popup_finish));
+            dialog.setArguments(args);
+            dialog.show(getActivity().getFragmentManager(), "IdentifyPopup");
+            // Set boolean to false so they don't see this modal multiple times
+            sharedPref.edit().putBoolean(getString(R.string.preference_first_time_identifying), false).commit();
+        }
 
         TextView nextButton = (TextView) view.findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
