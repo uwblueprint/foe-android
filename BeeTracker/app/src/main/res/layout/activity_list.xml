@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/learnActivityBackground"
+    tools:context="com.blueprint.foe.beetracker.ListActivity">
+    <TextView
+        android:id="@+id/myList"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="24dp"
+        android:paddingRight="5dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="My List"/>
+    <TextView
+        android:id="@+id/numSightings"
+        android:layout_toRightOf="@id/myList"
+        android:paddingLeft="5dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="16dp"
+        android:textSize="16sp"
+        android:textColor="#bdbdbd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4 sightings"/>
+    <ListView
+        android:id="@+id/sightingsListView"
+        android:layout_below="@id/myList"
+        android:animateLayoutChanges="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:scrollbars="none"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="18dp"/>
+    <include layout="@layout/navigation_bar"/>
+</RelativeLayout>

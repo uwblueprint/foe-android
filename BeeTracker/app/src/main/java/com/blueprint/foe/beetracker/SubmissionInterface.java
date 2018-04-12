@@ -1,6 +1,6 @@
 package com.blueprint.foe.beetracker;
 
-import com.blueprint.foe.beetracker.Model.Submission;
+import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 
 /**
  * This interface allows each fragment to interact with a common Submission object stored
@@ -9,5 +9,5 @@ import com.blueprint.foe.beetracker.Model.Submission;
  */
 public interface SubmissionInterface {
     void createOrResetSubmission();
-    Submission getSubmission();
+    CurrentSubmission getSubmission();
 }

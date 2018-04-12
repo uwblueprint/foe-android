@@ -1,27 +1,25 @@
 package com.blueprint.foe.beetracker.Model;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-
 import com.google.android.gms.location.places.Place;
 
+import java.io.Console;
+import java.util.Date;
+
 /**
- * Represents the data object that contains all information related to submission.
+ * Created by luisa on 2018-04-09.
  */
 
-public class Submission {
-    private static final String TAG = Submission.class.toString();
-    public static final int MAX_FACE = 2;
-    public static final int MAX_THORAX = 5;
-    public static final int MAX_ABDOMEN = 8;
+public abstract class Submission {
+    // TODO: accept user input for Date
+    protected Date mDate = null;
+    protected BeeSpeciesType mSpeciesType = null;
+    protected Species mSpecies = null;
+    protected Habitat mHabitat = null;
+    protected Weather mWeather = null;
+    protected Place mPlace = null;
 
-    private BeeSpeciesType mSpeciesType = null;
-    private Species mSpecies = null;
-    private Habitat mHabitat = null;
-    private Weather mWeather = null;
-    private Place mPlace = null;
-    private String mImageFilePath = null;
-    private transient Bitmap mBitmap = null;
+    //@Override
+    //public abstract boolean equals(Object other);
 
     @Override
     public boolean equals(Object other) {
@@ -36,11 +34,68 @@ public class Submission {
                 && this.mSpeciesType == that.mSpeciesType
                 && this.mHabitat == that.mHabitat
                 && this.mWeather == that.mWeather
-                && this.mImageFilePath == that.mImageFilePath
-                && ((this.mBitmap == null && that.mBitmap == null)
-                    || this.mBitmap != null && that.mBitmap != null && this.mBitmap.equals(that.mBitmap))
+                && ((this.mDate == null && that.mDate == null)
+                || this.mDate != null && that.mDate != null && this.mDate.equals(that.mDate))
                 && ((this.mPlace == null && that.mPlace == null)
-                    || this.mPlace != null && that.mPlace != null && this.mPlace.equals(that.mPlace));
+                || this.mPlace != null && that.mPlace != null && this.mPlace.equals(that.mPlace));
+    }
+
+    public void reset() {
+        mSpeciesType = null;
+        mSpecies = null;
+        mHabitat = null;
+        mWeather = null;
+        mPlace = null;
+        mDate = null;
+    }
+
+    public void setHabitat(Habitat h) {
+        mHabitat = h;
+    }
+
+    public Habitat getHabitat() {
+        return mHabitat;
+    }
+
+    public void setWeather(Weather w) {
+        mWeather = w;
+    }
+
+    public Weather getWeather() {
+        return mWeather;
+    }
+
+    public void setLocation(Place place) {
+        this.mPlace = place;
+    }
+
+    public Place getLocation() {
+        return mPlace;
+    }
+
+    public BeeSpeciesType getSpeciesType() {
+        return mSpeciesType;
+    }
+
+    public Species getSpecies() {
+        return mSpecies;
+    }
+
+    public void setSpecies(Species species, BeeSpeciesType isEastern) {
+        mSpeciesType = isEastern;
+        mSpecies = species;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public boolean isComplete() {
+        return mHabitat != null && mHabitat != Habitat.Default && mWeather != null && mWeather != Weather.Default && mPlace != null;
     }
 
     public enum Species {
@@ -49,7 +104,6 @@ public class Submission {
         nevadensis, auricomus, terricola, fervidus, flavifrons, occidentalis, melanopygus,
         bifarius, huntii, vosnesenski, cryptarum, mixtus, centralis
     } // Missing bohemicus
-
 
     public enum Habitat {
         Default, Back_Yard, Community_Garden, City_Park, Rural, Golf_Course, Roadside, Woodland, Farmland, School_Grounds, Other;
@@ -109,83 +163,6 @@ public class Submission {
                     return "There was an error.";
             }
         }
-    }
-
-    public void reset() {
-        mSpeciesType = null;
-        mSpecies = null;
-        mHabitat = null;
-        mWeather = null;
-        mPlace = null;
-        mImageFilePath = null;
-        mBitmap = null;
-    }
-
-    public Submission() {
-        reset();
-    }
-
-    public void setHabitat(Habitat h) {
-        mHabitat = h;
-    }
-
-    public Habitat getHabitat() {
-        return mHabitat;
-    }
-
-    public void setWeather(Weather w) {
-        mWeather = w;
-    }
-
-    public Weather getWeather() {
-        return mWeather;
-    }
-
-    public void setLocation(Place place) {
-        this.mPlace = place;
-    }
-
-    public Place getLocation() {
-        return mPlace;
-    }
-
-    public BeeSpeciesType getSpeciesType() {
-        return mSpeciesType;
-    }
-
-    public Species getSpecies() {
-        return mSpecies;
-    }
-
-    public void setSpecies(Species species, BeeSpeciesType isEastern) {
-        mSpeciesType = isEastern;
-        mSpecies = species;
-    }
-
-    public String getImageFilePath() {
-        return mImageFilePath;
-    }
-
-    public void setImageFilePath(String imageFilePath) {
-        mImageFilePath = imageFilePath;
-    }
-
-    public Bitmap getBitmap() {
-        return mBitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        mBitmap = bitmap;
-    }
-
-    public boolean isComplete() {
-        return mHabitat != null && mHabitat != Habitat.Default && mWeather != null && mWeather != Weather.Default && mPlace != null && mBitmap != null;
-    }
-
-    /* For debug only */
-    public void print() {
-        Log.d(TAG, "Species: " + mSpecies + ", Habitat: " + mHabitat + ", Weather: " + mWeather);
-        Log.d(TAG, "Location: " + mPlace);
     }
 
     public enum BeeSpeciesType {

@@ -47,6 +47,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LearnActivity" android:label="My Challenges" android:screenOrientation="portrait"/>
+        <activity android:name=".ListActivity" android:label="My List" android:screenOrientation="portrait"/>
         <activity android:name=".SubmissionActivity" android:screenOrientation="portrait" />
         <activity android:name=".MainActivity" android:screenOrientation="portrait" />
         <activity android:name=".HomePageActivity" android:screenOrientation="portrait"/>

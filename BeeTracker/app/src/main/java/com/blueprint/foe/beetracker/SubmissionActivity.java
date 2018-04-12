@@ -8,8 +8,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
+import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
-import com.blueprint.foe.beetracker.Model.Submission;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
     private static final String TAG = SubmissionActivity.class.toString();
-    private Submission submission;
+    private CurrentSubmission submission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +62,14 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
     @Override
     public void createOrResetSubmission() {
         if (this.submission == null) {
-            submission = new Submission();
+            submission = new CurrentSubmission();
         } else {
             submission.reset();
         }
     }
 
     @Override
-    public Submission getSubmission() {
+    public CurrentSubmission getSubmission() {
         return submission;
     }
 

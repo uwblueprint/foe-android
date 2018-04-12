@@ -3,12 +3,14 @@ package com.blueprint.foe.beetracker.API;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.blueprint.foe.beetracker.Model.CompletedSubmission;
+import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
-import com.blueprint.foe.beetracker.Model.Submission;
 import com.facebook.AccessToken;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 
 import okhttp3.OkHttpClient;
@@ -79,7 +81,7 @@ public class BeeTrackerCaller {
         @SerializedName("longitude")
         double longitude;
 
-        Sighting(Submission submission) {
+        Sighting(CurrentSubmission submission) {
             this.image = new Image(StorageAccessor.convertImageToStringForServer(submission.getBitmap()), submission.getImageFilePath());
             this.latitude = submission.getLocation().getLatLng().latitude;
             this.longitude = submission.getLocation().getLatLng().longitude;
@@ -97,11 +99,12 @@ public class BeeTrackerCaller {
         @SerializedName("sighting")
         Sighting sighting;
 
-        SubmissionRequest(Submission submission) {
+        SubmissionRequest(CurrentSubmission submission) {
             this.sighting = new Sighting(submission);
         }
     }
 
+    // TODO: add a field to store the Google Place ID/ string for the name of the place
     public class SubmissionResponse {
         @SerializedName("id")
         int id;
@@ -142,12 +145,14 @@ public class BeeTrackerCaller {
             return id;
         }
 
-        public String getDate() {
-            return date;
-        }
-
-        public String getUrl() {
-            return url;
+        public CompletedSubmission getSubmission() throws ParseException{
+            CompletedSubmission submission = new CompletedSubmission();
+            submission.setHabitat(CurrentSubmission.Habitat.valueOf(habitat));
+            submission.setWeather(CurrentSubmission.Weather.valueOf(weather));
+            // TODO: figure out how to set location
+            submission.setSpecies(CurrentSubmission.Species.valueOf(species), CurrentSubmission.BeeSpeciesType.Eastern); // TODO store Eastern/Western
+            submission.setDate(java.text.DateFormat.getDateInstance().parse(date));
+            return submission;
         }
     }
 
@@ -159,10 +164,10 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.facebookAuth(new SignupRequest(token.getToken().toString()));
+        return service.facebookAuth(new SignupRequest(token.getToken()));
     }
 
-    public Call<SubmissionResponse> submit(Submission submission, String token) throws IOException{
+    public Call<SubmissionResponse> submit(CurrentSubmission submission, String token) throws IOException{
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();

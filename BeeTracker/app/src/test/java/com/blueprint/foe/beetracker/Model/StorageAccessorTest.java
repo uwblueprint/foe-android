@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,9 +36,9 @@ public class StorageAccessorTest {
 
     @Test
     public void storeSubmission_isCorrect() throws Exception {
-        Submission submission = new Submission();
-        submission.setWeather(Submission.Weather.Cloudy);
-        submission.setHabitat(Submission.Habitat.Back_Yard);
+        CurrentSubmission submission = new CurrentSubmission();
+        submission.setWeather(CurrentSubmission.Weather.Cloudy);
+        submission.setHabitat(CurrentSubmission.Habitat.Back_Yard);
         submission.setBitmap(bitmap); // transient so shouldn't be stored
         String correctJson = "{\"mHabitat\":\"Back_Yard\",\"mWeather\":\"Cloudy\"}";
         ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
@@ -54,9 +53,9 @@ public class StorageAccessorTest {
 
     @Test
     public void loadSubmission_isCorrect() throws Exception {
-        Submission correctSubmission = new Submission();
-        correctSubmission.setWeather(Submission.Weather.Cloudy);
-        correctSubmission.setHabitat(Submission.Habitat.Back_Yard);
+        Submission correctSubmission = new CurrentSubmission();
+        correctSubmission.setWeather(CurrentSubmission.Weather.Cloudy);
+        correctSubmission.setHabitat(CurrentSubmission.Habitat.Back_Yard);
         String inputJson = "{\"mWeather\":\"Cloudy\",\"mHabitat\":\"Back_Yard\"}";
         InputStream fis = new ByteArrayInputStream(inputJson.getBytes(StandardCharsets.UTF_8));
 

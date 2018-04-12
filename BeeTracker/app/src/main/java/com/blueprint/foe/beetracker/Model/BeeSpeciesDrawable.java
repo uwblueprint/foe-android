@@ -5,19 +5,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.widget.GridLayout;
 
 /**
  * This class contains information about the bee part including whether or not it is selected,
  * its index and the drawable image to be loaded into the UI component.
  */
 public class BeeSpeciesDrawable {
-    private Submission.Species mSpecies;
-    private Submission.BeeSpeciesType mSpeciesType;
+    private CurrentSubmission.Species mSpecies;
+    private CurrentSubmission.BeeSpeciesType mSpeciesType;
     private int drawable;
     private boolean mSelected;
 
-    public BeeSpeciesDrawable(Submission.Species species, Submission.BeeSpeciesType speciesType, int drawable, Context context) {
+    public BeeSpeciesDrawable(CurrentSubmission.Species species, CurrentSubmission.BeeSpeciesType speciesType, int drawable, Context context) {
         this.mSpecies = species;
         this.mSpeciesType = speciesType;
         this.mSelected = false;
@@ -35,11 +34,11 @@ public class BeeSpeciesDrawable {
         return roundedBeeOptionDrawable;
     }
 
-    public Submission.Species getSpecies() {
+    public CurrentSubmission.Species getSpecies() {
         return mSpecies;
     }
 
-    public Submission.BeeSpeciesType getSpeciesType() {
+    public CurrentSubmission.BeeSpeciesType getSpeciesType() {
         return mSpeciesType;
     }
 

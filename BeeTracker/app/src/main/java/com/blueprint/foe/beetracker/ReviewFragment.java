@@ -21,13 +21,17 @@ import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
-import com.blueprint.foe.beetracker.Model.Submission;
+import com.blueprint.foe.beetracker.Model.CompletedSubmission;
+import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
+import static com.blueprint.foe.beetracker.Model.Submission.*;
+
 import java.io.IOException;
+import java.text.ParseException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,7 +61,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             public void onClick(View view) {
                 // check all fields are completed
                 SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
-                Submission submission = submissionInterface.getSubmission();
+                CurrentSubmission submission = submissionInterface.getSubmission();
                 if (!submission.isComplete()) {
                     setErrorFields(submission);
                     return;
@@ -76,7 +80,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         });
 
         // Set up image preview in top left corner
-        final Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+        final CurrentSubmission submission = ((SubmissionActivity) getActivity()).getSubmission();
         Bitmap bitmap = submission.getBitmap();
         int width = bitmap.getWidth();
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, container.getWidth(), (int)(((double)bitmap.getHeight() / (double)width) * container.getWidth()), false);
@@ -86,8 +90,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         // Set up interactive UI elements (spinner, location picker)
         // TODO (https://github.com/uwblueprint/foe/issues/32) : Set up an adapter that extends partsPickerAdapter
         mWeatherSpinner = (Spinner) view.findViewById(R.id.weather_spinner);
-        final Submission.Weather[] weathers = Submission.Weather.values();
-        ArrayAdapter<Submission.Weather> weatherAdapter = new ArrayAdapter<>(getActivity(),
+        final Weather[] weathers = Weather.values();
+        ArrayAdapter<Weather> weatherAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.spinner_item, weathers);
         weatherAdapter.setDropDownViewResource(R.layout.spinner_item);
         mWeatherSpinner.setAdapter(weatherAdapter);
@@ -106,8 +110,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         });
 
         mHabitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
-        final Submission.Habitat[] habitats = Submission.Habitat.values();
-        ArrayAdapter<Submission.Habitat> habitatAdapter = new ArrayAdapter<>(getActivity(),
+        final Habitat[] habitats = Habitat.values();
+        ArrayAdapter<Habitat> habitatAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.spinner_item, habitats);
         habitatAdapter.setDropDownViewResource(R.layout.spinner_item);
         mHabitatSpinner.setAdapter(habitatAdapter);
@@ -153,6 +157,12 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                     return;
                 }
                 Log.d(TAG, "The response body: " + response.body());
+                try {
+                    CompletedSubmission submission = response.body().getSubmission();
+
+                } catch (ParseException e) {
+
+                }
                 fragment.launchPopup();
             }
 
@@ -197,7 +207,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         try {
             SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
             String accessToken = sharedPref.getString(getString(R.string.preference_login_token), null);
-            Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+            CurrentSubmission submission = ((SubmissionActivity) getActivity()).getSubmission();
             Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken);
             token.enqueue(submitCallback);
         } catch (IOException e) {
@@ -207,7 +217,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         }
     }
 
-    private String getEnglishName(Submission.Species species) {
+    private String getEnglishName(Species species) {
         String[] names = {
                "Common eastern bumble bee", "Tri-coloured bumble bee",  "Red-belted bumble bee",
                 "Two-spotted bumble bee", "Northern amber bumble bee", "Half-black bumble bee",
@@ -223,14 +233,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     }
 
     // Method to set textfields to red as appropriate or reset them
-    private void setErrorFields(Submission submission) {
+    private void setErrorFields(CurrentSubmission submission) {
         if (!submission.isComplete()) {
             mErrorMessage.setVisibility(View.VISIBLE);
         }
-        if (submission.getHabitat() == null || submission.getHabitat() == Submission.Habitat.Default) {
+        if (submission.getHabitat() == null || submission.getHabitat() == Habitat.Default) {
             mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background_error);
         }
-        if (submission.getWeather() == null || submission.getWeather() == Submission.Weather.Default) {
+        if (submission.getWeather() == null || submission.getWeather() == Weather.Default) {
             mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background_error);
         }
         if (submission.getLocation() == null) {
@@ -238,14 +248,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         }
     }
 
-    private void resetErrorFields(Submission submission) {
+    private void resetErrorFields(CurrentSubmission submission) {
         if (submission.isComplete()) {
             mErrorMessage.setVisibility(View.GONE);
         }
-        if (submission.getHabitat() != null && submission.getHabitat() != Submission.Habitat.Default) {
+        if (submission.getHabitat() != null && submission.getHabitat() != Habitat.Default) {
             mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background);
         }
-        if (submission.getWeather() != null && submission.getWeather() != Submission.Weather.Default) {
+        if (submission.getWeather() != null && submission.getWeather() != Weather.Default) {
             mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background);
         }
         if (submission.getLocation() != null) {
