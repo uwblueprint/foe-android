@@ -237,10 +237,10 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         if (!submission.isComplete()) {
             mErrorMessage.setVisibility(View.VISIBLE);
         }
-        if (submission.getHabitat() == null || submission.getHabitat() == Habitat.Default) {
+        if (submission.getHabitat() == null || submission.getHabitat() == Habitat.unselected) {
             mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background_error);
         }
-        if (submission.getWeather() == null || submission.getWeather() == Weather.Default) {
+        if (submission.getWeather() == null || submission.getWeather() == Weather.unselected) {
             mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background_error);
         }
         if (submission.getLocation() == null) {
@@ -252,10 +252,10 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         if (submission.isComplete()) {
             mErrorMessage.setVisibility(View.GONE);
         }
-        if (submission.getHabitat() != null && submission.getHabitat() != Habitat.Default) {
+        if (submission.getHabitat() != null && submission.getHabitat() != Habitat.unselected) {
             mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background);
         }
-        if (submission.getWeather() != null && submission.getWeather() != Weather.Default) {
+        if (submission.getWeather() != null && submission.getWeather() != Weather.unselected) {
             mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background);
         }
         if (submission.getLocation() != null) {

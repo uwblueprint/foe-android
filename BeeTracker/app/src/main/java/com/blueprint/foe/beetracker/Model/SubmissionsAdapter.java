@@ -15,7 +15,7 @@ import com.blueprint.foe.beetracker.R;
 import java.util.ArrayList;
 
 /**
- * An ArrayAdapter for the submission collection. Used by ListActivity.
+ * An ArrayAdapter for the submission collection. Used by HistoryActivity.
  */
 public class SubmissionsAdapter extends ArrayAdapter<CompletedSubmission> {
     private static String TAG = SubmissionsAdapter.class.toString();

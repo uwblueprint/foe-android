@@ -47,7 +47,7 @@
             android:paddingEnd="@dimen/medium_padding"
             android:paddingStart="@dimen/medium_padding"
             android:textColor="@color/mediumDarkGrey"
-            android:id="@+id/buttonList"/>
+            android:id="@+id/buttonHistory"/>
     </RelativeLayout>
     <View
         android:layout_above="@id/navBar"

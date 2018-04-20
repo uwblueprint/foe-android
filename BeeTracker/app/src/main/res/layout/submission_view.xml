@@ -11,8 +11,10 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:hardwareAccelerated="true"
         card_view:cardCornerRadius="0dp"
-        card_view:cardElevation="@dimen/cardview_default_elevation">
+        card_view:cardUseCompatPadding="true"
+        card_view:cardElevation="2dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -20,7 +22,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/imgFrame">
-
                 <ImageView
                     android:id="@+id/imgSubmission"
                     android:src="@drawable/fact_illustation_general"
@@ -29,14 +30,12 @@
                     android:layout_height="261dp"
                     android:background="@color/mediumGrey"
                     android:layout_marginBottom="@dimen/medium_padding"/>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_gravity="bottom"
                     android:background="@drawable/gradient_shape"/>
             </FrameLayout>
-
             <TextView
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"

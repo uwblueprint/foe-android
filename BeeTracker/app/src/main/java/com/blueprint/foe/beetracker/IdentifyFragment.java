@@ -161,12 +161,12 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
 
         List<BeeSpeciesDrawable> easternDrawables = new ArrayList<>();
         for (int i = 0; i < easternAssets.length; i++) {
-            easternDrawables.add(new BeeSpeciesDrawable(easternSpecies.get(i), BeeSpeciesType.Eastern, easternAssets[i], getActivity()));
+            easternDrawables.add(new BeeSpeciesDrawable(easternSpecies.get(i), BeeSpeciesType.Eastern, easternAssets[i]));
         }
 
         List<BeeSpeciesDrawable> westernDrawables = new ArrayList<>();
         for (int i = 0; i < westernAssets.length; i++) {
-            westernDrawables.add(new BeeSpeciesDrawable(westernSpecies.get(i), BeeSpeciesType.Western, westernAssets[i], getActivity()));
+            westernDrawables.add(new BeeSpeciesDrawable(westernSpecies.get(i), BeeSpeciesType.Western, westernAssets[i]));
         }
 
         if (submission.getSpecies() != null) {

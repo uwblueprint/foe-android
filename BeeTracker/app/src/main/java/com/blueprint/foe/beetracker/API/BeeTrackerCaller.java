@@ -85,11 +85,11 @@ public class BeeTrackerCaller {
             this.image = new Image(StorageAccessor.convertImageToStringForServer(submission.getBitmap()), submission.getImageFilePath());
             this.latitude = submission.getLocation().getLatLng().latitude;
             this.longitude = submission.getLocation().getLatLng().longitude;
-            this.weather = submission.getWeather().name().toLowerCase();
-            this.habitat = submission.getHabitat().name().toLowerCase();
+            this.weather = submission.getWeather().name();
+            this.habitat = submission.getHabitat().name();
             this.species = null;
             if (submission.getSpecies() != null) {
-                this.species = submission.getSpecies().toString().toLowerCase();
+                this.species = submission.getSpecies().toString();
             }
             this.date = DateFormat.format("yyyy-MM-dd", (new Date()).getTime()).toString();
         }
@@ -150,7 +150,9 @@ public class BeeTrackerCaller {
             submission.setHabitat(CurrentSubmission.Habitat.valueOf(habitat));
             submission.setWeather(CurrentSubmission.Weather.valueOf(weather));
             // TODO: figure out how to set location
-            submission.setSpecies(CurrentSubmission.Species.valueOf(species), CurrentSubmission.BeeSpeciesType.Eastern); // TODO store Eastern/Western
+            if (species != null && !species.isEmpty()) {
+                submission.setSpecies(CurrentSubmission.Species.valueOf(species), CurrentSubmission.BeeSpeciesType.Eastern); // TODO store Eastern/Western
+            }
             submission.setDate(java.text.DateFormat.getDateInstance().parse(date));
             return submission;
         }

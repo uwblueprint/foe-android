@@ -27,8 +27,8 @@ public class SubmissionTest {
     @Test
     public void gettersAndSetters() throws Exception {
         Submission submission = new CurrentSubmission();
-        CurrentSubmission.Weather weather = CurrentSubmission.Weather.Cloudy;
-        CurrentSubmission.Habitat habitat = CurrentSubmission.Habitat.Back_Yard;
+        CurrentSubmission.Weather weather = CurrentSubmission.Weather.cloudy;
+        CurrentSubmission.Habitat habitat = CurrentSubmission.Habitat.back_yard;
 
         submission.setSpecies(CurrentSubmission.Species.affinis, CurrentSubmission.BeeSpeciesType.Eastern);
         submission.setWeather(weather);
@@ -48,8 +48,8 @@ public class SubmissionTest {
         CurrentSubmission submission = new CurrentSubmission();
 
         submission.setBitmap(bitmap);
-        submission.setWeather(CurrentSubmission.Weather.Cloudy);
-        submission.setHabitat(CurrentSubmission.Habitat.Back_Yard);
+        submission.setWeather(CurrentSubmission.Weather.cloudy);
+        submission.setHabitat(CurrentSubmission.Habitat.back_yard);
         submission.setLocation(place);
 
         assertEquals(true, submission.isComplete()); // Species is not needed for completeness
@@ -60,8 +60,8 @@ public class SubmissionTest {
         CurrentSubmission submission = new CurrentSubmission();
 
         submission.setBitmap(bitmap);
-        submission.setWeather(CurrentSubmission.Weather.Cloudy);
-        submission.setHabitat(CurrentSubmission.Habitat.Back_Yard);
+        submission.setWeather(CurrentSubmission.Weather.cloudy);
+        submission.setHabitat(CurrentSubmission.Habitat.back_yard);
         // Missing Location
 
         assertEquals(false, submission.isComplete());
@@ -71,13 +71,13 @@ public class SubmissionTest {
     public void submission_isEqual() throws Exception {
         CurrentSubmission submission = new CurrentSubmission();
 
-        submission.setWeather(CurrentSubmission.Weather.Cloudy);
-        submission.setHabitat(CurrentSubmission.Habitat.Back_Yard);
+        submission.setWeather(CurrentSubmission.Weather.cloudy);
+        submission.setHabitat(CurrentSubmission.Habitat.back_yard);
         submission.setSpecies(CurrentSubmission.Species.affinis, CurrentSubmission.BeeSpeciesType.Eastern);
 
         CurrentSubmission submission1 = new CurrentSubmission();
-        submission1.setWeather(CurrentSubmission.Weather.Cloudy);
-        submission1.setHabitat(CurrentSubmission.Habitat.Back_Yard);
+        submission1.setWeather(CurrentSubmission.Weather.cloudy);
+        submission1.setHabitat(CurrentSubmission.Habitat.back_yard);
         submission1.setSpecies(CurrentSubmission.Species.affinis, CurrentSubmission.BeeSpeciesType.Eastern);
 
         assertTrue(submission.equals(submission1));
@@ -88,11 +88,11 @@ public class SubmissionTest {
     public void submission_isNotEqual() throws Exception {
         Submission submission = new CurrentSubmission();
 
-        submission.setHabitat(CurrentSubmission.Habitat.Back_Yard);
+        submission.setHabitat(CurrentSubmission.Habitat.back_yard);
 
         Submission submission1 = new CurrentSubmission();
-        submission1.setWeather(CurrentSubmission.Weather.Cloudy); // other has no weather
-        submission1.setHabitat(CurrentSubmission.Habitat.Back_Yard);
+        submission1.setWeather(CurrentSubmission.Weather.cloudy); // other has no weather
+        submission1.setHabitat(CurrentSubmission.Habitat.back_yard);
 
         assertFalse(submission.equals(submission1));
         assertFalse(submission1.equals(submission));

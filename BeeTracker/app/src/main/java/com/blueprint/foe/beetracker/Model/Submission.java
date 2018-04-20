@@ -2,7 +2,6 @@ package com.blueprint.foe.beetracker.Model;
 
 import com.google.android.gms.location.places.Place;
 
-import java.io.Console;
 import java.util.Date;
 
 /**
@@ -95,7 +94,7 @@ public abstract class Submission {
     }
 
     public boolean isComplete() {
-        return mHabitat != null && mHabitat != Habitat.Default && mWeather != null && mWeather != Weather.Default && mPlace != null;
+        return mHabitat != null && mHabitat != Habitat.unselected && mWeather != null && mWeather != Weather.unselected && mPlace != null;
     }
 
     public enum Species {
@@ -106,33 +105,33 @@ public abstract class Submission {
     } // Missing bohemicus
 
     public enum Habitat {
-        Default, Back_Yard, Community_Garden, City_Park, Rural, Golf_Course, Roadside, Woodland, Farmland, School_Grounds, Other;
+        unselected, back_yard, community_garden, city_park, rural, golf_course, roadside, woodland, farmland, school_grounds, other;
 
         @Override
         public String toString() {
             switch (this) {
-                case Default:
+                case unselected:
                     return "";
-                case Back_Yard:
+                case back_yard:
                     return "Back Yard";
-                case Community_Garden:
+                case community_garden:
                     return "Community Garden";
-                case City_Park:
+                case city_park:
                     return "City Park";
-                case Rural:
+                case rural:
                     return "Rural";
-                case Golf_Course:
+                case golf_course:
                     return "Golf Course";
-                case Roadside:
+                case roadside:
                     return "Roadside";
-                case Woodland:
+                case woodland:
                     return "Woodland";
-                case Farmland:
+                case farmland:
                     return "Farmland";
-                case School_Grounds:
+                case school_grounds:
                     return "School Grounds";
-                case Other:
-                    return "Other";
+                case other:
+                    return "other";
                 default:
                     return "There was an error.";
             }
@@ -140,24 +139,24 @@ public abstract class Submission {
     }
 
     public enum Weather {
-        Default, Sunny, Partly_Cloudy, Cloudy, Rain, Windy, Other;
+        unselected, sunny, partly_cloudy, cloudy, rain, windy, other;
 
         @Override
         public String toString() {
             switch (this) {
-                case Default:
+                case unselected:
                     return "";
-                case Sunny:
+                case sunny:
                     return "Sunny";
-                case Partly_Cloudy:
+                case partly_cloudy:
                     return "Partly Cloudy";
-                case Cloudy:
+                case cloudy:
                     return "Cloudy";
-                case Rain:
+                case rain:
                     return "Rain";
-                case Windy:
+                case windy:
                     return "Windy";
-                case Other:
+                case other:
                     return "Other";
                 default:
                     return "There was an error.";

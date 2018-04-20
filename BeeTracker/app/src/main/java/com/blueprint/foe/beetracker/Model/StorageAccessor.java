@@ -75,7 +75,7 @@ public class StorageAccessor {
         SubmissionCollection submissions = new SubmissionCollection();
         for (int i = 0; i < count; i++) {
             CompletedSubmission submission = new CompletedSubmission();
-            submission.setWeather(Submission.Weather.Sunny);
+            submission.setWeather(Submission.Weather.sunny);
             submission.setSpecies(Submission.Species.bifarius, Submission.BeeSpeciesType.Eastern);
             submissions.addSubmission(submission);
         }

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/learnActivityBackground"
-    tools:context="com.blueprint.foe.beetracker.ListActivity">
+    android:background="@color/white"
+    tools:context="com.blueprint.foe.beetracker.HistoryActivity">
     <TextView
         android:id="@+id/myList"
         android:layout_alignParentTop="true"

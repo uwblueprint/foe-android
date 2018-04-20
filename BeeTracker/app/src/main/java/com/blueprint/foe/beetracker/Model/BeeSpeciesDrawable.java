@@ -6,17 +6,19 @@ import android.graphics.BitmapFactory;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 
+import static com.blueprint.foe.beetracker.Model.Submission.*;
+
 /**
  * This class contains information about the bee part including whether or not it is selected,
  * its index and the drawable image to be loaded into the UI component.
  */
 public class BeeSpeciesDrawable {
-    private CurrentSubmission.Species mSpecies;
-    private CurrentSubmission.BeeSpeciesType mSpeciesType;
+    private Species mSpecies;
+    private BeeSpeciesType mSpeciesType;
     private int drawable;
     private boolean mSelected;
 
-    public BeeSpeciesDrawable(CurrentSubmission.Species species, CurrentSubmission.BeeSpeciesType speciesType, int drawable, Context context) {
+    public BeeSpeciesDrawable(Species species, BeeSpeciesType speciesType, int drawable) {
         this.mSpecies = species;
         this.mSpeciesType = speciesType;
         this.mSelected = false;
@@ -34,11 +36,11 @@ public class BeeSpeciesDrawable {
         return roundedBeeOptionDrawable;
     }
 
-    public CurrentSubmission.Species getSpecies() {
+    public Species getSpecies() {
         return mSpecies;
     }
 
-    public CurrentSubmission.BeeSpeciesType getSpeciesType() {
+    public BeeSpeciesType getSpeciesType() {
         return mSpeciesType;
     }
 

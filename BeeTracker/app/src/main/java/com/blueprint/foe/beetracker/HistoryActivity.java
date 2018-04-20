@@ -9,8 +9,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blueprint.foe.beetracker.Model.FactCollection;
-import com.blueprint.foe.beetracker.Model.FactsAdapter;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.SubmissionCollection;
 import com.blueprint.foe.beetracker.Model.SubmissionsAdapter;
@@ -18,16 +16,14 @@ import com.blueprint.foe.beetracker.Model.SubmissionsAdapter;
 import java.io.IOException;
 
 /**
- * Created by luisa on 2018-04-12.
+ * Activity that shows the user all of their previous submissions.
  */
-
-public class ListActivity extends AppCompatActivity {
-
+public class HistoryActivity extends AppCompatActivity {
     private SubmissionCollection mSubmissions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+        setContentView(R.layout.activity_history);
 
         try {
             this.mSubmissions = StorageAccessor.loadSubmissions(2);
@@ -42,7 +38,7 @@ public class ListActivity extends AppCompatActivity {
         TextView submitButton = (TextView) findViewById(R.id.buttonSubmit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                Intent myIntent = new Intent(ListActivity.this,
+                Intent myIntent = new Intent(HistoryActivity.this,
                         SubmissionActivity.class);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 finish(); // We want submissions to go back to the home page
@@ -57,9 +53,9 @@ public class ListActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
-        TextView listButton = (TextView) findViewById(R.id.buttonList);
-        listButton.setTextColor(ContextCompat.getColor(this, R.color.grassGreen));
-        listButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.lightbulb_green_icon), null, null, null);
+        TextView historyButton = (TextView) findViewById(R.id.buttonHistory);
+        historyButton.setTextColor(ContextCompat.getColor(this, R.color.grassGreen));
+        historyButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.lightbulb_green_icon), null, null, null);
 
         listView.setAdapter(adapter);
     }

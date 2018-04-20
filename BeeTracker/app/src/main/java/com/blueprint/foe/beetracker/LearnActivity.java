@@ -60,7 +60,7 @@ public class LearnActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
-        TextView learnButton = (TextView) findViewById(R.id.buttonList);
+        TextView learnButton = (TextView) findViewById(R.id.buttonHistory);
         learnButton.setTextColor(ContextCompat.getColor(this, R.color.grassGreen));
         learnButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.lightbulb_green_icon), null, null, null);
 

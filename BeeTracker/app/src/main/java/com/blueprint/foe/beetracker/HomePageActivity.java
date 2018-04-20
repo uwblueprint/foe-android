@@ -4,12 +4,8 @@ import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import android.view.Window;
@@ -46,11 +42,11 @@ public class HomePageActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
-        TextView learnButton = (TextView) findViewById(R.id.buttonList);
+        TextView learnButton = (TextView) findViewById(R.id.buttonHistory);
         learnButton.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
                 Intent myIntent = new Intent(HomePageActivity.this,
-                        ListActivity.class);
+                        HistoryActivity.class);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(myIntent);
             }
