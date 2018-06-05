@@ -45,20 +45,20 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             }
         });
 
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email");
+        LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        facebookLoginButton.setReadPermissions("email");
         // Other app specific specialization
 
         // Callback registration
         callbackManager = CallbackManager.Factory.create();
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinningIconDialog = new SpinningIconDialog();
                 spinningIconDialog.show(getFragmentManager(), "SpinningPopup");
             }
         });
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
