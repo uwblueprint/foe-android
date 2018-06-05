@@ -1,12 +1,12 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="zero">0sp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="geotag_header_spacing">24dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="medium_small_padding">12dp</dimen>
     <dimen name="medium_padding">16dp</dimen>
-    <dimen name="medium_big_padding">20dp</dimen>
     <dimen name="big_padding">24dp</dimen>
     <dimen name="small_text_size">12sp</dimen>
     <dimen name="medium_text_size">16sp</dimen>
@@ -29,13 +29,13 @@
     <dimen name="homepage_welcome_message_text_size">20sp</dimen>
     <dimen name="login_page_background_padding_adjustment">-6sp</dimen>
     <dimen name="loginpage_cloud_background_padding">42sp</dimen>
-    <dimen name="email_password_login_top_margin">52sp</dimen>
     <dimen name="email_password_label_text_size">14sp</dimen>
     <dimen name="email_password_input_text_size">16sp</dimen>
     <dimen name="email_password_input_padding_adjustment">-4sp</dimen>
     <dimen name="email_password_side_padding">42sp</dimen>
+    <dimen name="email_password_top_padding">20sp</dimen>
+    <dimen name="email_login_side_padding">54sp</dimen>
     <dimen name="forgot_password_text_size">14sp</dimen>
-    <dimen name="email_login_side_padding">54dp</dimen>
     <dimen name="facebook_login_side_padding">54dp</dimen>
     <dimen name="error_dialog_title_text_size">40sp</dimen>
     <dimen name="error_dialog_width">327dp</dimen>
