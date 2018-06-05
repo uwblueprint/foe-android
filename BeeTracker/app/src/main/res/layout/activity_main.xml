@@ -158,7 +158,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/password_input"
             android:layout_marginTop="@dimen/medium_small_padding"
-            app:cardCornerRadius="@dimen/big_padding">
+            app:cardCornerRadius="@dimen/login_button_corner_radius">
 
             <Button
                 android:id="@+id/email_login_button"
@@ -213,7 +213,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/big_padding"
         android:layout_centerHorizontal="true"
-        app:cardCornerRadius="@dimen/big_padding"
+        app:cardCornerRadius="@dimen/login_button_corner_radius"
         app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
         app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
         app:layout_constraintBottom_toBottomOf="@id/bottomGuideline">
@@ -230,12 +230,4 @@
             android:textSize="@dimen/medium_text_size"
             facebook:com_facebook_login_text="@string/signin_with_facebook" />
     </android.support.v7.widget.CardView>
-
-    <TextView
-        android:id="@+id/skip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/medium_padding"
-        android:text="@string/continue_as_guest"
-        android:textColor="@color/mediumDarkGrey" />
 </android.support.constraint.ConstraintLayout>

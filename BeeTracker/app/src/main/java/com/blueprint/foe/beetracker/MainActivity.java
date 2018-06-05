@@ -35,16 +35,6 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView skipButton = (TextView) findViewById(R.id.skip);
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                sharedPref.edit().putBoolean(getString(R.string.preference_logged_in_as_guest), true).commit();
-                navigateToHome();
-            }
-        });
-
         LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
         facebookLoginButton.setReadPermissions("email");
         // Other app specific specialization
