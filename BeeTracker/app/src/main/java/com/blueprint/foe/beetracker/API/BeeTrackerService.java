@@ -13,8 +13,16 @@ import retrofit2.http.POST;
  */
 
 public interface  BeeTrackerService {
+    @Headers("Content-Type: application/json")
+    @POST("/auth")
+    Call<BeeTrackerCaller.EmailPasswordSignupResponse> emailPasswordSignup(@Body BeeTrackerCaller.EmailPasswordSignupRequest signupRequest);
+
+    @Headers("Content-Type: application/json")
+    @POST("/auth/sign_in")
+    Call<BeeTrackerCaller.EmailPasswordSigninResponse> emailPasswordAuth(@Body BeeTrackerCaller.EmailPasswordSigninRequest signinRequest);
+
     @POST("/auth/facebook")
-    Call<BeeTrackerCaller.SignupResponse> facebookAuth(@Body BeeTrackerCaller.SignupRequest token);
+    Call<BeeTrackerCaller.FacebookSigninResponse> facebookAuth(@Body BeeTrackerCaller.FacebookSigninRequest token);
 
     @Headers("Content-Type: application/json")
     @POST("/sightings")

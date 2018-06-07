@@ -52,8 +52,13 @@
     <string name="error_message_submit">Something went wrong with submitting your image.</string>
     <string name="preference_file_key">com.blueprint.foe.beetracker.PREFERENCE_FILE_KEY</string>
     <string name="preference_login_token">LOGIN_TOKEN</string>
-    <string name="preference_logged_in_as_guest">GUEST_LOGIN</string>
+    <string name="preference_login_token_type">LOGIN_TOKEN_TYPE</string>
+    <string name="preference_login_client">LOGIN_CLIENT</string>
+    <string name="preference_login_expiry">LOGIN_EXPIRY</string>
+    <string name="preference_login_uid">LOGIN_UID</string>
     <string name="preference_first_time_identifying">FIRST_TIME_IDENTIFYING</string>
+    <string name="signup_email">SIGNUP_EMAIL</string>
+    <string name="signup_password">SIGNUP_PASSWORD</string>
     <string name="email_label">EMAIL</string>
     <string name="email_placeholder">Enter email</string>
     <string name="password_label">PASSWORD</string>

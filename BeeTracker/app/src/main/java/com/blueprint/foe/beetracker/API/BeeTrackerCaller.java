@@ -3,6 +3,7 @@ package com.blueprint.foe.beetracker.API;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.blueprint.foe.beetracker.Exceptions.EmptyCredentialsException;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.Submission;
 import com.facebook.AccessToken;
@@ -25,21 +26,105 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class BeeTrackerCaller {
     private static final String TAG = BeeTrackerCaller.class.toString();
 
-    public class SignupRequest {
+    public class EmailPasswordSignupRequest {
+        @SerializedName("email")
+        String email;
+
+        @SerializedName("password")
+        String password;
+
+        @SerializedName("confirm_success_url")
+        String successUrl;
+
+        EmailPasswordSignupRequest(String email, String password, String successUrl) {
+            this.email = email;
+            this.password = password;
+            this.successUrl = successUrl;
+        }
+    }
+
+    public class EmailPasswordSignupResponse {
         @SerializedName("code")
         String code;
 
-        SignupRequest(String code) {
+        EmailPasswordSignupResponse(String code) {
             this.code = code;
         }
     }
 
-    public class SignupResponse {
+    public class EmailPasswordSigninRequest {
+        @SerializedName("email")
+        String email;
+
+        @SerializedName("password")
+        String password;
+
+        EmailPasswordSigninRequest(String email, String password) {
+            this.email = email;
+            this.password = password;
+        }
+    }
+
+    public class EmailPasswordSigninResponse {
+        @SerializedName("access-token")
+        String accessToken;
+
+        @SerializedName("token-type")
+        String tokenType;
+
+        @SerializedName("client")
+        String client;
+
+        @SerializedName("expiry")
+        String expiry;
+
+        @SerializedName("uid")
+        String uid;
+
+        EmailPasswordSigninResponse(String accessToken, String tokenType, String client, String expiry, String uid) {
+            this.accessToken = accessToken;
+            this.tokenType = tokenType;
+            this.client = client;
+            this.expiry = expiry;
+            this.uid = uid;
+        }
+
+        public String getToken() {
+            return accessToken;
+        }
+
+        public String getTokenType() {
+            return tokenType;
+        }
+
+        public String getClient() {
+            return client;
+        }
+
+        public String getExpiry() {
+            return expiry;
+        }
+
+        public String getUid() {
+            return uid;
+        }
+    }
+
+    public class FacebookSigninRequest {
+        @SerializedName("code")
+        String code;
+
+        FacebookSigninRequest(String code) {
+            this.code = code;
+        }
+    }
+
+    public class FacebookSigninResponse {
         @SerializedName("token")
         String token;
 
-        SignupResponse(String code) {
-            this.token = code;
+        FacebookSigninResponse(String token) {
+            this.token = token;
         }
 
         public String getToken() {
@@ -152,14 +237,44 @@ public class BeeTrackerCaller {
     }
 
     public static final String API_URL = "https://foe-api.herokuapp.com/";
-    public Call<SignupResponse> signup(AccessToken token) throws IOException{
+    public static final String DEFAULT_SIGNUP_SUCCESS_URL = "http://foecanada.org/";
+
+    public Call<EmailPasswordSignupResponse> emailPasswordSignup(String email, String password) throws IOException, EmptyCredentialsException{
+        if (email.isEmpty() || password.isEmpty()) {
+            throw new EmptyCredentialsException();
+        }
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.facebookAuth(new SignupRequest(token.getToken().toString()));
+        return service.emailPasswordSignup(new EmailPasswordSignupRequest(email, password, DEFAULT_SIGNUP_SUCCESS_URL));
+    }
+
+    public Call<EmailPasswordSigninResponse> emailPasswordSignin(String email, String password) throws IOException, EmptyCredentialsException{
+        if (email.isEmpty() || password.isEmpty()) {
+            throw new EmptyCredentialsException();
+        }
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        BeeTrackerService service = retrofit.create(BeeTrackerService.class);
+        return service.emailPasswordAuth(new EmailPasswordSigninRequest(email, password));
+    }
+
+    public Call<FacebookSigninResponse> facebookSignup(AccessToken token) throws IOException{
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        BeeTrackerService service = retrofit.create(BeeTrackerService.class);
+        return service.facebookAuth(new FacebookSigninRequest(token.getToken().toString()));
     }
 
     public Call<SubmissionResponse> submit(Submission submission, String token) throws IOException{
