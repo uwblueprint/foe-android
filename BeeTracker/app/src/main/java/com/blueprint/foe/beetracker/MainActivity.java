@@ -121,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     LoginManager.getInstance().logOut();
                     return;
                 }
-                // Remove later
-                showErrorDialog("Confirm your email");
             }
 
             @Override
