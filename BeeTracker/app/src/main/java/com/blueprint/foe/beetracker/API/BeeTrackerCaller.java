@@ -61,48 +61,7 @@ public class BeeTrackerCaller {
     }
 
     public class EmailPasswordSigninResponse {
-        @SerializedName("access-token")
-        String accessToken;
-
-        @SerializedName("token-type")
-        String tokenType;
-
-        @SerializedName("client")
-        String client;
-
-        @SerializedName("expiry")
-        String expiry;
-
-        @SerializedName("uid")
-        String uid;
-
-        EmailPasswordSigninResponse(String accessToken, String tokenType, String client, String expiry, String uid) {
-            this.accessToken = accessToken;
-            this.tokenType = tokenType;
-            this.client = client;
-            this.expiry = expiry;
-            this.uid = uid;
-        }
-
-        public String getToken() {
-            return accessToken;
-        }
-
-        public String getTokenType() {
-            return tokenType;
-        }
-
-        public String getClient() {
-            return client;
-        }
-
-        public String getExpiry() {
-            return expiry;
-        }
-
-        public String getUid() {
-            return uid;
-        }
+        // Only the response headers matter for sign in
     }
 
     public class FacebookSigninRequest {

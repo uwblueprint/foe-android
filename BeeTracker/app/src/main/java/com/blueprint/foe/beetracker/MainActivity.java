@@ -66,9 +66,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         emailPasswordLoginCallback = new Callback<BeeTrackerCaller.EmailPasswordSigninResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.EmailPasswordSigninResponse> call, Response<BeeTrackerCaller.EmailPasswordSigninResponse> response) {
-                if (response.code() == 401 || response.body() == null ||  response.body().getToken() == null
-                        || response.body().getTokenType() == null || response.body().getClient() == null
-                        || response.body().getExpiry() == null || response.body().getUid() == null) {
+                if (response.code() == 401 || response.headers() == null) {
                     Log.e(TAG, "The response from the server is 401 + " + response.message());
                     LoginManager.getInstance().logOut();
                     spinningIconDialog.dismiss();
@@ -76,11 +74,11 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     return;
                 }
                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                sharedPref.edit().putString(getString(R.string.preference_login_token), response.body().getToken()).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_token_type), response.body().getTokenType()).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_client), response.body().getClient()).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.body().getExpiry()).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_uid), response.body().getUid()).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_token), response.headers().get("access-token")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_token_type), response.headers().get("token-type")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
                 navigateToHome();
             }
 
