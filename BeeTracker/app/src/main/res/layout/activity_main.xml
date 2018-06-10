@@ -112,6 +112,7 @@
             android:layout_marginRight="@dimen/email_password_input_padding_adjustment"
             android:layout_marginTop="@dimen/medium_small_padding"
             android:hint="@string/email_placeholder"
+            android:textColorHint="@color/lightGrey"
             android:inputType="textEmailAddress"
             android:textColor="@color/black"
             android:textSize="@dimen/email_password_input_text_size" />
@@ -138,6 +139,7 @@
             android:layout_marginRight="@dimen/email_password_input_padding_adjustment"
             android:layout_marginTop="@dimen/medium_small_padding"
             android:hint="@string/password_placeholder"
+            android:textColorHint="@color/lightGrey"
             android:inputType="textPassword"
             android:textColor="@color/black"
             android:textSize="@dimen/email_password_input_text_size" />
