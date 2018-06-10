@@ -44,12 +44,7 @@ public class BeeTrackerCaller {
     }
 
     public class EmailPasswordSignupResponse {
-        @SerializedName("code")
-        String code;
-
-        EmailPasswordSignupResponse(String code) {
-            this.code = code;
-        }
+        // Only the response code matters for sign up
     }
 
     public class EmailPasswordSigninRequest {
