@@ -55,10 +55,12 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     Log.e(TAG, e.toString());
                     e.printStackTrace();
                     showErrorDialog(getString(R.string.error_message_login));
+                    spinningIconDialog.dismiss();
                 } catch (EmptyCredentialsException ece) {
                     Log.e(TAG, ece.toString());
                     ece.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message_login));
+                    showErrorDialog(getString(R.string.error_message_empty_credentials));
+                    spinningIconDialog.dismiss();
                 }
             }
         });
