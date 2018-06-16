@@ -7,7 +7,6 @@ import android.util.Log;
 import com.blueprint.foe.beetracker.Exceptions.EmptyCredentialsException;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.Submission;
-import com.facebook.AccessToken;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;

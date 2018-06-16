@@ -14,12 +14,7 @@ import android.widget.TextView;
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.Exceptions.EmptyCredentialsException;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 
 import java.io.IOException;
 
