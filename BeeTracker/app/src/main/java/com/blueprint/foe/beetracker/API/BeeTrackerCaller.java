@@ -64,28 +64,6 @@ public class BeeTrackerCaller {
         // Only the response headers matter for sign in
     }
 
-    public class FacebookSigninRequest {
-        @SerializedName("code")
-        String code;
-
-        FacebookSigninRequest(String code) {
-            this.code = code;
-        }
-    }
-
-    public class FacebookSigninResponse {
-        @SerializedName("token")
-        String token;
-
-        FacebookSigninResponse(String token) {
-            this.token = token;
-        }
-
-        public String getToken() {
-            return token;
-        }
-    }
-
     public class Image {
         @SerializedName("file")
         String file;
@@ -219,16 +197,6 @@ public class BeeTrackerCaller {
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
         return service.emailPasswordAuth(new EmailPasswordSigninRequest(email, password));
-    }
-
-    public Call<FacebookSigninResponse> facebookSignup(AccessToken token) throws IOException{
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.facebookAuth(new FacebookSigninRequest(token.getToken().toString()));
     }
 
     public Call<SubmissionResponse> submit(Submission submission, String token) throws IOException{
