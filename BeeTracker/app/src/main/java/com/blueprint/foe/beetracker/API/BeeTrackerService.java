@@ -21,9 +21,6 @@ public interface  BeeTrackerService {
     @POST("/auth/sign_in")
     Call<BeeTrackerCaller.EmailPasswordSigninResponse> emailPasswordAuth(@Body BeeTrackerCaller.EmailPasswordSigninRequest signinRequest);
 
-    @POST("/auth/facebook")
-    Call<BeeTrackerCaller.FacebookSigninResponse> facebookAuth(@Body BeeTrackerCaller.FacebookSigninRequest token);
-
     @Headers("Content-Type: application/json")
     @POST("/sightings")
     Call<BeeTrackerCaller.SubmissionResponse> submitSighting(@Header("Authorization") String authorization, @Body BeeTrackerCaller.SubmissionRequest submissionRequest);
