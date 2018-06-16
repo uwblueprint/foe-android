@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +37,34 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final EditText emailInput = (EditText) findViewById(R.id.email_input);
+        emailInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                resetInputFieldActiveState(emailInput);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        final EditText passwordInput = (EditText) findViewById(R.id.password_input);
+        passwordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                resetInputFieldActiveState(passwordInput);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         Button emailLoginButton = (Button) findViewById(R.id.email_login_button);
         emailLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     Log.e(TAG, ece.toString());
                     ece.printStackTrace();
                     showErrorDialog(getString(R.string.error_message_empty_credentials));
+                    setInputFieldsActiveStateToError(emailInput, passwordInput);
                     spinningIconDialog.dismiss();
                 }
             }
@@ -68,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     LoginManager.getInstance().logOut();
                     spinningIconDialog.dismiss();
                     showErrorDialog(getString(R.string.error_message_login));
+                    setInputFieldsActiveStateToError(emailInput, passwordInput);
                     return;
                 }
                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -115,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     Log.e(TAG, ece.toString());
                     ece.printStackTrace();
                     showErrorDialog(getString(R.string.error_message_empty_credentials));
+                    setInputFieldsActiveStateToError(emailInput, passwordInput);
                     spinningIconDialog.dismiss();
                 }
             }
@@ -160,6 +195,15 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         args.putString(BeeAlertErrorDialog.ERROR_MESSAGE_KEY, message);
         dialog.setArguments(args);
         dialog.show(getFragmentManager(), "ErrorMessage");
+    }
+
+    private void resetInputFieldActiveState(EditText editText) {
+        ViewCompat.setBackgroundTintList(editText, ColorStateList.valueOf(getResources().getColor(R.color.grassGreen)));
+    }
+
+    private void setInputFieldsActiveStateToError(EditText emailInput, EditText passwordInput) {
+        ViewCompat.setBackgroundTintList(emailInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+        ViewCompat.setBackgroundTintList(passwordInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
     }
 
     @Override
