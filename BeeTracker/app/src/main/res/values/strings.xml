@@ -66,9 +66,6 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="login">Log In</string>
     <string name="signup_with_email">Sign Up With Email</string>
-    <string name="or">Or</string>
-    <string name="continue_as_guest">Login as guest</string>
-    <string name="signin_with_facebook">Sign in with Facebook</string>
     <string name="great_bumblebee_count">The Great Bumblebee Count</string>
     <string name="foe_presents">Friends of Earth Canada Presents</string>
     <string name="error">Error</string>

@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
     private static final String TAG = MainActivity.class.toString();
     private Callback emailPasswordLoginCallback;
     private Callback emailPasswordSignupCallback;
-    private Callback facebookLoginCallback;
-    private CallbackManager facebookCallbackManager;
     private SpinningIconDialog spinningIconDialog;
 
     @Override
@@ -44,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         emailLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSpinningIconDialog();
+                spinningIconDialog = new SpinningIconDialog();
+                spinningIconDialog.show(getFragmentManager(), "SpinningPopup");
 
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
@@ -84,7 +83,11 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
 
             @Override
             public void onFailure(Call<BeeTrackerCaller.EmailPasswordSigninResponse> call, Throwable t) {
-                handleLoginFailure("email password", t);
+                Log.e(TAG, "There was an error with the login callback + " + t.toString());
+                t.printStackTrace();
+                LoginManager.getInstance().logOut();
+                spinningIconDialog.dismiss();
+                showErrorDialog(getString(R.string.error_message_login));
             }
         };
 
@@ -137,84 +140,6 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                 // Do nothing
             }
         });
-
-        LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
-        facebookLoginButton.setReadPermissions("email");
-        // Other app specific specialization
-
-        // Callback registration
-        facebookCallbackManager = CallbackManager.Factory.create();
-        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showSpinningIconDialog();
-            }
-        });
-        facebookLoginButton.registerCallback(facebookCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-
-                BeeTrackerCaller caller = new BeeTrackerCaller();
-                try {
-                    Call<BeeTrackerCaller.FacebookSigninResponse> token = caller.facebookSignup(loginResult.getAccessToken());
-                    token.enqueue(facebookLoginCallback);
-                } catch (IOException e) {
-                    Log.e(TAG, e.toString());
-                    e.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message_login));
-                }
-            }
-
-            @Override
-            public void onCancel() {}
-
-            @Override
-            public void onError(FacebookException exception) {
-                Log.e(TAG, "There was an error on Facebook login. " + exception.toString());
-                exception.printStackTrace();
-                showErrorDialog(getString(R.string.error_message_login));
-            }
-        });
-
-        facebookLoginCallback = new Callback<BeeTrackerCaller.FacebookSigninResponse>() {
-            @Override
-            public void onResponse(Call<BeeTrackerCaller.FacebookSigninResponse> call, Response<BeeTrackerCaller.FacebookSigninResponse> response) {
-                if (response.code() == 401 || response.body() == null ||  response.body().getToken() == null) {
-                    Log.e(TAG, "The response from the server is 401 + " + response.message());
-                    LoginManager.getInstance().logOut();
-                    spinningIconDialog.dismiss();
-                    showErrorDialog(getString(R.string.error_message_login));
-                    return;
-                }
-                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                sharedPref.edit().putString(getString(R.string.preference_login_token), response.body().getToken()).commit();
-                navigateToHome();
-            }
-
-            @Override
-            public void onFailure(Call<BeeTrackerCaller.FacebookSigninResponse> call, Throwable t) {
-                handleLoginFailure("facebook", t);
-            }
-        };
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void showSpinningIconDialog() {
-        spinningIconDialog = new SpinningIconDialog();
-        spinningIconDialog.show(getFragmentManager(), "SpinningPopup");
-    }
-
-    private void handleLoginFailure(String failureType, Throwable t) {
-        Log.e(TAG, "There was an error with the " + failureType + " login callback + " + t.toString());
-        t.printStackTrace();
-        LoginManager.getInstance().logOut();
-        spinningIconDialog.dismiss();
-        showErrorDialog(getString(R.string.error_message_login));
     }
 
     private void navigateToHome() {

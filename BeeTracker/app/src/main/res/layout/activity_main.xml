@@ -9,6 +9,27 @@
     android:gravity="center_vertical"
     tools:context="com.blueprint.foe.beetracker.MainActivity">
 
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/leftLoginGuideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.10"/>
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rightLoginGuideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.90"/>
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputFieldsTopGuideline"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35"/>
+
     <ImageView
         android:id="@+id/greyBackground"
         android:layout_width="@dimen/zero"
@@ -32,8 +53,8 @@
         android:id="@+id/beeAppLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/big_padding"
         android:src="@mipmap/bee_app_logo_right"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/foePresents"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -42,7 +63,7 @@
         android:id="@+id/foePresents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/small_padding"
+        android:layout_marginTop="@dimen/big_padding"
         android:text="@string/foe_presents"
         android:textColor="@color/subheadingTextColour"
         android:textSize="@dimen/small_text_size"
@@ -54,42 +75,22 @@
         android:id="@+id/greatBumblebeeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_padding"
         android:layout_marginBottom="@dimen/small_padding"
         android:text="@string/great_bumblebee_count"
         android:textColor="@color/black"
         android:textSize="@dimen/big_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/emailPasswordTopGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/inputFieldsTopGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/leftLoginGuideline"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.10"/>
-
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rightLoginGuideline"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.90"/>
-
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/emailPasswordTopGuideline"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.30"/>
-
     <RelativeLayout
-        android:id="@+id/emailPasswordRelativeLayout"
-        android:layout_width="0dp"
+        android:id="@+id/inputFieldsRelativeLayout"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
         app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/emailPasswordTopGuideline">
+        app:layout_constraintTop_toBottomOf="@+id/inputFieldsTopGuideline">
 
         <TextView
             android:id="@+id/email_label"
@@ -154,11 +155,21 @@
             android:textColor="@color/lightGrey"
             android:textSize="@dimen/forgot_password_text_size" />
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/loginAndSignupButtonsRelativeLayout"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_padding"
+        app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
+        app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/inputFieldsRelativeLayout">
+
         <android.support.v7.widget.CardView
             android:id="@+id/emailLoginCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/password_input"
             android:layout_marginTop="@dimen/medium_small_padding"
             app:cardCornerRadius="@dimen/login_button_corner_radius">
 
@@ -190,46 +201,4 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/or"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/or"
-        android:textColor="@color/subheadingTextColour"
-        android:textSize="@dimen/medium_text_size"
-        app:layout_constraintTop_toBottomOf="@+id/emailPasswordRelativeLayout"
-        app:layout_constraintBottom_toTopOf="@+id/facebookLoginCardView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottomGuideline"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95"/>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/facebookLoginCardView"
-        android:layout_width="@dimen/zero"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_padding"
-        android:layout_centerHorizontal="true"
-        app:cardCornerRadius="@dimen/login_button_corner_radius"
-        app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
-        app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
-        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline">
-
-        <com.facebook.login.widget.LoginButton xmlns:facebook="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/facebook_login_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="@dimen/medium_padding"
-            android:paddingBottom="@dimen/medium_padding"
-            android:paddingLeft="@dimen/facebook_login_side_padding"
-            android:paddingRight="@dimen/facebook_login_side_padding"
-            android:textSize="@dimen/medium_text_size"
-            facebook:com_facebook_login_text="@string/signin_with_facebook" />
-    </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>
