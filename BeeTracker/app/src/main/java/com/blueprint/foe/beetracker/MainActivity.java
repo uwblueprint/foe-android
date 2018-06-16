@@ -98,11 +98,13 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                spinningIconDialog = new SpinningIconDialog();
+                spinningIconDialog.show(getFragmentManager(), "SpinningPopup");
+
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
                     String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
                     String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
-
                     Call<BeeTrackerCaller.EmailPasswordSignupResponse> call = caller.emailPasswordSignup(email, password);
                     call.enqueue(emailPasswordSignupCallback);
 
@@ -112,9 +114,13 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
                     e.printStackTrace();
+                    showErrorDialog(getString(R.string.error_message_signup));
+                    spinningIconDialog.dismiss();
                 } catch (EmptyCredentialsException ece) {
                     Log.e(TAG, ece.toString());
                     ece.printStackTrace();
+                    showErrorDialog(getString(R.string.error_message_signup));
+                    spinningIconDialog.dismiss();
                 }
             }
         });
@@ -125,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                 if (response.code() == 401 || response.body() == null) {
                     Log.e(TAG, "The response from the server is 401 + " + response.message());
                     LoginManager.getInstance().logOut();
+                    spinningIconDialog.dismiss();
+                    showErrorDialog(getString(R.string.error_message_signup));
                     return;
                 }
             }
