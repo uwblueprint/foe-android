@@ -18,7 +18,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         String token = sharedPref.getString(getString(R.string.preference_login_token), "");
-        Log.d(TAG, token);
         Intent intent = null;
         if (token.isEmpty()) {
             intent = new Intent(this, MainActivity.class);
