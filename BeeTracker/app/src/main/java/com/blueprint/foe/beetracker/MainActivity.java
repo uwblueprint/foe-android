@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.Exceptions.EmptyCredentialsException;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
-import com.facebook.login.LoginManager;
 
 import java.io.IOException;
 
@@ -82,13 +81,11 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     Log.e(TAG, e.toString());
                     e.printStackTrace();
                     showErrorDialog(getString(R.string.error_message_login));
-                    spinningIconDialog.dismiss();
                 } catch (EmptyCredentialsException ece) {
                     Log.e(TAG, ece.toString());
                     ece.printStackTrace();
                     showErrorDialog(getString(R.string.error_message_empty_credentials));
                     setInputFieldsActiveStateToError(emailInput, passwordInput);
-                    spinningIconDialog.dismiss();
                 }
             }
         });
@@ -98,8 +95,6 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             public void onResponse(Call<BeeTrackerCaller.EmailPasswordSigninResponse> call, Response<BeeTrackerCaller.EmailPasswordSigninResponse> response) {
                 if (response.code() == 401 || response.headers() == null) {
                     Log.e(TAG, "The response from the server is 401 + " + response.message());
-                    LoginManager.getInstance().logOut();
-                    spinningIconDialog.dismiss();
                     showErrorDialog(getString(R.string.error_message_login));
                     setInputFieldsActiveStateToError(emailInput, passwordInput);
                     return;
@@ -117,8 +112,6 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             public void onFailure(Call<BeeTrackerCaller.EmailPasswordSigninResponse> call, Throwable t) {
                 Log.e(TAG, "There was an error with the login callback + " + t.toString());
                 t.printStackTrace();
-                LoginManager.getInstance().logOut();
-                spinningIconDialog.dismiss();
                 showErrorDialog(getString(R.string.error_message_login));
             }
         };
@@ -144,13 +137,11 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     Log.e(TAG, e.toString());
                     e.printStackTrace();
                     showErrorDialog(getString(R.string.error_message_signup));
-                    spinningIconDialog.dismiss();
                 } catch (EmptyCredentialsException ece) {
                     Log.e(TAG, ece.toString());
                     ece.printStackTrace();
                     showErrorDialog(getString(R.string.error_message_empty_credentials));
                     setInputFieldsActiveStateToError(emailInput, passwordInput);
-                    spinningIconDialog.dismiss();
                 }
             }
         });
@@ -160,8 +151,6 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             public void onResponse(Call<BeeTrackerCaller.EmailPasswordSignupResponse> call, Response<BeeTrackerCaller.EmailPasswordSignupResponse> response) {
                 if (response.code() == 401 || response.body() == null) {
                     Log.e(TAG, "The response from the server is 401 + " + response.message());
-                    LoginManager.getInstance().logOut();
-                    spinningIconDialog.dismiss();
                     showErrorDialog(getString(R.string.error_message_signup));
                     return;
                 }
@@ -190,6 +179,9 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
     }
 
     private void showErrorDialog(String message) {
+        if (spinningIconDialog != null) {
+            spinningIconDialog.dismiss();
+        }
         BeeAlertErrorDialog dialog = new BeeAlertErrorDialog();
         Bundle args = new Bundle();
         args.putString(BeeAlertErrorDialog.ERROR_MESSAGE_KEY, message);
