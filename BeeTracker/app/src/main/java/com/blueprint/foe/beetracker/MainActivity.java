@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("email");
-        // other app specific specialization
+        // Other app specific specialization
 
         // Callback registration
         callbackManager = CallbackManager.Factory.create();

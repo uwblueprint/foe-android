@@ -6,12 +6,13 @@ import android.util.Log;
 import java.util.Date;
 
 /**
- * Represents the data object that contains all information related to submission.
+ * Represents the data object that contains all information related to submission, as it's being
+ * built up by the user. It extends Submission with a Bitmap and image file path.
  */
 public class CurrentSubmission extends Submission {
     private static final String TAG = CurrentSubmission.class.toString();
-    protected transient Bitmap mBitmap = null;
-    protected String mImageFilePath = null;
+    private transient Bitmap mBitmap = null;
+    private String mImageFilePath = null;
 
     @Override
     public boolean equals(Object other) {
@@ -27,17 +28,6 @@ public class CurrentSubmission extends Submission {
                     || this.mImageFilePath != null && this.mImageFilePath.equals(that.mImageFilePath))
                 && ((this.mBitmap == null && that.mBitmap == null)
                     || this.mBitmap != null && that.mBitmap != null && this.mBitmap.equals(that.mBitmap));
-//        return this.mSpecies == that.mSpecies
-//                && this.mSpeciesType == that.mSpeciesType
-//                && this.mHabitat == that.mHabitat
-//                && this.mWeather == that.mWeather
-//                && this.mImageFilePath == that.mImageFilePath
-//                && ((this.mDate == null && that.mDate == null)
-//                    || this.mDate != null && that.mDate != null && this.mDate.equals(that.mDate))
-//                && ((this.mBitmap == null && that.mBitmap == null)
-//                    || this.mBitmap != null && that.mBitmap != null && this.mBitmap.equals(that.mBitmap))
-//                && ((this.mPlace == null && that.mPlace == null)
-//                    || this.mPlace != null && that.mPlace != null && this.mPlace.equals(that.mPlace));
     }
 
 
@@ -72,11 +62,4 @@ public class CurrentSubmission extends Submission {
     public boolean isComplete() {
         return super.isComplete() && mBitmap != null;
     }
-
-    /* For debug only */
-    public void print() {
-        Log.d(TAG, "Species: " + mSpecies + ", Habitat: " + mHabitat + ", Weather: " + mWeather);
-        Log.d(TAG, "Location: " + mPlace);
-    }
-
 }

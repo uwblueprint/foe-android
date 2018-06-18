@@ -5,20 +5,17 @@ import com.google.android.gms.location.places.Place;
 import java.util.Date;
 
 /**
- * Created by luisa on 2018-04-09.
+ * Abstract class for common methods between a submission being built up (CurrentSubmission) and
+ * the submissions returned from the server (CompletedSubmission)
  */
-
 public abstract class Submission {
-    // TODO: accept user input for Date
-    protected Date mDate = null;
-    protected BeeSpeciesType mSpeciesType = null;
-    protected Species mSpecies = null;
-    protected Habitat mHabitat = null;
-    protected Weather mWeather = null;
-    protected Place mPlace = null;
-
-    //@Override
-    //public abstract boolean equals(Object other);
+    // TODO: accept user input for Date https://github.com/uwblueprint/foe/issues/75
+    private Date mDate = null;
+    private BeeSpeciesType mSpeciesType = null;
+    private Species mSpecies = null;
+    private Habitat mHabitat = null;
+    private Weather mWeather = null;
+    private Place mPlace = null;
 
     @Override
     public boolean equals(Object other) {

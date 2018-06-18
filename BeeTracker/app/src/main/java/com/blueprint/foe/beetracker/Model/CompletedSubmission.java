@@ -35,16 +35,5 @@ public class CompletedSubmission extends Submission {
                 && this.mId == that.mId
                 && (this.mImageUrl == null && that.mImageUrl == null)
                     || (this.mImageUrl != null && this.mImageUrl.equals(that.mImageUrl));
-
-//        return this.mSpecies == that.mSpecies
-//                && this.mSpeciesType == that.mSpeciesType
-//                && this.mHabitat == that.mHabitat
-//                && this.mWeather == that.mWeather
-//                && this.mId == that.mId
-//                && this.mImageUrl == that.mImageUrl
-//                && ((this.mDate == null && that.mDate == null)
-//                || this.mDate != null && that.mDate != null && this.mDate.equals(that.mDate))
-//                && ((this.mPlace == null && that.mPlace == null)
-//                || this.mPlace != null && that.mPlace != null && this.mPlace.equals(that.mPlace));
     }
 }

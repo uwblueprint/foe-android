@@ -42,8 +42,8 @@ public class HomePageActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
-        TextView learnButton = (TextView) findViewById(R.id.buttonHistory);
-        learnButton.setOnClickListener(new OnClickListener() {
+        TextView historyButton = (TextView) findViewById(R.id.buttonHistory);
+        historyButton.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
                 Intent myIntent = new Intent(HomePageActivity.this,
                         HistoryActivity.class);

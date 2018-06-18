@@ -71,6 +71,9 @@ public class StorageAccessor {
         return loadSubmission(fis);
     }
 
+    /*
+     * Temporary method used to generate fake data to display on the UI.
+     */
     public static SubmissionCollection loadSubmissions(int count) throws IOException {
         SubmissionCollection submissions = new SubmissionCollection();
         for (int i = 0; i < count; i++) {
