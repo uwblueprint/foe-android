@@ -146,7 +146,9 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         submitCallback = new Callback<BeeTrackerCaller.SubmissionResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.SubmissionResponse> call, Response<BeeTrackerCaller.SubmissionResponse> response) {
-                spinningIconDialog.dismiss();
+                if (spinningIconDialog != null) {
+                    spinningIconDialog.dismiss();
+                }
                 if (response.code() == 401 || response.code() == 422 || response.body() == null) {
                     Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
                     showErrorDialog(getString(R.string.error_message_submit));
@@ -160,7 +162,9 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             public void onFailure(Call<BeeTrackerCaller.SubmissionResponse> call, Throwable t) {
                 Log.e(TAG, "There was an error with the submitCallback + " + t.toString());
                 t.printStackTrace();
-                spinningIconDialog.dismiss();
+                if (spinningIconDialog != null) {
+                    spinningIconDialog.dismiss();
+                }
                 showErrorDialog(getString(R.string.error_message_submit));
             }
         };
