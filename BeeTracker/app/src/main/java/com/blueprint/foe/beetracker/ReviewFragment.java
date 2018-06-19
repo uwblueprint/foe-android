@@ -104,6 +104,9 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                 Log.d(TAG, "nothing selected");
             }
         });
+        if (submission.getWeather() != null) {
+            mWeatherSpinner.setSelection(submission.getWeather().ordinal());
+        }
 
         mHabitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
         final Submission.Habitat[] habitats = Submission.Habitat.values();
@@ -122,6 +125,9 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+        if (submission.getHabitat() != null) {
+            mHabitatSpinner.setSelection(submission.getHabitat().ordinal());
+        }
 
         mCardView = (CardView) view.findViewById(R.id.card_view);
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -141,6 +147,9 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                 Log.e(TAG, "An error occurred: " + status);
             }
         });
+        if (submission.getLocation() != null) {
+            autocompleteFragment.setText(submission.getLocation().getName());
+        }
 
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
         submitCallback = new Callback<BeeTrackerCaller.SubmissionResponse>() {
