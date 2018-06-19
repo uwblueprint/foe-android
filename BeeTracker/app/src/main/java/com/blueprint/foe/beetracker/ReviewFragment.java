@@ -155,6 +155,12 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                     return;
                 }
                 Log.d(TAG, "The response body: " + response.body());
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().putString(getString(R.string.preference_login_token), response.headers().get("access-token")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_token_type), response.headers().get("token-type")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
                 fragment.launchPopup();
             }
 
@@ -201,8 +207,11 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         try {
             SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
             String accessToken = sharedPref.getString(getString(R.string.preference_login_token), null);
+            String tokenType = sharedPref.getString(getString(R.string.preference_login_token_type), null);
+            String client = sharedPref.getString(getString(R.string.preference_login_client), null);
+            String uid = sharedPref.getString(getString(R.string.preference_login_uid), null);
             Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
-            Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken);
+            Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken, tokenType, client, uid);
             token.enqueue(submitCallback);
         } catch (IOException e) {
             Log.e(TAG, e.toString());

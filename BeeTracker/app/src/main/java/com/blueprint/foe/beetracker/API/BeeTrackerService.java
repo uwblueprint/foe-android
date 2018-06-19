@@ -22,5 +22,5 @@ public interface  BeeTrackerService {
 
     @Headers("Content-Type: application/json")
     @POST("/sightings")
-    Call<BeeTrackerCaller.SubmissionResponse> submitSighting(@Header("Authorization") String authorization, @Body BeeTrackerCaller.SubmissionRequest submissionRequest);
+    Call<BeeTrackerCaller.SubmissionResponse> submitSighting(@Header("access-token") String accessToken, @Header("token-type") String tokenType, @Header("client") String client, @Header("uid") String uid, @Body BeeTrackerCaller.SubmissionRequest submissionRequest);
 }
