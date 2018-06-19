@@ -33,34 +33,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal">
-                <TextView
-                    android:id="@+id/buttonSubmit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/medium_padding"
-                    android:paddingBottom="@dimen/medium_padding"
-                    android:paddingEnd="@dimen/medium_padding"
-                    android:paddingStart="@dimen/medium_padding"
-                    android:drawableStart="@mipmap/submit_grey_icon"
-                    android:drawablePadding="@dimen/small_padding"
-                    android:gravity="center|center_vertical"
-                    android:textColor="@color/mediumDarkGrey"
-                    android:text="@string/submit" />
+        <TextView
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/medium_padding"
+            android:paddingBottom="@dimen/medium_padding"
+            android:paddingEnd="@dimen/medium_padding"
+            android:paddingStart="@dimen/medium_padding"
+            android:drawableStart="@mipmap/submit_grey_icon"
+            android:drawablePadding="@dimen/small_padding"
+            android:gravity="center|center_vertical"
+            android:textColor="@color/mediumDarkGrey"
+            android:text="@string/submit" />
         </RelativeLayout>
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/learn"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:drawableStart="@mipmap/lightbulb_grey_icon"-->
-            <!--android:drawablePadding="@dimen/small_padding"-->
-            <!--android:paddingTop="@dimen/medium_padding"-->
-            <!--android:paddingBottom="@dimen/medium_padding"-->
-            <!--android:paddingEnd="@dimen/medium_padding"-->
-            <!--android:paddingStart="@dimen/medium_padding"-->
-            <!--android:textColor="@color/mediumDarkGrey"-->
-            <!--android:id="@+id/buttonLearn"/>-->
     </LinearLayout>
     <View
         android:layout_above="@id/navBar"
