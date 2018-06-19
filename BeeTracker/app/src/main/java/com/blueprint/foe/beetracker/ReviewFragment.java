@@ -57,13 +57,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             @Override
             public void onClick(View view) {
                 // check all fields are completed
+                fragment.launchSpinnerPopup();
                 SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
                 Submission submission = submissionInterface.getSubmission();
                 if (!submission.isComplete()) {
                     setErrorFields(submission);
+                    removeSpinnerPopup();
                     return;
                 }
-                fragment.launchSpinnerPopup();
                 submitToServer();
             }
         });
@@ -147,15 +148,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         submitCallback = new Callback<BeeTrackerCaller.SubmissionResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.SubmissionResponse> call, Response<BeeTrackerCaller.SubmissionResponse> response) {
-                if (spinningIconDialog != null) {
-                    spinningIconDialog.dismiss();
-                }
+                removeSpinnerPopup();
                 if (response.code() == 401) {
                     Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
                     getActivity().finish();
-                    Toast.makeText(getActivity(), "Sorry, you've been logged out.", Toast.LENGTH_LONG);
+                    Toast.makeText(getActivity(), "Sorry, you've been logged out.", Toast.LENGTH_LONG).show();
+                    return;
                 }
                 SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 sharedPref.edit().putString(getString(R.string.preference_login_token), response.headers().get("access-token")).commit();
@@ -176,9 +176,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             public void onFailure(Call<BeeTrackerCaller.SubmissionResponse> call, Throwable t) {
                 Log.e(TAG, "There was an error with the submitCallback + " + t.toString());
                 t.printStackTrace();
-                if (spinningIconDialog != null) {
-                    spinningIconDialog.dismiss();
-                }
+                removeSpinnerPopup();
                 showErrorDialog(getString(R.string.error_message_submit));
             }
         };
@@ -208,6 +206,12 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     private void launchSpinnerPopup() {
         spinningIconDialog = new SpinningIconDialog();
         spinningIconDialog.show(getActivity().getFragmentManager(), "SpinningPopup");
+    }
+
+    private void removeSpinnerPopup() {
+        if (spinningIconDialog != null) {
+            spinningIconDialog.dismiss();
+        }
     }
 
     private void submitToServer() {
