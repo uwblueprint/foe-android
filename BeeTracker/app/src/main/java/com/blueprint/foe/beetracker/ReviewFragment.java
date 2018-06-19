@@ -2,6 +2,7 @@ package com.blueprint.foe.beetracker;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -149,18 +150,25 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                 if (spinningIconDialog != null) {
                     spinningIconDialog.dismiss();
                 }
-                if (response.code() == 401 || response.code() == 422 || response.body() == null) {
+                if (response.code() == 401) {
                     Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
-                    showErrorDialog(getString(R.string.error_message_submit));
-                    return;
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                    Toast.makeText(getActivity(), "Sorry, you've been logged out.", Toast.LENGTH_LONG);
                 }
-                Log.d(TAG, "The response body: " + response.body());
                 SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 sharedPref.edit().putString(getString(R.string.preference_login_token), response.headers().get("access-token")).commit();
                 sharedPref.edit().putString(getString(R.string.preference_login_token_type), response.headers().get("token-type")).commit();
                 sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
                 sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
                 sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
+                if (response.code() == 422 || response.body() == null) {
+                    Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
+                    showErrorDialog(getString(R.string.error_message_submit));
+                    return;
+                }
+                Log.d(TAG, "The response body: " + response.body());
                 fragment.launchPopup();
             }
 
