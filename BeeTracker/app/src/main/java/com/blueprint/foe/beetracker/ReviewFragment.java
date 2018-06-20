@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +24,17 @@ import android.widget.Toast;
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Model.Submission;
+import com.blueprint.foe.beetracker.Model.WeatherOption;
+import com.blueprint.foe.beetracker.Model.WeatherPickerAdapter;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,11 +47,12 @@ import retrofit2.Response;
 public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
     private static final String TAG = ReviewFragment.class.toString();
     private Spinner mHabitatSpinner;
-    private Spinner mWeatherSpinner;
     private CardView mCardView;
     private TextView mErrorMessage;
     private Callback submitCallback;
     private SpinningIconDialog spinningIconDialog;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,26 +92,11 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         preview.setImageBitmap(scaled);
 
         // Set up interactive UI elements (spinner, location picker)
-        // TODO (https://github.com/uwblueprint/foe/issues/32) : Set up an adapter that extends partsPickerAdapter
-        mWeatherSpinner = (Spinner) view.findViewById(R.id.weather_spinner);
-        final Submission.Weather[] weathers = Submission.Weather.values();
-        ArrayAdapter<Submission.Weather> weatherAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, weathers);
-        weatherAdapter.setDropDownViewResource(R.layout.spinner_item);
-        mWeatherSpinner.setAdapter(weatherAdapter);
-        mWeatherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int item = (int) mWeatherSpinner.getSelectedItemId();
-                submission.setWeather(weathers[item]);
-                resetErrorFields(submission);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                Log.d(TAG, "nothing selected");
-            }
-        });
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(createAdapter(submission));
 
         mHabitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
         final Submission.Habitat[] habitats = Submission.Habitat.values();
@@ -234,8 +227,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         if (submission.getHabitat() == null || submission.getHabitat() == Submission.Habitat.Default) {
             mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background_error);
         }
-        if (submission.getWeather() == null || submission.getWeather() == Submission.Weather.Default) {
-            mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background_error);
+        if (submission.getWeather() == null) {
+            mRecyclerView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.errorRed));
         }
         if (submission.getLocation() == null) {
             mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.errorRed));
@@ -249,8 +242,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         if (submission.getHabitat() != null && submission.getHabitat() != Submission.Habitat.Default) {
             mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background);
         }
-        if (submission.getWeather() != null && submission.getWeather() != Submission.Weather.Default) {
-            mWeatherSpinner.setBackgroundResource(R.drawable.spinner_background);
+        if (submission.getWeather() != null) {
+            mRecyclerView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
         }
         if (submission.getLocation() != null) {
             mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
@@ -273,5 +266,21 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         } else if (id == NORMAL_DIALOG) {
             getActivity().finish();
         }
+    }
+
+    private WeatherPickerAdapter createAdapter(Submission submission) {
+        int[] weatherAssets = {R.mipmap.weather_sunny, R.mipmap.weather_partly_cloudy, R.mipmap.weather_cloudy, R.mipmap.weather_rainy};
+        List<Submission.Weather> weatherOptionEnums = Arrays.asList(Submission.Weather.values());
+
+        List<WeatherOption> weatherOptions = new ArrayList<>();
+        for (int i = 0; i < weatherAssets.length; i++) {
+            weatherOptions.add(new WeatherOption(weatherOptionEnums.get(i), weatherAssets[i]));
+        }
+
+        if (submission.getWeather() != null) {
+            weatherOptions.get(weatherOptionEnums.indexOf(submission.getWeather())).setSelection(true);
+        }
+
+        return new WeatherPickerAdapter(weatherOptions);
     }
 }
