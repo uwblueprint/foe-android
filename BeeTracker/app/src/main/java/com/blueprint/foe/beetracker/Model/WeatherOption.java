@@ -25,9 +25,6 @@ public class WeatherOption {
         this.drawable = drawable;
     }
 
-    // Moved this method from the constructor to here because we were getting OutOfMemory error.
-    // This is an OK fix, but we should investigate different ways of storing all these images in
-    // memory and compressing them. TODO: https://github.com/uwblueprint/foe/issues/51
     public Drawable getDrawable(Context context) {
         return ContextCompat.getDrawable(context, drawable);
     }

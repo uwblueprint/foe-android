@@ -27,7 +27,6 @@ import java.util.List;
  */
 public class WeatherPickerAdapter extends RecyclerView.Adapter<WeatherPickerAdapter.ViewHolder> {
     private static String TAG = WeatherPickerAdapter.class.toString();
-    private static int SIZE = 80;
     private List<WeatherOption> mWeatherOptions;
 
     @Override
