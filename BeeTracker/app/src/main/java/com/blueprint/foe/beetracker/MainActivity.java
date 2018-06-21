@@ -1,5 +1,7 @@
 package com.blueprint.foe.beetracker;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -120,29 +122,13 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                spinningIconDialog = new SpinningIconDialog();
-                spinningIconDialog.show(getFragmentManager(), "SpinningPopup");
-
-                BeeTrackerCaller caller = new BeeTrackerCaller();
-                try {
-                    String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
-                    String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
-                    Call<BeeTrackerCaller.EmailPasswordSignupResponse> call = caller.emailPasswordSignup(email, password);
-                    call.enqueue(emailPasswordSignupCallback);
-
-                    SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                    sharedPref.edit().putString(getString(R.string.signup_email), email).commit();
-                    sharedPref.edit().putString(getString(R.string.signup_password), password).commit();
-                } catch (IOException e) {
-                    Log.e(TAG, e.toString());
-                    e.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message_signup));
-                } catch (EmptyCredentialsException ece) {
-                    Log.e(TAG, ece.toString());
-                    ece.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message_empty_credentials));
-                    setInputFieldsActiveStateToError(emailInput, passwordInput);
-                }
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                SignUpFragment signUpFragment = new SignUpFragment();
+                fragmentTransaction.add(R.id.fragment_container, signUpFragment);
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
