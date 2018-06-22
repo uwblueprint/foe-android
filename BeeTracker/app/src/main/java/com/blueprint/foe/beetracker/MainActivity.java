@@ -29,7 +29,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements BeeAlertDialogListener {
     private static final String TAG = MainActivity.class.toString();
     private Callback emailPasswordLoginCallback;
-    private Callback emailPasswordSignupCallback;
     private SpinningIconDialog spinningIconDialog;
 
     @Override
