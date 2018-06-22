@@ -1,6 +1,5 @@
 package com.blueprint.foe.beetracker;
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -122,32 +121,20 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
+                String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
+
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().putString(getString(R.string.signup_email), email).commit();
+                sharedPref.edit().putString(getString(R.string.signup_password), password).commit();
+
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 SignUpFragment signUpFragment = new SignUpFragment();
-                fragmentTransaction.add(R.id.fragment_container, signUpFragment);
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
+                fragmentTransaction.replace(R.id.constraintLayout, signUpFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
-
-        emailPasswordSignupCallback = new Callback<BeeTrackerCaller.EmailPasswordSignupResponse>() {
-            @Override
-            public void onResponse(Call<BeeTrackerCaller.EmailPasswordSignupResponse> call, Response<BeeTrackerCaller.EmailPasswordSignupResponse> response) {
-                if (response.code() == 401 || response.body() == null) {
-                    Log.e(TAG, "The response from the server is 401 + " + response.message());
-                    showErrorDialog(getString(R.string.error_message_signup));
-                    return;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BeeTrackerCaller.EmailPasswordSignupResponse> call, Throwable t) {
-                Log.e(TAG, "There was an error with the email password signup callback + " + t.toString());
-                t.printStackTrace();
-            }
-        };
 
         TextView forgotPasswordButton = (TextView) findViewById(R.id.forgot_password);
         forgotPasswordButton.setOnClickListener(new View.OnClickListener() {

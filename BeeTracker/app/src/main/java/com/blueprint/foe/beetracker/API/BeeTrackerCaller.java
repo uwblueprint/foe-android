@@ -31,6 +31,9 @@ public class BeeTrackerCaller {
     private static final String TAG = BeeTrackerCaller.class.toString();
 
     public class EmailPasswordSignupRequest {
+        @SerializedName("name")
+        String name;
+
         @SerializedName("email")
         String email;
 
@@ -40,7 +43,8 @@ public class BeeTrackerCaller {
         @SerializedName("confirm_success_url")
         String successUrl;
 
-        EmailPasswordSignupRequest(String email, String password, String successUrl) {
+        EmailPasswordSignupRequest(String name, String email, String password, String successUrl) {
+            this.name = name;
             this.email = email;
             this.password = password;
             this.successUrl = successUrl;
@@ -175,7 +179,7 @@ public class BeeTrackerCaller {
     public static final String API_URL = "https://foe-api.herokuapp.com/";
     public static final String DEFAULT_SIGNUP_SUCCESS_URL = "http://foecanada.org/";
 
-    public Call<EmailPasswordSignupResponse> emailPasswordSignup(String email, String password) throws IOException, EmptyCredentialsException{
+    public Call<EmailPasswordSignupResponse> emailPasswordSignup(String name, String email, String password) throws IOException, EmptyCredentialsException{
         if (email.isEmpty() || password.isEmpty()) {
             throw new EmptyCredentialsException();
         }
@@ -187,7 +191,7 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.emailPasswordSignup(new EmailPasswordSignupRequest(email, password, DEFAULT_SIGNUP_SUCCESS_URL));
+        return service.emailPasswordSignup(new EmailPasswordSignupRequest(name, email, password, DEFAULT_SIGNUP_SUCCESS_URL));
     }
 
     public Call<EmailPasswordSigninResponse> emailPasswordSignin(String email, String password) throws IOException, EmptyCredentialsException{

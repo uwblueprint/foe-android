@@ -37,6 +37,7 @@
         android:layout_marginTop="@dimen/signup_title_top_padding"
         android:text="@string/signup"
         android:textColor="@color/black"
+        android:textStyle="bold"
         android:textSize="@dimen/big_text_size"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@id/leftSignupGuideline"
@@ -178,7 +179,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/SignupButtonsRelativeLayout"
+        android:id="@+id/SignupButtonRelativeLayout"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/signup_button_bottom_padding"
@@ -196,11 +197,12 @@
             android:gravity="center_horizontal" />
 
         <android.support.v7.widget.CardView
-            android:id="@+id/emailLoginCardView"
+            android:id="@+id/signupCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/agreement_acknowledgement"
             android:layout_marginTop="@dimen/medium_padding"
+            android:layout_marginBottom="@dimen/small_padding"
             app:cardCornerRadius="@dimen/login_signup_button_corner_radius">
 
             <Button
