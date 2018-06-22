@@ -53,11 +53,11 @@
         android:id="@+id/contentRelativeLayout"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/confirm_email_top_padding"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintEnd_toEndOf="@id/rightConfirmEmailGuideline"
-        app:layout_constraintStart_toStartOf="@+id/leftConfirmEmailGuideline">
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/leftConfirmEmailGuideline"
+        app:layout_constraintEnd_toEndOf="@id/rightConfirmEmailGuideline">
 
         <ImageView
             android:id="@+id/confirmationEmailIllustration"
