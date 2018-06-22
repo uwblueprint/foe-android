@@ -53,6 +53,8 @@
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/confirm_email_top_padding"
+        app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintEnd_toEndOf="@id/rightConfirmEmailGuideline"
         app:layout_constraintStart_toStartOf="@+id/leftConfirmEmailGuideline">
 
@@ -70,8 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/confirmationEmailIllustration"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/big_padding"
+            android:layout_centerHorizontal="true"
             android:text="@string/almost_there"
             android:textColor="@color/black"
             android:textSize="@dimen/big_text_size"
@@ -82,8 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/almostThereText"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/small_padding"
+            android:gravity="center_horizontal"
             android:text="@string/confirm_email_description"
             android:textColor="@color/black"
             android:textSize="@dimen/medium_text_size" />
