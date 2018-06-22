@@ -46,15 +46,6 @@ public class HomePageActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
-        TextView learnButton = (TextView) findViewById(R.id.buttonLearn);
-        learnButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View arg0) {
-                Intent myIntent = new Intent(HomePageActivity.this,
-                        LearnActivity.class);
-                myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(myIntent);
-            }
-        });
 
         TextView tvFOE = (TextView) findViewById(R.id.visit_foe);
         tvFOE.setOnClickListener(new OnClickListener() {
