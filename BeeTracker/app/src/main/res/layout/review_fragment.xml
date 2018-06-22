@@ -55,7 +55,9 @@
         android:id="@+id/review_species_identification"
         android:layout_below="@id/review_error_message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp">
         <ImageView
             android:id="@+id/beeImageView"
             android:layout_width="@dimen/identified_species_image_height"
@@ -65,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/identified_species_image_height"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/small_padding"
             android:layout_marginStart="@dimen/big_padding"
             android:layout_marginBottom="@dimen/small_padding"
             android:gravity="center_vertical"
@@ -152,13 +153,15 @@
         android:paddingBottom="@dimen/small_padding"
         android:textColor="@color/subheadingTextColour"
         android:text="@string/weather"/>
-    <Spinner
-        android:id="@+id/weather_spinner"
-        android:layout_below="@id/weather_textview"
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="0dp"
+        android:layout_below="@id/weather_textview"
+        android:paddingStart="16dp"
         android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
         android:paddingEnd="@dimen/small_padding"
-        android:paddingBottom="@dimen/small_padding"/>
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:id="@+id/recyclerView"/>
 </RelativeLayout>

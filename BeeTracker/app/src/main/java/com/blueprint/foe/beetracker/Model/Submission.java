@@ -86,13 +86,11 @@ public class Submission {
     }
 
     public enum Weather {
-        Default, Sunny, Partly_Cloudy, Cloudy, Rain, Windy, Other;
+        Sunny, Partly_Cloudy, Cloudy, Rain;
 
         @Override
         public String toString() {
             switch (this) {
-                case Default:
-                    return "";
                 case Sunny:
                     return "Sunny";
                 case Partly_Cloudy:
@@ -100,11 +98,7 @@ public class Submission {
                 case Cloudy:
                     return "Cloudy";
                 case Rain:
-                    return "Rain";
-                case Windy:
-                    return "Windy";
-                case Other:
-                    return "Other";
+                    return "Rainy";
                 default:
                     return "There was an error.";
             }
@@ -179,7 +173,7 @@ public class Submission {
     }
 
     public boolean isComplete() {
-        return mHabitat != null && mHabitat != Habitat.Default && mWeather != null && mWeather != Weather.Default && mPlace != null && mBitmap != null;
+        return mHabitat != null && mHabitat != Habitat.Default && mWeather != null && mPlace != null && mBitmap != null;
     }
 
     /* For debug only */
