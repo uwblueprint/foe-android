@@ -35,6 +35,7 @@
     <dimen name="login_signup_top_padding">20dp</dimen>
     <dimen name="login_signup_button_side_padding">54dp</dimen>
     <dimen name="login_signup_button_corner_radius">28dp</dimen>
+    <dimen name="login_button_bottom_padding">32dp</dimen>
     <dimen name="signup_title_top_padding">42dp</dimen>
     <dimen name="signup_button_bottom_padding">36dp</dimen>
     <dimen name="confirm_email_top_padding">80dp</dimen>
