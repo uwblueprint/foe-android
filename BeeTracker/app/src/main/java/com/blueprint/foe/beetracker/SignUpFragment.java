@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
-import com.blueprint.foe.beetracker.Exceptions.EmptyCredentialsException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,79 +28,84 @@ import retrofit2.Response;
 public class SignUpFragment extends Fragment {
     private static final String TAG = SignUpFragment.class.toString();
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
+    private TextView mNameLabel;
+    private TextView mEmailLabel;
+    private TextView mPasswordLabel;
+    private TextView mConfirmPasswordLabel;
+    private EditText mNameInput;
+    private EditText mEmailInput;
+    private EditText mPasswordInput;
+    private EditText mConfirmPasswordInput;
     private Callback signupCallback;
     private SpinningIconDialog spinningIconDialog;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                         Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.sign_up_fragment, container, false);
 
-        final EditText nameInput = (EditText) view.findViewById(R.id.name_input);
-        nameInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                resetInputFieldActiveState(nameInput);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        final EditText emailInput = (EditText) view.findViewById(R.id.email_input);
-        emailInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                resetInputFieldActiveState(emailInput);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        final EditText passwordInput = (EditText) view.findViewById(R.id.password_input);
-        passwordInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                resetInputFieldActiveState(passwordInput);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        final EditText confirmPasswordInput = (EditText) view.findViewById(R.id.confirm_password_input);
-        passwordInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                resetInputFieldActiveState(confirmPasswordInput);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+        mNameLabel = (TextView) view.findViewById(R.id.name_label);
+        mEmailLabel = (TextView) view.findViewById(R.id.email_label);
+        mPasswordLabel = (TextView) view.findViewById(R.id.password_label);
+        mConfirmPasswordLabel = (TextView) view.findViewById(R.id.confirm_password_label);
+        mNameInput = (EditText) view.findViewById(R.id.name_input);
+        mEmailInput = (EditText) view.findViewById(R.id.email_input);
+        mPasswordInput = (EditText) view.findViewById(R.id.password_input);
+        mConfirmPasswordInput = (EditText) view.findViewById(R.id.confirm_password_input);
 
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         String signupEmail = sharedPref.getString(getString(R.string.signup_email), null);
         String signupPassword = sharedPref.getString(getString(R.string.signup_password), null);
 
         if (signupEmail != null) {
-            emailInput.setText(signupEmail);
+            mEmailInput.setText(signupEmail);
         }
         if (signupPassword != null) {
-            passwordInput.setText(signupPassword);
+            mPasswordInput.setText(signupPassword);
         }
+
+        mNameInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    setLabelAndFieldToActiveState(mNameLabel);
+                } else {
+                    setLabelAndFieldToInactiveState(mNameLabel);
+                }
+            }
+        });
+
+        mEmailInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    setLabelAndFieldToActiveState(mEmailLabel);
+                } else {
+                    setLabelAndFieldToInactiveState(mEmailLabel);
+                }
+            }
+        });
+
+        mPasswordInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    setLabelAndFieldToActiveState(mPasswordLabel);
+                } else {
+                    setLabelAndFieldToInactiveState(mPasswordLabel);
+                }
+            }
+        });
+
+        mConfirmPasswordInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    setLabelAndFieldToActiveState(mConfirmPasswordLabel);
+                } else {
+                    setLabelAndFieldToInactiveState(mConfirmPasswordLabel);
+                }
+            }
+        });
 
         ImageButton cancelButton = (ImageButton) view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -121,46 +125,37 @@ public class SignUpFragment extends Fragment {
 
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
+                    String name = ((EditText) view.findViewById(R.id.name_input)).getText().toString();
+                    String email = ((EditText) view.findViewById(R.id.email_input)).getText().toString();
                     String password = ((EditText) view.findViewById(R.id.password_input)).getText().toString();
                     String confirmPassword = ((EditText) view.findViewById(R.id.confirm_password_input)).getText().toString();
 
-                    if (!password.equals(confirmPassword)) {
-                        showErrorDialog(getString(R.string.error_message_password_mismatch));
-                        return;
-                    } else if (password.length() < MINIMUM_PASSWORD_LENGTH) {
-                        showErrorDialog(getString(R.string.error_message_password_too_short));
+                    if (!signupFieldsAreValid(name, email, password, confirmPassword)) {
                         return;
                     }
-
-                    String name = ((EditText) view.findViewById(R.id.name_input)).getText().toString();
-                    String email = ((EditText) view.findViewById(R.id.email_input)).getText().toString();
 
                     SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                     sharedPref.edit().putString(getString(R.string.signup_name), name).commit();
                     sharedPref.edit().putString(getString(R.string.signup_email), email).commit();
                     sharedPref.edit().putString(getString(R.string.signup_password), password).commit();
 
-                    Call<BeeTrackerCaller.EmailPasswordSignupResponse> call = caller.emailPasswordSignup(name, email, password);
+                    Call<BeeTrackerCaller.SignUpResponse> call = caller.signUp(name, email, password);
                     call.enqueue(signupCallback);
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
                     e.printStackTrace();
                     showErrorDialog(getString(R.string.error_message_signup));
-                } catch (EmptyCredentialsException ece) {
-                    Log.e(TAG, ece.toString());
-                    ece.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message_empty_credentials));
-                    setInputFieldsActiveStateToError(nameInput, emailInput, passwordInput, confirmPasswordInput);
                 }
             }
         });
 
-        signupCallback = new Callback<BeeTrackerCaller.EmailPasswordSignupResponse>() {
+        signupCallback = new Callback<BeeTrackerCaller.SignUpResponse>() {
             @Override
-            public void onResponse(Call<BeeTrackerCaller.EmailPasswordSignupResponse> call, Response<BeeTrackerCaller.EmailPasswordSignupResponse> response) {
+            public void onResponse(Call<BeeTrackerCaller.SignUpResponse> call, Response<BeeTrackerCaller.SignUpResponse> response) {
                 if (response.code() == 401 || response.body() == null) {
                     Log.e(TAG, "The response from the server is 401 + " + response.message());
                     showErrorDialog(getString(R.string.error_message_signup));
+                    setAllLabelsAndFieldsToError();
                     return;
                 }
 
@@ -176,13 +171,103 @@ public class SignUpFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<BeeTrackerCaller.EmailPasswordSignupResponse> call, Throwable t) {
+            public void onFailure(Call<BeeTrackerCaller.SignUpResponse> call, Throwable t) {
                 Log.e(TAG, "There was an error with the signup callback + " + t.toString());
                 t.printStackTrace();
+                showErrorDialog(getString(R.string.error_message_signup));
+                setAllLabelsAndFieldsToError();
             }
         };
 
         return view;
+    }
+
+    private void setLabelAndFieldToActiveState(TextView label) {
+        label.setTextColor(getResources().getColor(R.color.grassGreen));
+
+        EditText inputField = (EditText) getView().findViewById(label.getLabelFor());
+        ViewCompat.setBackgroundTintList(inputField, ColorStateList.valueOf(getResources().getColor(R.color.grassGreen)));
+    }
+
+    private void setLabelAndFieldToInactiveState(TextView label) {
+        label.setTextColor(getResources().getColor(R.color.subheadingTextColour));
+
+        EditText inputField = (EditText) getView().findViewById(label.getLabelFor());
+        ViewCompat.setBackgroundTintList(inputField, ColorStateList.valueOf(getResources().getColor(R.color.mediumGrey)));
+    }
+
+    private void setPasswordFieldsToError() {
+        ArrayList<TextView> labelsToSet = new ArrayList<>();
+        labelsToSet.add(mPasswordLabel);
+        labelsToSet.add(mConfirmPasswordLabel);
+        setLabelsAndFieldsToError(labelsToSet);
+    }
+
+    private void setLabelsAndFieldsToError(ArrayList<TextView> labels) {
+        for (TextView label: labels) {
+            label.setTextColor(getResources().getColor(R.color.poppyRed));
+
+            EditText inputFieldToSet;
+            switch (label.getLabelFor()) {
+                case R.id.name_input:
+                    inputFieldToSet = mNameInput;
+                    break;
+                case R.id.email_input:
+                    inputFieldToSet = mEmailInput;
+                    break;
+                case R.id.password_input:
+                    inputFieldToSet = mPasswordInput;
+                    break;
+                case R.id.confirm_password_input:
+                    inputFieldToSet = mConfirmPasswordInput;
+                    break;
+                default:
+                    inputFieldToSet = mEmailInput;
+            }
+            ViewCompat.setBackgroundTintList(inputFieldToSet, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+        }
+    }
+    private void setAllLabelsAndFieldsToError() {
+        mNameLabel.setTextColor(getResources().getColor(R.color.poppyRed));
+        mEmailLabel.setTextColor(getResources().getColor(R.color.poppyRed));
+        mPasswordLabel.setTextColor(getResources().getColor(R.color.poppyRed));
+        mConfirmPasswordLabel.setTextColor(getResources().getColor(R.color.poppyRed));
+        ViewCompat.setBackgroundTintList(mNameInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+        ViewCompat.setBackgroundTintList(mEmailInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+        ViewCompat.setBackgroundTintList(mPasswordInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+        ViewCompat.setBackgroundTintList(mConfirmPasswordInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+    }
+
+
+    private boolean signupFieldsAreValid(String name, String email, String password, String confirmPassword) {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            showErrorDialog(getString(R.string.error_message_empty_signup_credentials));
+            ArrayList<TextView> labelsToSet = new ArrayList<>();
+            if (name.isEmpty()) {
+                labelsToSet.add(mNameLabel);
+            }
+            if (email.isEmpty()) {
+                labelsToSet.add(mEmailLabel);
+            }
+            if (password.isEmpty()) {
+                labelsToSet.add(mPasswordLabel);
+            }
+            if (confirmPassword.isEmpty()) {
+                labelsToSet.add(mConfirmPasswordLabel);
+            }
+            setLabelsAndFieldsToError(labelsToSet);
+            return false;
+        } else if (!password.equals(confirmPassword)) {
+            showErrorDialog(getString(R.string.error_message_password_mismatch));
+            setPasswordFieldsToError();
+            return false;
+        } else if (password.length() < MINIMUM_PASSWORD_LENGTH) {
+            showErrorDialog(getString(R.string.error_message_password_too_short));
+            setPasswordFieldsToError();
+            return false;
+        }
+
+        return true;
     }
 
     private void showErrorDialog(String message) {
@@ -194,17 +279,6 @@ public class SignUpFragment extends Fragment {
         args.putString(BeeAlertErrorDialog.ERROR_MESSAGE_KEY, message);
         dialog.setArguments(args);
         dialog.show(getFragmentManager(), "ErrorMessage");
-    }
-
-    private void resetInputFieldActiveState(EditText editText) {
-        ViewCompat.setBackgroundTintList(editText, ColorStateList.valueOf(getResources().getColor(R.color.grassGreen)));
-    }
-
-    private void setInputFieldsActiveStateToError(EditText nameInput, EditText emailInput, EditText passwordInput, EditText confirmPasswordInput) {
-        ViewCompat.setBackgroundTintList(nameInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
-        ViewCompat.setBackgroundTintList(emailInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
-        ViewCompat.setBackgroundTintList(passwordInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
-        ViewCompat.setBackgroundTintList(confirmPasswordInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
     }
 
 }
