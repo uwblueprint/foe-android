@@ -33,6 +33,10 @@ public class ConfirmEmailFragment extends Fragment {
             confirmEmailDescription.setText(getString(R.string.confirm_email_description, email));
         }
 
+        sharedPref.edit().remove(getString(R.string.signup_name)).commit();
+        sharedPref.edit().remove(getString(R.string.signup_email)).commit();
+        sharedPref.edit().remove(getString(R.string.signup_password)).commit();
+
         ImageButton cancelButton = (ImageButton) view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
