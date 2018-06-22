@@ -2,6 +2,7 @@ package com.blueprint.foe.beetracker;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -64,13 +65,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             @Override
             public void onClick(View view) {
                 // check all fields are completed
+                fragment.launchSpinnerPopup();
                 SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
                 Submission submission = submissionInterface.getSubmission();
                 if (!submission.isComplete()) {
                     setErrorFields(submission);
+                    removeSpinnerPopup();
                     return;
                 }
-                fragment.launchSpinnerPopup();
                 submitToServer();
             }
         });
@@ -115,6 +117,9 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+        if (submission.getHabitat() != null) {
+            mHabitatSpinner.setSelection(submission.getHabitat().ordinal());
+        }
 
         mCardView = (CardView) view.findViewById(R.id.card_view);
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -134,15 +139,30 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                 Log.e(TAG, "An error occurred: " + status);
             }
         });
+        if (submission.getLocation() != null) {
+            autocompleteFragment.setText(submission.getLocation().getName());
+        }
 
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
         submitCallback = new Callback<BeeTrackerCaller.SubmissionResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.SubmissionResponse> call, Response<BeeTrackerCaller.SubmissionResponse> response) {
-                if (spinningIconDialog != null) {
-                    spinningIconDialog.dismiss();
+                removeSpinnerPopup();
+                if (response.code() == 401) {
+                    Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                    Toast.makeText(getActivity(), "Sorry, you've been logged out.", Toast.LENGTH_LONG).show();
+                    return;
                 }
-                if (response.code() == 401 || response.code() == 422 || response.body() == null) {
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().putString(getString(R.string.preference_login_token), response.headers().get("access-token")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_token_type), response.headers().get("token-type")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
+                sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
+                if (response.code() == 422 || response.body() == null) {
                     Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
                     showErrorDialog(getString(R.string.error_message_submit));
                     return;
@@ -155,9 +175,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             public void onFailure(Call<BeeTrackerCaller.SubmissionResponse> call, Throwable t) {
                 Log.e(TAG, "There was an error with the submitCallback + " + t.toString());
                 t.printStackTrace();
-                if (spinningIconDialog != null) {
-                    spinningIconDialog.dismiss();
-                }
+                removeSpinnerPopup();
                 showErrorDialog(getString(R.string.error_message_submit));
             }
         };
@@ -189,13 +207,22 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         spinningIconDialog.show(getActivity().getFragmentManager(), "SpinningPopup");
     }
 
+    private void removeSpinnerPopup() {
+        if (spinningIconDialog != null) {
+            spinningIconDialog.dismiss();
+        }
+    }
+
     private void submitToServer() {
         BeeTrackerCaller caller = new BeeTrackerCaller();
         try {
             SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
             String accessToken = sharedPref.getString(getString(R.string.preference_login_token), null);
+            String tokenType = sharedPref.getString(getString(R.string.preference_login_token_type), null);
+            String client = sharedPref.getString(getString(R.string.preference_login_client), null);
+            String uid = sharedPref.getString(getString(R.string.preference_login_uid), null);
             Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
-            Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken);
+            Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken, tokenType, client, uid);
             token.enqueue(submitCallback);
         } catch (IOException e) {
             Log.e(TAG, e.toString());

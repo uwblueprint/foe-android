@@ -1,5 +1,7 @@
 package com.blueprint.foe.beetracker.API;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.util.Log;
 import com.blueprint.foe.beetracker.Exceptions.EmptyCredentialsException;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.Submission;
+import com.blueprint.foe.beetracker.R;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
@@ -108,7 +111,7 @@ public class BeeTrackerCaller {
             this.habitat = submission.getHabitat().name().toLowerCase();
             this.species = null;
             if (submission.getSpecies() != null) {
-                this.species = submission.getSpecies().toString().toLowerCase();
+                this.species = "bombus_" + submission.getSpecies().toString().toLowerCase();
             }
             this.date = DateFormat.format("yyyy-MM-dd", (new Date()).getTime()).toString();
         }
@@ -205,7 +208,7 @@ public class BeeTrackerCaller {
         return service.emailPasswordAuth(new EmailPasswordSigninRequest(email, password));
     }
 
-    public Call<SubmissionResponse> submit(Submission submission, String token) throws IOException{
+    public Call<SubmissionResponse> submit(Submission submission, String accessToken, String tokenType, String client, String uid) throws IOException{
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -218,7 +221,7 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.submitSighting("Token " + token, new SubmissionRequest(submission));
+        return service.submitSighting(accessToken, tokenType, client, uid, new SubmissionRequest(submission));
     }
 
     @NonNull
