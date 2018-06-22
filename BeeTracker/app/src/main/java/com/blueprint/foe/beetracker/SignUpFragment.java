@@ -165,6 +165,10 @@ public class SignUpFragment extends Fragment {
                 if (spinningIconDialog != null) {
                     spinningIconDialog.dismiss();
                 }
+                SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().remove(getString(R.string.signup_name)).commit();
+                sharedPref.edit().remove(getString(R.string.signup_email)).commit();
+                sharedPref.edit().remove(getString(R.string.signup_password)).commit();
 
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 ConfirmEmailFragment confirmEmailFragment = new ConfirmEmailFragment();
