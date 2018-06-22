@@ -54,14 +54,14 @@ public class BeeTrackerCaller {
         // Only the response code matters for sign up
     }
 
-    public class LognInRequest {
+    public class LogInRequest {
         @SerializedName("email")
         String email;
 
         @SerializedName("password")
         String password;
 
-        LognInRequest(String email, String password) {
+        LogInRequest(String email, String password) {
             this.email = email;
             this.password = password;
         }
@@ -197,7 +197,7 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.logIn(new LognInRequest(email, password));
+        return service.logIn(new LogInRequest(email, password));
     }
 
     public Call<SubmissionResponse> submit(Submission submission, String token) throws IOException{

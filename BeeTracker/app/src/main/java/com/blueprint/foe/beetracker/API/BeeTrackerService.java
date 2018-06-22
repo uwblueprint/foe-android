@@ -18,7 +18,7 @@ public interface  BeeTrackerService {
 
     @Headers("Content-Type: application/json")
     @POST("/auth/sign_in")
-    Call<BeeTrackerCaller.LogInResponse> logIn(@Body BeeTrackerCaller.LognInRequest signinRequest);
+    Call<BeeTrackerCaller.LogInResponse> logIn(@Body BeeTrackerCaller.LogInRequest signinRequest);
 
     @Headers("Content-Type: application/json")
     @POST("/sightings")
