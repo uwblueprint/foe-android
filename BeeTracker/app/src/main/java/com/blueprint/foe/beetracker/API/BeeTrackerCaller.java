@@ -180,8 +180,10 @@ public class BeeTrackerCaller {
     public static final String DEFAULT_SIGNUP_SUCCESS_URL = "http://foecanada.org/";
 
     public Call<EmailPasswordSignupResponse> emailPasswordSignup(String name, String email, String password) throws IOException, EmptyCredentialsException{
-        if (email.isEmpty() || password.isEmpty()) {
-            throw new EmptyCredentialsException();
+        if (email.isEmpty()) {
+            throw new EmptyCredentialsException("email");
+        } else if (password.isEmpty()) {
+            throw new EmptyCredentialsException("password");
         }
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -195,8 +197,10 @@ public class BeeTrackerCaller {
     }
 
     public Call<EmailPasswordSigninResponse> emailPasswordSignin(String email, String password) throws IOException, EmptyCredentialsException{
-        if (email.isEmpty() || password.isEmpty()) {
-            throw new EmptyCredentialsException();
+        if (email.isEmpty()) {
+            throw new EmptyCredentialsException("email");
+        } else if (password.isEmpty()) {
+            throw new EmptyCredentialsException("password");
         }
 
         Retrofit retrofit = new Retrofit.Builder()
