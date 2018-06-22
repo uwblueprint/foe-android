@@ -1,6 +1,7 @@
 package com.blueprint.foe.beetracker;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ public class ConfirmEmailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Back to main activity
-                getFragmentManager().popBackStack();
+                getFragmentManager().popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
 

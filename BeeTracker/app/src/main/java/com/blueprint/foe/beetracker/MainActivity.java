@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 SignUpFragment signUpFragment = new SignUpFragment();
                 fragmentTransaction.replace(R.id.constraintLayout, signUpFragment);
-                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.addToBackStack("main");
                 fragmentTransaction.commit();
             }
         });
