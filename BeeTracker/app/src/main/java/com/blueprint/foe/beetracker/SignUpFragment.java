@@ -28,7 +28,8 @@ import retrofit2.Response;
 
 public class SignUpFragment extends Fragment {
     private static final String TAG = SignUpFragment.class.toString();
-    private Callback emailPasswordSignupCallback;
+    private static final int MINIMUM_PASSWORD_LENGTH = 8;
+    private Callback signupCallback;
     private SpinningIconDialog spinningIconDialog;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,23 +121,27 @@ public class SignUpFragment extends Fragment {
 
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
-                    String name = ((EditText) view.findViewById(R.id.name_input)).getText().toString();
-                    String email = ((EditText) view.findViewById(R.id.email_input)).getText().toString();
                     String password = ((EditText) view.findViewById(R.id.password_input)).getText().toString();
                     String confirmPassword = ((EditText) view.findViewById(R.id.confirm_password_input)).getText().toString();
 
                     if (!password.equals(confirmPassword)) {
-                        showErrorDialog(getString(R.string.error_message_signup));
+                        showErrorDialog(getString(R.string.error_message_password_mismatch));
+                        return;
+                    } else if (password.length() < MINIMUM_PASSWORD_LENGTH) {
+                        showErrorDialog(getString(R.string.error_message_password_too_short));
                         return;
                     }
 
-                    Call<BeeTrackerCaller.EmailPasswordSignupResponse> call = caller.emailPasswordSignup(name, email, password);
-                    call.enqueue(emailPasswordSignupCallback);
+                    String name = ((EditText) view.findViewById(R.id.name_input)).getText().toString();
+                    String email = ((EditText) view.findViewById(R.id.email_input)).getText().toString();
 
                     SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                     sharedPref.edit().putString(getString(R.string.signup_name), name).commit();
                     sharedPref.edit().putString(getString(R.string.signup_email), email).commit();
                     sharedPref.edit().putString(getString(R.string.signup_password), password).commit();
+
+                    Call<BeeTrackerCaller.EmailPasswordSignupResponse> call = caller.emailPasswordSignup(name, email, password);
+                    call.enqueue(signupCallback);
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
                     e.printStackTrace();
@@ -147,16 +152,10 @@ public class SignUpFragment extends Fragment {
                     showErrorDialog(getString(R.string.error_message_empty_credentials));
                     setInputFieldsActiveStateToError(nameInput, emailInput, passwordInput, confirmPasswordInput);
                 }
-
-                Fragment confirmEmailFragment = new ConfirmEmailFragment();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.constraintLayout, confirmEmailFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
             }
         });
 
-        emailPasswordSignupCallback = new Callback<BeeTrackerCaller.EmailPasswordSignupResponse>() {
+        signupCallback = new Callback<BeeTrackerCaller.EmailPasswordSignupResponse>() {
             @Override
             public void onResponse(Call<BeeTrackerCaller.EmailPasswordSignupResponse> call, Response<BeeTrackerCaller.EmailPasswordSignupResponse> response) {
                 if (response.code() == 401 || response.body() == null) {
@@ -164,11 +163,21 @@ public class SignUpFragment extends Fragment {
                     showErrorDialog(getString(R.string.error_message_signup));
                     return;
                 }
+
+                if (spinningIconDialog != null) {
+                    spinningIconDialog.dismiss();
+                }
+
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                ConfirmEmailFragment confirmEmailFragment = new ConfirmEmailFragment();
+                fragmentTransaction.replace(R.id.constraintLayout, confirmEmailFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
 
             @Override
             public void onFailure(Call<BeeTrackerCaller.EmailPasswordSignupResponse> call, Throwable t) {
-                Log.e(TAG, "There was an error with the email password signup callback + " + t.toString());
+                Log.e(TAG, "There was an error with the signup callback + " + t.toString());
                 t.printStackTrace();
             }
         };
