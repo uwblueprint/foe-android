@@ -30,6 +30,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.20" />
+
+    <TextView
+        android:id="@+id/error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
+        android:background="@color/errorRed"
+        android:visibility="gone"
+        android:textColor="@color/poppyRed"
+        android:text="@string/signup_error_message_placeholder"
+        app:layout_constraintTop_toTopOf="parent" />
     
     <TextView
         android:id="@+id/title"

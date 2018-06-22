@@ -28,6 +28,7 @@ import retrofit2.Response;
 public class SignUpFragment extends Fragment {
     private static final String TAG = SignUpFragment.class.toString();
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
+    private TextView mErrorMessage;
     private TextView mNameLabel;
     private TextView mEmailLabel;
     private TextView mPasswordLabel;
@@ -42,6 +43,7 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.sign_up_fragment, container, false);
+        mErrorMessage = (TextView) view.findViewById(R.id.error_message);
 
         mNameLabel = (TextView) view.findViewById(R.id.name_label);
         mEmailLabel = (TextView) view.findViewById(R.id.email_label);
@@ -120,6 +122,7 @@ public class SignUpFragment extends Fragment {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideErrorMessage();
                 spinningIconDialog = new SpinningIconDialog();
                 spinningIconDialog.show(getFragmentManager(), "SpinningPopup");
 
@@ -241,7 +244,7 @@ public class SignUpFragment extends Fragment {
 
     private boolean signupFieldsAreValid(String name, String email, String password, String confirmPassword) {
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            showErrorDialog(getString(R.string.error_message_empty_signup_credentials));
+            showErrorMessage(getString(R.string.error_message_empty_signup_credentials));
             ArrayList<TextView> labelsToSet = new ArrayList<>();
             if (name.isEmpty()) {
                 labelsToSet.add(mNameLabel);
@@ -258,16 +261,30 @@ public class SignUpFragment extends Fragment {
             setLabelsAndFieldsToError(labelsToSet);
             return false;
         } else if (!password.equals(confirmPassword)) {
-            showErrorDialog(getString(R.string.error_message_password_mismatch));
+            showErrorMessage(getString(R.string.error_message_password_mismatch));
             setPasswordFieldsToError();
             return false;
         } else if (password.length() < MINIMUM_PASSWORD_LENGTH) {
-            showErrorDialog(getString(R.string.error_message_password_too_short));
+            showErrorMessage(getString(R.string.error_message_password_too_short));
             setPasswordFieldsToError();
             return false;
         }
 
         return true;
+    }
+
+    private void showErrorMessage(String message) {
+        if (spinningIconDialog != null) {
+            spinningIconDialog.dismiss();
+        }
+        mErrorMessage.setVisibility(View.VISIBLE);
+        mErrorMessage.setText(getString(R.string.signup_error_message_placeholder, message));
+    }
+
+    private void hideErrorMessage() {
+        if (mErrorMessage.getVisibility() == View.VISIBLE) {
+            mErrorMessage.setVisibility(View.GONE);
+        }
     }
 
     private void showErrorDialog(String message) {

@@ -65,6 +65,7 @@
     <string name="signup_name">SIGNUP_NAME</string>
     <string name="signup_email">SIGNUP_EMAIL</string>
     <string name="signup_password">SIGNUP_PASSWORD</string>
+    <string name="signup_error_message_placeholder">%1$s</string>
     <string name="name_label">"NAME</string>
     <string name="name_placeholder">"Johnny Appleseed</string>
     <string name="email_label">EMAIL</string>
@@ -75,6 +76,7 @@
     <string name="signup_password_placeholder">Minimum 8 characters</string>
     <string name="confirm_password_label">RE-ENTER PASSWORD</string>
     <string name="confirm_password_placeholder">Re-enter password</string>
+    <string name="agreement_acknowledgement">By signing up, I agree to the <b>terms and conditions</b> and <b>EULA Agreement</b></string>
     <string name="almost_there">Almost there, %1$s!</string>
     <string name="confirm_email_description">We\'ve sent an email to <b>%1$s</b> with a confirmation link to complete your signup.</string>
     <string name="resend_email">Resend Email</string>
@@ -83,7 +85,6 @@
     <string name="signup">Sign Up</string>
     <string name="confirm_email">Confirm Email</string>
     <string name="create_an_account">Create an account</string>
-    <string name="agreement_acknowledgement">By signing up, I agree to the <b>terms and conditions</b> and <b>EULA Agreement</b></string>
     <string name="great_bumblebee_count">The Great Bumblebee Count</string>
     <string name="foe_presents">Friends of Earth Canada Presents</string>
     <string name="error">Error</string>
