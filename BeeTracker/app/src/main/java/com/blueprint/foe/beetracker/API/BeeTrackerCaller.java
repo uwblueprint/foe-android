@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 import android.util.Log;
 
-import com.blueprint.foe.beetracker.Exceptions.EmptyCredentialsException;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.Submission;
 import com.blueprint.foe.beetracker.R;
@@ -33,7 +32,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class BeeTrackerCaller {
     private static final String TAG = BeeTrackerCaller.class.toString();
 
-    public class EmailPasswordSignupRequest {
+    public class SignUpRequest {
+        @SerializedName("name")
+        String name;
+
         @SerializedName("email")
         String email;
 
@@ -43,31 +45,32 @@ public class BeeTrackerCaller {
         @SerializedName("confirm_success_url")
         String successUrl;
 
-        EmailPasswordSignupRequest(String email, String password, String successUrl) {
+        SignUpRequest(String name, String email, String password, String successUrl) {
+            this.name = name;
             this.email = email;
             this.password = password;
             this.successUrl = successUrl;
         }
     }
 
-    public class EmailPasswordSignupResponse {
+    public class SignUpResponse {
         // Only the response code matters for sign up
     }
 
-    public class EmailPasswordSigninRequest {
+    public class LogInRequest {
         @SerializedName("email")
         String email;
 
         @SerializedName("password")
         String password;
 
-        EmailPasswordSigninRequest(String email, String password) {
+        LogInRequest(String email, String password) {
             this.email = email;
             this.password = password;
         }
     }
 
-    public class EmailPasswordSigninResponse {
+    public class LogInResponse {
         // Only the response headers matter for sign in
     }
 
@@ -178,11 +181,7 @@ public class BeeTrackerCaller {
     public static final String API_URL = "https://foe-api.herokuapp.com/";
     public static final String DEFAULT_SIGNUP_SUCCESS_URL = "http://foecanada.org/";
 
-    public Call<EmailPasswordSignupResponse> emailPasswordSignup(String email, String password) throws IOException, EmptyCredentialsException{
-        if (email.isEmpty() || password.isEmpty()) {
-            throw new EmptyCredentialsException();
-        }
-
+    public Call<SignUpResponse> signUp(String name, String email, String password) throws IOException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -190,14 +189,10 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.emailPasswordSignup(new EmailPasswordSignupRequest(email, password, DEFAULT_SIGNUP_SUCCESS_URL));
+        return service.signUp(new SignUpRequest(name, email, password, DEFAULT_SIGNUP_SUCCESS_URL));
     }
 
-    public Call<EmailPasswordSigninResponse> emailPasswordSignin(String email, String password) throws IOException, EmptyCredentialsException{
-        if (email.isEmpty() || password.isEmpty()) {
-            throw new EmptyCredentialsException();
-        }
-
+    public Call<LogInResponse> logIn(String email, String password) throws IOException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -205,7 +200,7 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.emailPasswordAuth(new EmailPasswordSigninRequest(email, password));
+        return service.logIn(new LogInRequest(email, password));
     }
 
     public Call<SubmissionResponse> submit(Submission submission, String accessToken, String tokenType, String client, String uid) throws IOException{

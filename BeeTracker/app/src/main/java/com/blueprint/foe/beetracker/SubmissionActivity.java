@@ -29,7 +29,7 @@ public class SubmissionActivity extends AppCompatActivity implements SubmissionI
         CaptureFragment fragment = new CaptureFragment();
         fragmentTransaction.add(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
-    };
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

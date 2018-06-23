@@ -1,5 +1,6 @@
 package com.blueprint.foe.beetracker;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
-import com.blueprint.foe.beetracker.Exceptions.EmptyCredentialsException;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,8 +26,11 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements BeeAlertDialogListener {
     private static final String TAG = MainActivity.class.toString();
+    private TextView mEmailLabel;
+    private TextView mPasswordLabel;
+    private EditText mEmailInput;
+    private EditText mPasswordInput;
     private Callback emailPasswordLoginCallback;
-    private Callback emailPasswordSignupCallback;
     private SpinningIconDialog spinningIconDialog;
 
     @Override
@@ -36,32 +38,31 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final EditText emailInput = (EditText) findViewById(R.id.email_input);
-        emailInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        mEmailLabel = (TextView) findViewById(R.id.email_label);
+        mPasswordLabel = (TextView) findViewById(R.id.password_label);
+        mEmailInput = (EditText) findViewById(R.id.email_input);
+        mPasswordInput = (EditText) findViewById(R.id.password_input);
 
+        mEmailInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                resetInputFieldActiveState(emailInput);
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    setLabelAndFieldToActiveState(mEmailLabel);
+                } else {
+                    setLabelAndFieldToInactiveState(mEmailLabel);
+                }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
         });
 
-        final EditText passwordInput = (EditText) findViewById(R.id.password_input);
-        passwordInput.addTextChangedListener(new TextWatcher() {
+        mPasswordInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                resetInputFieldActiveState(passwordInput);
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    setLabelAndFieldToActiveState(mPasswordLabel);
+                } else {
+                    setLabelAndFieldToInactiveState(mPasswordLabel);
+                }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
         });
 
         Button emailLoginButton = (Button) findViewById(R.id.email_login_button);
@@ -75,28 +76,28 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                 try {
                     String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
                     String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
-                    Call<BeeTrackerCaller.EmailPasswordSigninResponse> call = caller.emailPasswordSignin(email, password);
+
+                    if (!loginFieldsAreValid(email, password)) {
+                        return;
+                    }
+
+                    Call<BeeTrackerCaller.LogInResponse> call = caller.logIn(email, password);
                     call.enqueue(emailPasswordLoginCallback);
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
                     e.printStackTrace();
                     showErrorDialog(getString(R.string.error_message_login));
-                } catch (EmptyCredentialsException ece) {
-                    Log.e(TAG, ece.toString());
-                    ece.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message_empty_credentials));
-                    setInputFieldsActiveStateToError(emailInput, passwordInput);
                 }
             }
         });
 
-        emailPasswordLoginCallback = new Callback<BeeTrackerCaller.EmailPasswordSigninResponse>() {
+        emailPasswordLoginCallback = new Callback<BeeTrackerCaller.LogInResponse>() {
             @Override
-            public void onResponse(Call<BeeTrackerCaller.EmailPasswordSigninResponse> call, Response<BeeTrackerCaller.EmailPasswordSigninResponse> response) {
+            public void onResponse(Call<BeeTrackerCaller.LogInResponse> call, Response<BeeTrackerCaller.LogInResponse> response) {
                 if (response.code() == 401 || response.headers() == null) {
                     Log.e(TAG, "The response from the server is 401 + " + response.message());
                     showErrorDialog(getString(R.string.error_message_login));
-                    setInputFieldsActiveStateToError(emailInput, passwordInput);
+                    setAllLabelsAndFieldsToError();
                     return;
                 }
                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -109,10 +110,11 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             }
 
             @Override
-            public void onFailure(Call<BeeTrackerCaller.EmailPasswordSigninResponse> call, Throwable t) {
+            public void onFailure(Call<BeeTrackerCaller.LogInResponse> call, Throwable t) {
                 Log.e(TAG, "There was an error with the login callback + " + t.toString());
                 t.printStackTrace();
                 showErrorDialog(getString(R.string.error_message_login));
+                setAllLabelsAndFieldsToError();
             }
         };
 
@@ -120,48 +122,20 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                spinningIconDialog = new SpinningIconDialog();
-                spinningIconDialog.show(getFragmentManager(), "SpinningPopup");
+                String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
+                String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
 
-                BeeTrackerCaller caller = new BeeTrackerCaller();
-                try {
-                    String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
-                    String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
-                    Call<BeeTrackerCaller.EmailPasswordSignupResponse> call = caller.emailPasswordSignup(email, password);
-                    call.enqueue(emailPasswordSignupCallback);
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().putString(getString(R.string.signup_email), email).commit();
+                sharedPref.edit().putString(getString(R.string.signup_password), password).commit();
 
-                    SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                    sharedPref.edit().putString(getString(R.string.signup_email), email).commit();
-                    sharedPref.edit().putString(getString(R.string.signup_password), password).commit();
-                } catch (IOException e) {
-                    Log.e(TAG, e.toString());
-                    e.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message_signup));
-                } catch (EmptyCredentialsException ece) {
-                    Log.e(TAG, ece.toString());
-                    ece.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message_empty_credentials));
-                    setInputFieldsActiveStateToError(emailInput, passwordInput);
-                }
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                SignUpFragment signUpFragment = new SignUpFragment();
+                fragmentTransaction.replace(R.id.constraintLayout, signUpFragment);
+                fragmentTransaction.addToBackStack("main");
+                fragmentTransaction.commit();
             }
         });
-
-        emailPasswordSignupCallback = new Callback<BeeTrackerCaller.EmailPasswordSignupResponse>() {
-            @Override
-            public void onResponse(Call<BeeTrackerCaller.EmailPasswordSignupResponse> call, Response<BeeTrackerCaller.EmailPasswordSignupResponse> response) {
-                if (response.code() == 401 || response.body() == null) {
-                    Log.e(TAG, "The response from the server is 401 + " + response.message());
-                    showErrorDialog(getString(R.string.error_message_signup));
-                    return;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BeeTrackerCaller.EmailPasswordSignupResponse> call, Throwable t) {
-                Log.e(TAG, "There was an error with the email password signup callback + " + t.toString());
-                t.printStackTrace();
-            }
-        };
 
         TextView forgotPasswordButton = (TextView) findViewById(R.id.forgot_password);
         forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
@@ -189,13 +163,61 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         dialog.show(getFragmentManager(), "ErrorMessage");
     }
 
-    private void resetInputFieldActiveState(EditText editText) {
-        ViewCompat.setBackgroundTintList(editText, ColorStateList.valueOf(getResources().getColor(R.color.grassGreen)));
+    private void setLabelAndFieldToActiveState(TextView label) {
+        label.setTextColor(getResources().getColor(R.color.grassGreen));
+
+        EditText inputField = (EditText) findViewById(label.getLabelFor());
+        ViewCompat.setBackgroundTintList(inputField, ColorStateList.valueOf(getResources().getColor(R.color.grassGreen)));
     }
 
-    private void setInputFieldsActiveStateToError(EditText emailInput, EditText passwordInput) {
-        ViewCompat.setBackgroundTintList(emailInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
-        ViewCompat.setBackgroundTintList(passwordInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+    private void setLabelAndFieldToInactiveState(TextView label) {
+        label.setTextColor(getResources().getColor(R.color.subheadingTextColour));
+
+        EditText inputField = (EditText) findViewById(label.getLabelFor());
+        ViewCompat.setBackgroundTintList(inputField, ColorStateList.valueOf(getResources().getColor(R.color.mediumGrey)));
+    }
+
+    private void setLabelsAndFieldsToError(ArrayList<TextView> labels) {
+        for (TextView label: labels) {
+            label.setTextColor(getResources().getColor(R.color.poppyRed));
+
+            EditText inputFieldToSet;
+            switch (label.getLabelFor()) {
+                case R.id.email_input:
+                    inputFieldToSet = mEmailInput;
+                    break;
+                case R.id.password_input:
+                    inputFieldToSet = mPasswordInput;
+                    break;
+                default:
+                    inputFieldToSet = mEmailInput;
+            }
+            ViewCompat.setBackgroundTintList(inputFieldToSet, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+        }
+    }
+
+    private void setAllLabelsAndFieldsToError() {
+        mEmailLabel.setTextColor(getResources().getColor(R.color.poppyRed));
+        mPasswordLabel.setTextColor(getResources().getColor(R.color.poppyRed));
+        ViewCompat.setBackgroundTintList(mEmailInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+        ViewCompat.setBackgroundTintList(mPasswordInput, ColorStateList.valueOf(getResources().getColor(R.color.poppyRed)));
+    }
+
+    private boolean loginFieldsAreValid(String email, String password) {
+        if (email.isEmpty() || password.isEmpty()) {
+            showErrorDialog(getString(R.string.error_message_empty_login_credentials));
+            ArrayList<TextView> labelsToSet = new ArrayList<>();
+            if (email.isEmpty()) {
+                labelsToSet.add(mEmailLabel);
+            }
+            if (password.isEmpty()) {
+                labelsToSet.add(mPasswordLabel);
+            }
+            setLabelsAndFieldsToError(labelsToSet);
+            return false;
+        }
+
+        return true;
     }
 
     @Override

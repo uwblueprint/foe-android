@@ -28,7 +28,7 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <style name="LoginEditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="LoginSignupEditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorControlNormal">@color/mediumGrey</item>
         <item name="colorControlActivated">@color/grassGreen</item>
         <item name="colorControlHighlight">@color/grassGreen</item>
