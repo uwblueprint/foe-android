@@ -29,7 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class BeeTrackerCaller {
     private static final String TAG = BeeTrackerCaller.class.toString();
 
-    public class signUpRequest {
+    public class SignUpRequest {
         @SerializedName("name")
         String name;
 
@@ -42,7 +42,7 @@ public class BeeTrackerCaller {
         @SerializedName("confirm_success_url")
         String successUrl;
 
-        signUpRequest(String name, String email, String password, String successUrl) {
+        SignUpRequest(String name, String email, String password, String successUrl) {
             this.name = name;
             this.email = email;
             this.password = password;
@@ -186,7 +186,7 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.signUp(new signUpRequest(name, email, password, DEFAULT_SIGNUP_SUCCESS_URL));
+        return service.signUp(new SignUpRequest(name, email, password, DEFAULT_SIGNUP_SUCCESS_URL));
     }
 
     public Call<LogInResponse> logIn(String email, String password) throws IOException {

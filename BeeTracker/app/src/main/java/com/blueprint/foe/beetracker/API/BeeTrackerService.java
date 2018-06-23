@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 public interface  BeeTrackerService {
     @Headers("Content-Type: application/json")
     @POST("/auth")
-    Call<BeeTrackerCaller.SignUpResponse> signUp(@Body BeeTrackerCaller.signUpRequest signupRequest);
+    Call<BeeTrackerCaller.SignUpResponse> signUp(@Body BeeTrackerCaller.SignUpRequest signupRequest);
 
     @Headers("Content-Type: application/json")
     @POST("/auth/sign_in")
