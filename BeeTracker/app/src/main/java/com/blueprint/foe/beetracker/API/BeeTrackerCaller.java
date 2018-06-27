@@ -100,6 +100,9 @@ public class BeeTrackerCaller {
         @SerializedName("image")
         Image image;
 
+        @SerializedName("street_address")
+        String street_address;
+
         @SerializedName("latitude")
         double latitude;
 
@@ -110,6 +113,7 @@ public class BeeTrackerCaller {
             this.image = new Image(StorageAccessor.convertImageToStringForServer(submission.getBitmap()), submission.getImageFilePath());
             this.latitude = submission.getLocation().getLatLng().latitude;
             this.longitude = submission.getLocation().getLatLng().longitude;
+            this.street_address = submission.getLocation().getName().toString();
             this.weather = submission.getWeather().name().toLowerCase();
             this.habitat = submission.getHabitat().name().toLowerCase();
             this.species = null;
@@ -212,7 +216,6 @@ public class BeeTrackerCaller {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
