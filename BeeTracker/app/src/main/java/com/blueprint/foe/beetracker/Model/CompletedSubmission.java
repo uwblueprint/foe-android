@@ -36,4 +36,12 @@ public class CompletedSubmission extends Submission {
                 && (this.mImageUrl == null && that.mImageUrl == null)
                     || (this.mImageUrl != null && this.mImageUrl.equals(that.mImageUrl));
     }
+
+    public String getImageUrl() {
+        return mImageUrl;
+    }
+
+    public void setImageUrl(String url) {
+        mImageUrl = url;
+    }
 }

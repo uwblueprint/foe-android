@@ -1,7 +1,5 @@
 package com.blueprint.foe.beetracker.Model;
 
-import com.google.android.gms.location.places.Place;
-
 import java.util.Date;
 
 /**
@@ -15,7 +13,9 @@ public abstract class Submission {
     private Species mSpecies = null;
     private Habitat mHabitat = null;
     private Weather mWeather = null;
-    private Place mPlace = null;
+    private double mLatitude = 0;
+    private double mLongitude = 0;
+    private String mStreetAddress = null;
 
     @Override
     public boolean equals(Object other) {
@@ -32,8 +32,87 @@ public abstract class Submission {
                 && this.mWeather == that.mWeather
                 && ((this.mDate == null && that.mDate == null)
                 || this.mDate != null && that.mDate != null && this.mDate.equals(that.mDate))
-                && ((this.mPlace == null && that.mPlace == null)
-                || this.mPlace != null && that.mPlace != null && this.mPlace.equals(that.mPlace));
+                && this.mLatitude == that.mLatitude
+                && this.mLongitude == that.mLongitude
+                && ((this.mStreetAddress == null && that.mStreetAddress == null)
+                    || this.mStreetAddress != null && that.mStreetAddress != null && this.mStreetAddress.equals(that.mStreetAddress));
+    }
+
+    public enum Species {
+        impatiens, ternarius, rufocinctus, bimaculatus, borealis, vagans, affinis,
+        griseocollis, citrinus, perplexus, pensylvanicus, sylvicola, sandersoni,
+        nevadensis, auricomus, terricola, fervidus, flavifrons, occidentalis, melanopygus,
+        bifarius, huntii, vosnesenski, cryptarum, mixtus, centralis;
+
+        public String getEnglishName() {
+            String[] names = {
+                    "Common eastern bumble bee", "Tri-coloured bumble bee",  "Red-belted bumble bee",
+                    "Two-spotted bumble bee", "Northern amber bumble bee", "Half-black bumble bee",
+                    "Rusty-patched bumble bee", "Brown-belted bumble bee", "Lemon cuckoo bumble bee",
+                    "Confusing bumble bee", "American bumble bee", "Forest bumble bee",
+                    "Sanderson bumble bee", "Nevada bumble bee", "Black and gold bumble bee",
+                    "Yellow-banded bumble bee", "Yellow bumble bee", "Yellow head bumble bee",
+                    "Common western bumble bee", "Black tail bumble bee", "Two-form bumble bee",
+                    "Hunt bumble bee", "Vosnensky bumble bee", "Cryptic bumble bee",
+                    "Fuzzy-horned bumble bee", "Central bumble bee",
+            }; // Missing "Gypso cuckoo bumble bee"
+            return names[this.ordinal()];
+        }
+    } // Missing bohemicus
+
+
+    public enum Habitat {
+        Default, Back_Yard, Community_Garden, City_Park, Rural, Golf_Course, Roadside, Woodland, Farmland, School_Grounds, Other;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case Default:
+                    return "";
+                case Back_Yard:
+                    return "Back Yard";
+                case Community_Garden:
+                    return "Community Garden";
+                case City_Park:
+                    return "City Park";
+                case Rural:
+                    return "Rural";
+                case Golf_Course:
+                    return "Golf Course";
+                case Roadside:
+                    return "Roadside";
+                case Woodland:
+                    return "Woodland";
+                case Farmland:
+                    return "Farmland";
+                case School_Grounds:
+                    return "School Grounds";
+                case Other:
+                    return "Other";
+                default:
+                    return "There was an error.";
+            }
+        }
+    }
+
+    public enum Weather {
+        Sunny, Partly_Cloudy, Cloudy, Rain;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case Sunny:
+                    return "Sunny";
+                case Partly_Cloudy:
+                    return "Partly Cloudy";
+                case Cloudy:
+                    return "Cloudy";
+                case Rain:
+                    return "Rainy";
+                default:
+                    return "There was an error.";
+            }
+        }
     }
 
     public void reset() {
@@ -41,7 +120,9 @@ public abstract class Submission {
         mSpecies = null;
         mHabitat = null;
         mWeather = null;
-        mPlace = null;
+        mStreetAddress = null;
+        mLatitude = 0;
+        mLongitude = 0;
         mDate = null;
     }
 
@@ -61,12 +142,22 @@ public abstract class Submission {
         return mWeather;
     }
 
-    public void setLocation(Place place) {
-        this.mPlace = place;
+    public void setLocation(String address, double latitude, double longitude) {
+        this.mStreetAddress = address;
+        this.mLatitude = latitude;
+        this.mLongitude = longitude;
     }
 
-    public Place getLocation() {
-        return mPlace;
+    public String getStreetAddress() {
+        return mStreetAddress;
+    }
+
+    public double getLatitude() {
+        return mLatitude;
+    }
+
+    public double getLongitude() {
+        return mLongitude;
     }
 
     public BeeSpeciesType getSpeciesType() {
@@ -91,74 +182,7 @@ public abstract class Submission {
     }
 
     public boolean isComplete() {
-        return mHabitat != null && mHabitat != Habitat.unselected && mWeather != null && mWeather != Weather.unselected && mPlace != null;
-    }
-
-    public enum Species {
-        impatiens, ternarius, rufocinctus, bimaculatus, borealis, vagans, affinis,
-        griseocollis, citrinus, perplexus, pensylvanicus, sylvicola, sandersoni,
-        nevadensis, auricomus, terricola, fervidus, flavifrons, occidentalis, melanopygus,
-        bifarius, huntii, vosnesenski, cryptarum, mixtus, centralis
-    } // Missing bohemicus
-
-    public enum Habitat {
-        unselected, back_yard, community_garden, city_park, rural, golf_course, roadside, woodland, farmland, school_grounds, other;
-
-        @Override
-        public String toString() {
-            switch (this) {
-                case unselected:
-                    return "";
-                case back_yard:
-                    return "Back Yard";
-                case community_garden:
-                    return "Community Garden";
-                case city_park:
-                    return "City Park";
-                case rural:
-                    return "Rural";
-                case golf_course:
-                    return "Golf Course";
-                case roadside:
-                    return "Roadside";
-                case woodland:
-                    return "Woodland";
-                case farmland:
-                    return "Farmland";
-                case school_grounds:
-                    return "School Grounds";
-                case other:
-                    return "other";
-                default:
-                    return "There was an error.";
-            }
-        }
-    }
-
-    public enum Weather {
-        unselected, sunny, partly_cloudy, cloudy, rain, windy, other;
-
-        @Override
-        public String toString() {
-            switch (this) {
-                case unselected:
-                    return "";
-                case sunny:
-                    return "Sunny";
-                case partly_cloudy:
-                    return "Partly Cloudy";
-                case cloudy:
-                    return "Cloudy";
-                case rain:
-                    return "Rain";
-                case windy:
-                    return "Windy";
-                case other:
-                    return "Other";
-                default:
-                    return "There was an error.";
-            }
-        }
+        return mHabitat != null && mHabitat != Habitat.Default && mWeather != null && mStreetAddress != null && mLongitude != 0 && mLatitude != 0;
     }
 
     public enum BeeSpeciesType {

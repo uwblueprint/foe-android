@@ -38,6 +38,7 @@
         android:layout_height="match_parent"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
+        android:paddingBottom="50dp"
         android:scrollbars="none"
         android:divider="@android:color/transparent"
         android:dividerHeight="18dp"/>

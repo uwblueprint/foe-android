@@ -8,6 +8,9 @@ com_crashlytics_export_strings.xml
 local.properties
 keystore.properties
 
+# Keystore properties
+keystore.properties
+
 # Gradle generated files
 .gradle/
 
