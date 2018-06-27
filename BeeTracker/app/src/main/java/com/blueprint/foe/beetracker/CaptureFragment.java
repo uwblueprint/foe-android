@@ -80,9 +80,9 @@ public class CaptureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         // get an image from the camera
-                        mCameraView.capturePicture();
                         spinningIconDialog = new SpinningIconDialog();
                         spinningIconDialog.show(getActivity().getFragmentManager(), "SpinningPopup");
+                        mCameraView.capturePicture();
                     }
                 }
         );
@@ -188,7 +188,9 @@ public class CaptureFragment extends Fragment {
     }
 
     private void launchNextFragment() {
-        spinningIconDialog.dismiss();
+        if (spinningIconDialog != null) {
+            spinningIconDialog.dismiss();
+        }
         Fragment newFragment = new IdentifyFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 

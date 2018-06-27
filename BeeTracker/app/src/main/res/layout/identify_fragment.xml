@@ -40,7 +40,7 @@
     <com.blueprint.foe.beetracker.SquareImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/learnActivityBackground"
+        android:background="@color/greyBackground"
         android:id="@+id/previewImageView"/>
     <LinearLayout
         android:layout_width="match_parent"

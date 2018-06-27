@@ -1,63 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
+    android:gravity="center_vertical"
     tools:context="com.blueprint.foe.beetracker.MainActivity">
-    <ImageView
-        android:id="@+id/beeAppLogo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/bee_app_logo"
-        android:gravity="center_horizontal"/>
-    <TextView
-        android:id="@+id/foe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/big_padding"
-        android:layout_below="@id/beeAppLogo"
-        android:textColor="@color/black"
-        android:text="@string/foe" />
-    <TextView
-        android:id="@+id/greatCount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:text="@string/great_canadian"
-        android:gravity="center_horizontal"
-        android:layout_below="@id/foe"/>
-    <android.support.v7.widget.CardView
-        android:id="@+id/loginCardView"
+
+    <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/facebook_button_top_margin"
-        android:layout_marginBottom="@dimen/small_padding"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/greatCount"
-        app:cardCornerRadius="@dimen/big_padding">
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
-            xmlns:facebook="http://schemas.android.com/apk/res-auto"
-            facebook:com_facebook_login_text="@string/login_with_facebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/facebook_login_side_padding"
-            android:paddingRight="@dimen/facebook_login_side_padding"
-            android:paddingTop="@dimen/medium_padding"
-            android:paddingBottom="@dimen/medium_padding"
-            android:layout_gravity="center_horizontal" />
-    </android.support.v7.widget.CardView>
-    <TextView
-        android:id="@+id/skip"
+        android:id="@+id/leftLoginGuideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.10"/>
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rightLoginGuideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.90"/>
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputFieldsTopGuideline"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35"/>
+
+    <ImageView
+        android:id="@+id/greyBackground"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        android:src="@drawable/grey_rectangle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/cloudBackground" />
+
+    <ImageView
+        android:id="@+id/cloudBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/medium_padding"
-        android:layout_below="@id/loginCardView"
-        android:textColor="@color/mediumDarkGrey"
-        android:text="@string/continue_as_guest" />
-</RelativeLayout>
+        android:layout_marginTop="@dimen/loginpage_cloud_background_padding"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/clouds"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/beeAppLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:src="@mipmap/bee_app_logo_right"
+        app:layout_constraintBottom_toTopOf="@+id/foePresents"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/foePresents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_padding"
+        android:text="@string/foe_presents"
+        android:textColor="@color/subheadingTextColour"
+        android:textSize="@dimen/small_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/greatBumblebeeCount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/greatBumblebeeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:text="@string/great_bumblebee_count"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="@dimen/big_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/inputFieldsTopGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/inputFieldsRelativeLayout"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
+        app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/inputFieldsTopGuideline">
+
+        <TextView
+            android:id="@+id/email_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/login_signup_top_padding"
+            android:labelFor="@+id/email_input"
+            android:text="@string/email_label"
+            android:textColor="@color/subheadingTextColour"
+            android:textSize="@dimen/login_signup_label_text_size" />
+
+        <EditText
+            android:id="@+id/email_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/email_label"
+            android:layout_marginLeft="@dimen/login_signup_input_padding_adjustment"
+            android:layout_marginRight="@dimen/login_signup_input_padding_adjustment"
+            android:layout_marginTop="@dimen/medium_small_padding"
+            android:theme="@style/LoginSignupEditTextTheme"
+            android:hint="@string/login_email_placeholder"
+            android:textColorHint="@color/lightGrey"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textSize="@dimen/login_signup_input_text_size" />
+
+        <TextView
+            android:id="@+id/password_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/email_input"
+            android:layout_marginTop="@dimen/medium_small_padding"
+            android:labelFor="@+id/password_input"
+            android:text="@string/password_label"
+            android:textColor="@color/subheadingTextColour"
+            android:textSize="@dimen/login_signup_label_text_size" />
+
+        <EditText
+            android:id="@+id/password_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/password_label"
+            android:layout_marginLeft="@dimen/login_signup_input_padding_adjustment"
+            android:layout_marginRight="@dimen/login_signup_input_padding_adjustment"
+            android:layout_marginTop="@dimen/medium_small_padding"
+            android:theme="@style/LoginSignupEditTextTheme"
+            android:hint="@string/login_password_placeholder"
+            android:textColorHint="@color/lightGrey"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textSize="@dimen/login_signup_input_text_size" />
+
+        <TextView
+            android:id="@+id/forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/password_label"
+            android:layout_alignParentEnd="true"
+            android:text="@string/forgot_password"
+            android:textColor="@color/lightGrey"
+            android:textSize="@dimen/forgot_password_text_size" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/loginAndSignupButtonsRelativeLayout"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/login_button_bottom_padding"
+        app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
+        app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/emailLoginCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_small_padding"
+            app:cardCornerRadius="@dimen/login_signup_button_corner_radius">
+
+            <Button
+                android:id="@+id/email_login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grassGreen"
+                android:paddingBottom="@dimen/medium_padding"
+                android:paddingLeft="@dimen/login_signup_button_side_padding"
+                android:paddingRight="@dimen/login_signup_button_side_padding"
+                android:paddingTop="@dimen/medium_padding"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/medium_text_size" />
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/signup_with_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/emailLoginCardView"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:layout_centerHorizontal="true"
+            android:text="@string/create_an_account"
+            android:textColor="@color/grassGreen"
+            android:textSize="@dimen/medium_text_size" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
