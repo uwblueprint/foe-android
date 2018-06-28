@@ -45,14 +45,14 @@ public class SignUpFragment extends Fragment {
         final View view = inflater.inflate(R.layout.sign_up_fragment, container, false);
         mErrorMessage = (TextView) view.findViewById(R.id.error_message);
 
-        mNameLabel = (TextView) view.findViewById(R.id.name_label);
-        mEmailLabel = (TextView) view.findViewById(R.id.email_label);
-        mPasswordLabel = (TextView) view.findViewById(R.id.password_label);
-        mConfirmPasswordLabel = (TextView) view.findViewById(R.id.confirm_password_label);
-        mNameInput = (EditText) view.findViewById(R.id.name_input);
-        mEmailInput = (EditText) view.findViewById(R.id.email_input);
-        mPasswordInput = (EditText) view.findViewById(R.id.password_input);
-        mConfirmPasswordInput = (EditText) view.findViewById(R.id.confirm_password_input);
+        mNameLabel = (TextView) view.findViewById(R.id.sign_up_name_label);
+        mEmailLabel = (TextView) view.findViewById(R.id.sign_up_email_label);
+        mPasswordLabel = (TextView) view.findViewById(R.id.sign_up_password_label);
+        mConfirmPasswordLabel = (TextView) view.findViewById(R.id.sign_up_confirm_password_label);
+        mNameInput = (EditText) view.findViewById(R.id.sign_up_name_input);
+        mEmailInput = (EditText) view.findViewById(R.id.sign_up_email_input);
+        mPasswordInput = (EditText) view.findViewById(R.id.sign_up_password_input);
+        mConfirmPasswordInput = (EditText) view.findViewById(R.id.sign_up_confirm_password_input);
 
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         String signupEmail = sharedPref.getString(getString(R.string.signup_email), null);
@@ -128,10 +128,10 @@ public class SignUpFragment extends Fragment {
 
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
-                    String name = ((EditText) view.findViewById(R.id.name_input)).getText().toString();
-                    String email = ((EditText) view.findViewById(R.id.email_input)).getText().toString();
-                    String password = ((EditText) view.findViewById(R.id.password_input)).getText().toString();
-                    String confirmPassword = ((EditText) view.findViewById(R.id.confirm_password_input)).getText().toString();
+                    String name = ((EditText) view.findViewById(R.id.sign_up_name_input)).getText().toString();
+                    String email = ((EditText) view.findViewById(R.id.sign_up_email_input)).getText().toString();
+                    String password = ((EditText) view.findViewById(R.id.sign_up_password_input)).getText().toString();
+                    String confirmPassword = ((EditText) view.findViewById(R.id.sign_up_confirm_password_input)).getText().toString();
 
                     if (!signupFieldsAreValid(name, email, password, confirmPassword)) {
                         return;
@@ -212,16 +212,16 @@ public class SignUpFragment extends Fragment {
 
             EditText inputFieldToSet;
             switch (label.getLabelFor()) {
-                case R.id.name_input:
+                case R.id.sign_up_name_input:
                     inputFieldToSet = mNameInput;
                     break;
-                case R.id.email_input:
+                case R.id.sign_up_email_input:
                     inputFieldToSet = mEmailInput;
                     break;
-                case R.id.password_input:
+                case R.id.sign_up_password_input:
                     inputFieldToSet = mPasswordInput;
                     break;
-                case R.id.confirm_password_input:
+                case R.id.sign_up_confirm_password_input:
                     inputFieldToSet = mConfirmPasswordInput;
                     break;
                 default:

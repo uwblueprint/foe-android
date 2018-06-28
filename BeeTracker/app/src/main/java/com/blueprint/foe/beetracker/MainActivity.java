@@ -16,10 +16,12 @@ import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,6 +67,18 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             }
         });
 
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String email = sharedPref.getString(getString(R.string.signup_email), null);
+        String password = sharedPref.getString(getString(R.string.signup_password), null);
+
+        if (email != null) {
+            mEmailInput.setText(email);
+        }
+        if (password != null) {
+            mPasswordInput.setText(password);
+        }
+
+
         Button emailLoginButton = (Button) findViewById(R.id.email_login_button);
         emailLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +88,8 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
 
                 BeeTrackerCaller caller = new BeeTrackerCaller();
                 try {
-                    String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
-                    String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
+                    String email = mEmailInput.getText().toString();
+                    String password = mPasswordInput.getText().toString();
 
                     if (!loginFieldsAreValid(email, password)) {
                         return;
@@ -96,8 +110,17 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
             public void onResponse(Call<BeeTrackerCaller.LogInResponse> call, Response<BeeTrackerCaller.LogInResponse> response) {
                 if (response.code() == 401 || response.headers() == null) {
                     Log.e(TAG, "The response from the server is 401 + " + response.message());
+                    if (response.errorBody() != null) {
+                        Gson gson = new Gson();
+                        BeeTrackerCaller.LogInResponse message = gson.fromJson(response.errorBody().charStream(),BeeTrackerCaller.LogInResponse.class);
+                        if (message != null && message.getConfirmationError() != null) {
+                            showErrorDialog(message.getConfirmationError());
+                            return;
+                        }
+                    }
                     showErrorDialog(getString(R.string.error_message_login));
                     setAllLabelsAndFieldsToError();
+
                     return;
                 }
                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -106,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                 sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
                 sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
                 sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
+
+                sharedPref.edit().remove(getString(R.string.signup_name)).commit();
+                sharedPref.edit().remove(getString(R.string.signup_email)).commit();
+                sharedPref.edit().remove(getString(R.string.signup_password)).commit();
                 navigateToHome();
             }
 
@@ -122,8 +149,8 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = ((EditText) findViewById(R.id.email_input)).getText().toString();
-                String password = ((EditText) findViewById(R.id.password_input)).getText().toString();
+                String email = mEmailInput.getText().toString();
+                String password = mPasswordInput.getText().toString();
 
                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 sharedPref.edit().putString(getString(R.string.signup_email), email).commit();
