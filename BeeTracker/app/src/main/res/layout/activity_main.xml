@@ -32,8 +32,8 @@
 
     <ImageView
         android:id="@+id/greyBackground"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
         android:src="@drawable/grey_rectangle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
 
     <ImageView
         android:id="@+id/cloudBackground"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/loginpage_cloud_background_padding"
         android:adjustViewBounds="true"
@@ -74,6 +74,7 @@
         android:id="@+id/greatBumblebeeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_padding"
         android:layout_marginBottom="@dimen/small_padding"
         android:text="@string/great_bumblebee_count"
         android:textStyle="bold"
@@ -85,7 +86,7 @@
 
     <RelativeLayout
         android:id="@+id/inputFieldsRelativeLayout"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
         app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
@@ -161,7 +162,7 @@
 
     <RelativeLayout
         android:id="@+id/loginAndSignupButtonsRelativeLayout"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/login_button_bottom_padding"
         app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
