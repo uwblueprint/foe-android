@@ -21,6 +21,10 @@ public interface  BeeTrackerService {
     Call<BeeTrackerCaller.LogInResponse> logIn(@Body BeeTrackerCaller.LogInRequest signinRequest);
 
     @Headers("Content-Type: application/json")
+    @POST("/auth/resend_confirmation")
+    Call<BeeTrackerCaller.ResendEmailResponse> resendEmail(@Body BeeTrackerCaller.ResendEmailRequest resendRequest);
+
+    @Headers("Content-Type: application/json")
     @POST("/sightings")
     Call<BeeTrackerCaller.SubmissionResponse> submitSighting(@Header("access-token") String accessToken, @Header("token-type") String tokenType, @Header("client") String client, @Header("uid") String uid, @Body BeeTrackerCaller.SubmissionRequest submissionRequest);
 }

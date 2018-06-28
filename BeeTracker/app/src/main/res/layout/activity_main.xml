@@ -118,6 +118,7 @@
             android:textColorHint="@color/lightGrey"
             android:inputType="textEmailAddress"
             android:textColor="@color/black"
+            android:nextFocusDown="@+id/password_input"
             android:textSize="@dimen/login_signup_input_text_size" />
 
         <TextView
@@ -133,7 +134,7 @@
             android:textSize="@dimen/login_signup_label_text_size" />
 
         <EditText
-            android:id="@+id/password_input"
+            android:id="@id/password_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"

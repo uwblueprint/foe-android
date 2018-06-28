@@ -14,6 +14,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
@@ -71,7 +72,33 @@ public class BeeTrackerCaller {
     }
 
     public class LogInResponse {
-        // Only the response headers matter for sign in
+        @SerializedName("success")
+        boolean success;
+
+        @SerializedName("errors")
+        List<String> errors;
+
+        public String getConfirmationError() {
+            for (String error: errors) {
+                if (error.toLowerCase().contains("confirmation email")) {
+                    return error;
+                }
+            }
+            return null;
+        }
+    }
+
+    public class ResendEmailRequest {
+        @SerializedName("email")
+        String email;
+
+        public ResendEmailRequest(String email) {
+            this.email = email;
+        }
+    }
+
+    public class ResendEmailResponse {
+        // Don't need anything from the response
     }
 
     public class Image {
@@ -115,7 +142,11 @@ public class BeeTrackerCaller {
             this.longitude = submission.getLocation().getLatLng().longitude;
             this.street_address = submission.getLocation().getName().toString();
             this.weather = submission.getWeather().name().toLowerCase();
-            this.habitat = submission.getHabitat().name().toLowerCase();
+            if (submission.getHabitat() == Submission.Habitat.Balcony_Container_Garden) {
+                this.habitat = "balcony/container_garden";
+            } else {
+                this.habitat = submission.getHabitat().name().toLowerCase();
+            }
             this.species = null;
             if (submission.getSpecies() != null) {
                 this.species = "bombus_" + submission.getSpecies().toString().toLowerCase();
@@ -205,6 +236,17 @@ public class BeeTrackerCaller {
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
         return service.logIn(new LogInRequest(email, password));
+    }
+
+    public Call<ResendEmailResponse> resendEmail(String email) throws IOException {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(getOkHttpClient())
+                .build();
+
+        BeeTrackerService service = retrofit.create(BeeTrackerService.class);
+        return service.resendEmail(new ResendEmailRequest(email));
     }
 
     public Call<SubmissionResponse> submit(Submission submission, String accessToken, String tokenType, String client, String uid) throws IOException{
