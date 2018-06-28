@@ -129,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                 sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
                 sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
                 sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
+
+                sharedPref.edit().remove(getString(R.string.signup_name)).commit();
+                sharedPref.edit().remove(getString(R.string.signup_email)).commit();
+                sharedPref.edit().remove(getString(R.string.signup_password)).commit();
                 navigateToHome();
             }
 
@@ -245,14 +249,4 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
 
     @Override
     public void onDialogFinishClick(int id) {}
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-        sharedPref.edit().remove(getString(R.string.signup_name)).commit();
-        sharedPref.edit().remove(getString(R.string.signup_email)).commit();
-        sharedPref.edit().remove(getString(R.string.signup_password)).commit();
-    }
 }

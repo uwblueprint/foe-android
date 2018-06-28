@@ -220,7 +220,6 @@ public class BeeTrackerCaller {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(getOkHttpClient())
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
@@ -231,7 +230,6 @@ public class BeeTrackerCaller {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(getOkHttpClient())
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
@@ -242,7 +240,6 @@ public class BeeTrackerCaller {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(getOkHttpClient())
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
