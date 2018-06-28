@@ -14,40 +14,48 @@
         android:layout_height="wrap_content"
         android:id="@+id/leftLoginGuideline"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.10"/>
+        app:layout_constraintGuide_percent="0.1"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="41dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/rightLoginGuideline"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.90"/>
+        app:layout_constraintGuide_percent="0.9"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="370dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/inputFieldsTopGuideline"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35"/>
+        app:layout_constraintGuide_percent="0.35"
+        tools:layout_editor_absoluteY="230dp"
+        tools:layout_editor_absoluteX="0dp" />
 
     <ImageView
         android:id="@+id/greyBackground"
-        android:layout_width="@dimen/zero"
-        android:layout_height="@dimen/zero"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/grey_rectangle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/cloudBackground" />
+        app:layout_constraintBottom_toBottomOf="@+id/cloudBackground"
+        tools:layout_editor_absoluteX="0dp" />
 
     <ImageView
         android:id="@+id/cloudBackground"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/loginpage_cloud_background_padding"
         android:adjustViewBounds="true"
         android:src="@mipmap/clouds"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="8dp" />
 
     <ImageView
         android:id="@+id/beeAppLogo"
@@ -57,25 +65,25 @@
         android:src="@mipmap/bee_app_logo_right"
         app:layout_constraintBottom_toTopOf="@+id/foePresents"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="176dp" />
 
     <TextView
         android:id="@+id/foePresents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_padding"
         android:text="@string/foe_presents"
         android:textColor="@color/subheadingTextColour"
         android:textSize="@dimen/small_text_size"
         app:layout_constraintBottom_toTopOf="@+id/greatBumblebeeCount"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="117dp" />
 
     <TextView
         android:id="@+id/greatBumblebeeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/medium_padding"
         android:layout_marginBottom="@dimen/small_padding"
         android:text="@string/great_bumblebee_count"
         android:textStyle="bold"
@@ -83,15 +91,17 @@
         android:textSize="@dimen/big_text_size"
         app:layout_constraintBottom_toTopOf="@+id/inputFieldsTopGuideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="77dp" />
 
     <RelativeLayout
         android:id="@+id/inputFieldsRelativeLayout"
-        android:layout_width="@dimen/zero"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
         app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/inputFieldsTopGuideline">
+        app:layout_constraintTop_toTopOf="@+id/inputFieldsTopGuideline"
+        tools:layout_editor_absoluteX="41dp">
 
         <TextView
             android:id="@+id/email_label"
@@ -134,7 +144,7 @@
             android:textSize="@dimen/login_signup_label_text_size" />
 
         <EditText
-            android:id="@id/password_input"
+            android:id="@+id/password_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -163,12 +173,13 @@
 
     <RelativeLayout
         android:id="@+id/loginAndSignupButtonsRelativeLayout"
-        android:layout_width="@dimen/zero"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/login_button_bottom_padding"
         app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
         app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="41dp">
 
         <android.support.v7.widget.CardView
             android:id="@+id/emailLoginCardView"
@@ -197,7 +208,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/emailLoginCardView"
-            android:layout_marginTop="@dimen/medium_padding"
+            android:padding="@dimen/medium_padding"
             android:layout_centerHorizontal="true"
             android:text="@string/create_an_account"
             android:textColor="@color/grassGreen"
