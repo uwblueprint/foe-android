@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bee.</string>
+    <string name="app_name">Bumble Bee Count</string>
     <string name="facebook_app_id">221233091726222</string>
     <string name="fb_login_protocol_scheme">fb221233091726222</string>
     <string name="title_activity_submission">SubmissionActivity</string>

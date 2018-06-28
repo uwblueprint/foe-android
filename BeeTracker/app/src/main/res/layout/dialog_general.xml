@@ -6,7 +6,7 @@
     android:background="@color/white">
     <ImageView
         android:src="@mipmap/bee_image_popup"
-        android:layout_width="@dimen/popup_image_width"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/popup_image_height"
         android:id="@+id/dialog_image"
         android:layout_alignParentTop="true"

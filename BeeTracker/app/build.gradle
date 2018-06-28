@@ -7,7 +7,7 @@ android {
         applicationId "com.blueprint.foe.beetracker"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 2
+        versionCode 3
         versionName "1.0"
     }
     buildTypes {

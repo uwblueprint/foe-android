@@ -14,14 +14,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/leftLoginGuideline"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.10"/>
+        app:layout_constraintGuide_percent="0.1"/>
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/rightLoginGuideline"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.90"/>
+        app:layout_constraintGuide_percent="0.9"/>
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/cloudBackground" />
+        app:layout_constraintBottom_toBottomOf="@+id/cloudBackground"/>
 
     <ImageView
         android:id="@+id/cloudBackground"
@@ -47,7 +47,7 @@
         android:layout_marginTop="@dimen/loginpage_cloud_background_padding"
         android:adjustViewBounds="true"
         android:src="@mipmap/clouds"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/beeAppLogo"
@@ -57,19 +57,18 @@
         android:src="@mipmap/bee_app_logo_right"
         app:layout_constraintBottom_toTopOf="@+id/foePresents"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/foePresents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_padding"
         android:text="@string/foe_presents"
         android:textColor="@color/subheadingTextColour"
         android:textSize="@dimen/small_text_size"
         app:layout_constraintBottom_toTopOf="@+id/greatBumblebeeCount"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/greatBumblebeeCount"
@@ -83,7 +82,7 @@
         android:textSize="@dimen/big_text_size"
         app:layout_constraintBottom_toTopOf="@+id/inputFieldsTopGuideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <RelativeLayout
         android:id="@+id/inputFieldsRelativeLayout"
@@ -91,7 +90,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/leftLoginGuideline"
         app:layout_constraintEnd_toEndOf="@id/rightLoginGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/inputFieldsTopGuideline">
+        app:layout_constraintTop_toTopOf="@+id/inputFieldsTopGuideline">
 
         <TextView
             android:id="@+id/email_label"
@@ -197,7 +196,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/emailLoginCardView"
-            android:layout_marginTop="@dimen/medium_padding"
+            android:padding="@dimen/medium_padding"
             android:layout_centerHorizontal="true"
             android:text="@string/create_an_account"
             android:textColor="@color/grassGreen"

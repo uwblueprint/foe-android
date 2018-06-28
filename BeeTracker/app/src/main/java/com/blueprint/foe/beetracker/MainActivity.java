@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
                     Log.e(TAG, "The response from the server is 401 + " + response.message());
                     if (response.errorBody() != null) {
                         Gson gson = new Gson();
-                        BeeTrackerCaller.LogInResponse message = gson.fromJson(response.errorBody().charStream(),BeeTrackerCaller.LogInResponse.class);
+                        BeeTrackerCaller.LogInResponse message = gson.fromJson(response.errorBody().charStream(), BeeTrackerCaller.LogInResponse.class);
                         if (message != null && message.getConfirmationError() != null) {
                             showErrorDialog(message.getConfirmationError());
                             return;

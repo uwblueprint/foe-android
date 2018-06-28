@@ -22,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ConfirmEmailFragment extends Fragment {
-    private static final String TAG = SignUpFragment.class.toString();
+    private static final String TAG = ConfirmEmailFragment.class.toString();
     private Callback resendCallback;
     private SpinningIconDialog spinningIconDialog;
 
@@ -74,7 +74,7 @@ public class ConfirmEmailFragment extends Fragment {
 
             @Override
             public void onFailure(Call<BeeTrackerCaller.ResendEmailResponse> call, Throwable t) {
-                Log.e(TAG, "There was an error with the signup callback + " + t.toString());
+                Log.e(TAG, "There was an error with resending a confirmation email + " + t.toString());
                 t.printStackTrace();
                 showErrorDialog(getString(R.string.error_message_resend_email));
             }
@@ -93,7 +93,7 @@ public class ConfirmEmailFragment extends Fragment {
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
                     e.printStackTrace();
-                    showErrorDialog(getString(R.string.error_message_signup));
+                    showErrorDialog(getString(R.string.error_message_resend_email));
                 }
             }
         });
