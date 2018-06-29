@@ -210,6 +210,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         args.putString(BeeAlertDialog.HEADING, getString(R.string.submit_dialog_heading));
         args.putString(BeeAlertDialog.PARAGRAPH, getString(R.string.submit_dialog_paragraph));
         dialog.setArguments(args);
+        dialog.setCancelable(false);
         dialog.show(getActivity().getFragmentManager(), "SubmissionPopup");
     }
 

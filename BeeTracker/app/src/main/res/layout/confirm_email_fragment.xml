@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:clickable="true"
+    tools:context="com.blueprint.foe.beetracker.ConfirmEmailFragment">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/leftConfirmEmailGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/rightConfirmEmailGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/signup_title_top_padding"
+        android:text="@string/confirm_email"
+        android:textColor="@color/black"
+        android:textSize="@dimen/big_text_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/leftConfirmEmailGuideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/signup_title_top_padding"
+        android:adjustViewBounds="true"
+        android:paddingBottom="@dimen/zero"
+        android:paddingEnd="@dimen/zero"
+        android:paddingStart="@dimen/zero"
+        android:paddingTop="@dimen/zero"
+        android:src="@mipmap/cancel_button"
+        app:layout_constraintEnd_toEndOf="@id/rightConfirmEmailGuideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/contentRelativeLayout"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/leftConfirmEmailGuideline"
+        app:layout_constraintEnd_toEndOf="@id/rightConfirmEmailGuideline">
+
+        <ImageView
+            android:id="@+id/confirmationEmailIllustration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/medium_small_padding"
+            android:src="@mipmap/confirmation_email_illustration" />
+
+        <TextView
+            android:id="@+id/almostThereText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/confirmationEmailIllustration"
+            android:layout_marginTop="@dimen/big_padding"
+            android:layout_centerHorizontal="true"
+            android:text="@string/almost_there"
+            android:textColor="@color/black"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/confirmEmailDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/almostThereText"
+            android:layout_marginTop="@dimen/small_padding"
+            android:gravity="center_horizontal"
+            android:text="@string/confirm_email_description"
+            android:textColor="@color/black"
+            android:textSize="@dimen/medium_text_size" />
+
+        <TextView
+            android:id="@+id/resendEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/confirmEmailDescription"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/big_padding"
+            android:text="@string/resend_email"
+            android:textColor="@color/grassGreen"
+            android:textSize="@dimen/medium_text_size" />
+
+        <TextView
+            android:id="@+id/backToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/resendEmail"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/big_padding"
+            android:text="@string/back_to_signin"
+            android:textColor="@color/grassGreen"
+            android:textSize="@dimen/medium_text_size" />
+
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

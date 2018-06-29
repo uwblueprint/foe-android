@@ -15,11 +15,15 @@ import retrofit2.http.POST;
 public interface  BeeTrackerService {
     @Headers("Content-Type: application/json")
     @POST("/auth")
-    Call<BeeTrackerCaller.EmailPasswordSignupResponse> emailPasswordSignup(@Body BeeTrackerCaller.EmailPasswordSignupRequest signupRequest);
+    Call<BeeTrackerCaller.SignUpResponse> signUp(@Body BeeTrackerCaller.SignUpRequest signupRequest);
 
     @Headers("Content-Type: application/json")
     @POST("/auth/sign_in")
-    Call<BeeTrackerCaller.EmailPasswordSigninResponse> emailPasswordAuth(@Body BeeTrackerCaller.EmailPasswordSigninRequest signinRequest);
+    Call<BeeTrackerCaller.LogInResponse> logIn(@Body BeeTrackerCaller.LogInRequest signinRequest);
+
+    @Headers("Content-Type: application/json")
+    @POST("/auth/resend_confirmation")
+    Call<BeeTrackerCaller.ResendEmailResponse> resendEmail(@Body BeeTrackerCaller.ResendEmailRequest resendRequest);
 
     @Headers("Content-Type: application/json")
     @POST("/sightings")

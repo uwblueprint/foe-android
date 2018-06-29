@@ -62,7 +62,7 @@ public abstract class Submission {
 
 
     public enum Habitat {
-        Default, Back_Yard, Community_Garden, City_Park, Rural, Golf_Course, Roadside, Woodland, Farmland, School_Grounds, Other;
+        Default, Back_Yard, Balcony_Container_Garden, Community_Garden, City_Park, Rural, Golf_Course, Roadside, Woodland, Farmland, School_Grounds, Other;
 
         @Override
         public String toString() {
@@ -71,6 +71,8 @@ public abstract class Submission {
                     return "";
                 case Back_Yard:
                     return "Back Yard";
+                case Balcony_Container_Garden:
+                    return "Balcony/Container Garden";
                 case Community_Garden:
                     return "Community Garden";
                 case City_Park:

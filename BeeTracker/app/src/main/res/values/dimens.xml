@@ -29,15 +29,16 @@
     <dimen name="homepage_welcome_message_text_size">20sp</dimen>
     <dimen name="login_page_background_padding_adjustment">-6dp</dimen>
     <dimen name="loginpage_cloud_background_padding">42dp</dimen>
-    <dimen name="email_password_label_text_size">14sp</dimen>
-    <dimen name="email_password_input_text_size">16sp</dimen>
-    <dimen name="email_password_input_padding_adjustment">-4dp</dimen>
-    <dimen name="email_password_side_padding">42dp</dimen>
-    <dimen name="email_password_top_padding">20dp</dimen>
-    <dimen name="email_login_side_padding">54dp</dimen>
-    <dimen name="login_button_corner_radius">28dp</dimen>
+    <dimen name="login_signup_label_text_size">14sp</dimen>
+    <dimen name="login_signup_input_text_size">16sp</dimen>
+    <dimen name="login_signup_input_padding_adjustment">-4dp</dimen>
+    <dimen name="login_signup_top_padding">20dp</dimen>
+    <dimen name="login_signup_button_side_padding">54dp</dimen>
+    <dimen name="login_signup_button_corner_radius">28dp</dimen>
+    <dimen name="login_button_bottom_padding">32dp</dimen>
+    <dimen name="signup_title_top_padding">42dp</dimen>
+    <dimen name="signup_button_bottom_padding">36dp</dimen>
     <dimen name="forgot_password_text_size">14sp</dimen>
-    <dimen name="facebook_login_side_padding">54dp</dimen>
     <dimen name="error_dialog_title_text_size">40sp</dimen>
     <dimen name="error_dialog_width">327dp</dimen>
 </resources>
