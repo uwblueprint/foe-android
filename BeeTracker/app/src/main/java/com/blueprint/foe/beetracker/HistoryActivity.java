@@ -1,6 +1,5 @@
 package com.blueprint.foe.beetracker;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,14 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
-import com.blueprint.foe.beetracker.Model.CompletedSubmission;
-import com.blueprint.foe.beetracker.Model.CurrentSubmission;
-import com.blueprint.foe.beetracker.Model.StorageAccessor;
-import com.blueprint.foe.beetracker.Model.SubmissionCollection;
 import com.blueprint.foe.beetracker.Model.SubmissionsAdapter;
 
 import java.io.IOException;
-import java.text.ParseException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +27,6 @@ import retrofit2.Response;
 public class HistoryActivity extends AppCompatActivity {
     private static final String TAG = HistoryActivity.class.toString();
 
-    private SubmissionCollection mSubmissions;
     private Callback allSightingsCallback;
     private ListView listView;
     private TextView tvNumberOfSightings;

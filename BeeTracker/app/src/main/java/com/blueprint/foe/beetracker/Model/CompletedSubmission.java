@@ -5,10 +5,9 @@ package com.blueprint.foe.beetracker.Model;
  * properties, the id and the S3 image url.
  */
 public class CompletedSubmission extends Submission {
+    private static final String TAG = Submission.class.toString();
     private int mId; // for de-duping
     private String mImageUrl;
-    private static final String TAG = Submission.class.toString();
-
 
     @Override
     public void reset() {

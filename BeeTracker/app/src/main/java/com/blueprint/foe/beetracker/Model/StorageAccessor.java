@@ -71,21 +71,6 @@ public class StorageAccessor {
         return loadSubmission(fis);
     }
 
-    /*
-     * Temporary method used to generate fake data to display on the UI.
-     */
-    public static SubmissionCollection loadSubmissions(int count) throws IOException {
-        SubmissionCollection submissions = new SubmissionCollection();
-        for (int i = 0; i < count; i++) {
-            CompletedSubmission submission = new CompletedSubmission();
-            submission.setWeather(Submission.Weather.Sunny);
-            submission.setSpecies(Submission.Species.bifarius, Submission.BeeSpeciesType.Eastern);
-            submission.setImageUrl("https://14fr7h2xgn5j198icf1rcm0i-wpengine.netdna-ssl.com/wp-content/uploads/2016/01/%C2%A9CC-Bumble-Bee-Hummel-Courtesy-of-Andreas--1024x723.jpg");
-            submissions.addSubmission(submission);
-        }
-        return submissions;
-    }
-
     public static FactCollection loadFacts(InputStream inputStream) throws IOException {
         String string = convertStreamToString(inputStream);
         inputStream.close();
