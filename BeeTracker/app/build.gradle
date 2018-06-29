@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.blueprint.foe.beetracker"
         minSdkVersion 21
-        targetSdkVersion 24
+        targetSdkVersion 26
         versionCode 3
         versionName "1.0"
     }
@@ -20,6 +20,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:customtabs:26.0.2'
     compile 'com.android.support:exifinterface:26.0.2'
     compile 'com.android.support:support-annotations:26.0.2'
     compile 'com.android.support:appcompat-v7:26.0.2'
