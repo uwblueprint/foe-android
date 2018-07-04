@@ -60,7 +60,7 @@ public class SubmissionsAdapter extends ArrayAdapter<BeeTrackerCaller.Submission
             final CompletedSubmission submission = getItem(position).getSubmission();
 
             TextView submissionDate = (TextView) convertView.findViewById(R.id.tvDate);
-            SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd", Locale.ENGLISH);
+            SimpleDateFormat formatter = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
             String formatted = formatter.format(submission.getDate());
             submissionDate.setText(formatted);
             TextView submissionSpecies = (TextView) convertView.findViewById(R.id.tvSpecies);
