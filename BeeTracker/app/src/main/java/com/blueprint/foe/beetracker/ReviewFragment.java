@@ -23,7 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
+import com.blueprint.foe.beetracker.API.TokenHelper;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
+import com.blueprint.foe.beetracker.Model.CompletedSubmission;
+import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 import com.blueprint.foe.beetracker.Model.Submission;
 import com.blueprint.foe.beetracker.Model.WeatherOption;
 import com.blueprint.foe.beetracker.Model.WeatherPickerAdapter;
@@ -32,7 +35,10 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
+import static com.blueprint.foe.beetracker.Model.Submission.*;
+
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,15 +65,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
 
-        final ReviewFragment fragment = this;
         TextView submitButton = (TextView) view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // check all fields are completed
-                fragment.launchSpinnerPopup();
+                launchSpinnerPopup();
                 SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
-                Submission submission = submissionInterface.getSubmission();
+                CurrentSubmission submission = submissionInterface.getSubmission();
                 if (!submission.isComplete()) {
                     setErrorFields(submission);
                     removeSpinnerPopup();
@@ -86,7 +91,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         });
 
         // Set up image preview in top left corner
-        final Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+        final CurrentSubmission submission = ((SubmissionActivity) getActivity()).getSubmission();
         Bitmap bitmap = submission.getBitmap();
         int width = bitmap.getWidth();
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, container.getWidth(), (int)(((double)bitmap.getHeight() / (double)width) * container.getWidth()), false);
@@ -101,8 +106,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         mRecyclerView.setAdapter(createAdapter(submission));
 
         mHabitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
-        final Submission.Habitat[] habitats = Submission.Habitat.values();
-        ArrayAdapter<Submission.Habitat> habitatAdapter = new ArrayAdapter<>(getActivity(),
+        final Habitat[] habitats = Habitat.values();
+        ArrayAdapter<Habitat> habitatAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.spinner_item, habitats);
         habitatAdapter.setDropDownViewResource(R.layout.spinner_item);
         mHabitatSpinner.setAdapter(habitatAdapter);
@@ -129,7 +134,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                submission.setLocation(place);
+                submission.setLocation(place.getName().toString(), place.getLatLng().latitude, place.getLatLng().longitude);
                 resetErrorFields(submission);
             }
 
@@ -139,8 +144,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                 Log.e(TAG, "An error occurred: " + status);
             }
         });
-        if (submission.getLocation() != null) {
-            autocompleteFragment.setText(submission.getLocation().getName());
+        if (submission.getStreetAddress() != null) {
+            autocompleteFragment.setText(submission.getStreetAddress());
         }
 
         mErrorMessage = (TextView) view.findViewById(R.id.review_error_message);
@@ -156,19 +161,14 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                     Toast.makeText(getActivity(), "Sorry, you've been logged out.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                sharedPref.edit().putString(getString(R.string.preference_login_token), response.headers().get("access-token")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_token_type), response.headers().get("token-type")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
+                TokenHelper.setSharedPreferencesFromHeader(getActivity(), response.headers());
                 if (response.code() == 422 || response.body() == null) {
                     Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
                     showErrorDialog(getString(R.string.error_message_submit));
                     return;
                 }
                 Log.d(TAG, "The response body: " + response.body());
-                fragment.launchPopup();
+                launchPopup();
             }
 
             @Override
@@ -185,7 +185,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             latinSpecies.setText("Bombus " + submission.getSpecies().toString());
 
             TextView englishSpecies = (TextView) view.findViewById(R.id.englishName);
-            englishSpecies.setText(getEnglishName(submission.getSpecies()));
+            englishSpecies.setText(submission.getSpecies().getEnglishName());
         }
 
         return view;
@@ -222,7 +222,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             String tokenType = sharedPref.getString(getString(R.string.preference_login_token_type), null);
             String client = sharedPref.getString(getString(R.string.preference_login_client), null);
             String uid = sharedPref.getString(getString(R.string.preference_login_uid), null);
-            Submission submission = ((SubmissionActivity) getActivity()).getSubmission();
+            CurrentSubmission submission = ((SubmissionActivity) getActivity()).getSubmission();
             Call<BeeTrackerCaller.SubmissionResponse> token = caller.submit(submission, accessToken, tokenType, client, uid);
             token.enqueue(submitCallback);
         } catch (IOException e) {
@@ -232,48 +232,35 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         }
     }
 
-    private String getEnglishName(Submission.Species species) {
-        String[] names = {
-               "Common eastern bumble bee", "Tri-coloured bumble bee",  "Red-belted bumble bee",
-                "Two-spotted bumble bee", "Northern amber bumble bee", "Half-black bumble bee",
-                "Rusty-patched bumble bee", "Brown-belted bumble bee", "Lemon cuckoo bumble bee",
-                "Confusing bumble bee", "American bumble bee", "Forest bumble bee",
-                "Sanderson bumble bee", "Nevada bumble bee", "Black and gold bumble bee",
-                "Yellow-banded bumble bee", "Yellow bumble bee", "Yellow head bumble bee",
-                "Common western bumble bee", "Black tail bumble bee", "Two-form bumble bee",
-                "Hunt bumble bee", "Vosnensky bumble bee", "Cryptic bumble bee",
-                "Fuzzy-horned bumble bee", "Central bumble bee",
-        }; // Missing "Gypso cuckoo bumble bee"
-        return names[species.ordinal()];
-    }
+
 
     // Method to set textfields to red as appropriate or reset them
-    private void setErrorFields(Submission submission) {
+    private void setErrorFields(CurrentSubmission submission) {
         if (!submission.isComplete()) {
             mErrorMessage.setVisibility(View.VISIBLE);
         }
-        if (submission.getHabitat() == null || submission.getHabitat() == Submission.Habitat.Default) {
+        if (submission.getHabitat() == null || submission.getHabitat() == Habitat.Default) {
             mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background_error);
         }
         if (submission.getWeather() == null) {
             mRecyclerView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.errorRed));
         }
-        if (submission.getLocation() == null) {
+        if (submission.getStreetAddress() == null) {
             mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.errorRed));
         }
     }
 
-    private void resetErrorFields(Submission submission) {
+    private void resetErrorFields(CurrentSubmission submission) {
         if (submission.isComplete()) {
             mErrorMessage.setVisibility(View.GONE);
         }
-        if (submission.getHabitat() != null && submission.getHabitat() != Submission.Habitat.Default) {
+        if (submission.getHabitat() != null && submission.getHabitat() != Habitat.Default) {
             mHabitatSpinner.setBackgroundResource(R.drawable.spinner_background);
         }
         if (submission.getWeather() != null) {
             mRecyclerView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
         }
-        if (submission.getLocation() != null) {
+        if (submission.getStreetAddress() != null) {
             mCardView.setCardBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
         }
     }
@@ -292,6 +279,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         if (id == ERROR_DIALOG) {
             // Do nothing
         } else if (id == NORMAL_DIALOG) {
+            Intent intent = new Intent(getActivity(), HistoryActivity.class);
+            startActivity(intent);
             getActivity().finish();
         }
     }

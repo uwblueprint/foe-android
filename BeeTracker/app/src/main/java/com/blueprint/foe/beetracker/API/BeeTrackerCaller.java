@@ -1,17 +1,20 @@
 package com.blueprint.foe.beetracker.API;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.blueprint.foe.beetracker.Model.CompletedSubmission;
+import com.blueprint.foe.beetracker.Model.CurrentSubmission;
+
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
-import com.blueprint.foe.beetracker.Model.Submission;
-import com.blueprint.foe.beetracker.R;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
+import java.text.ParseException;
+import com.blueprint.foe.beetracker.Model.Submission;
+
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -127,22 +130,22 @@ public class BeeTrackerCaller {
         @SerializedName("image")
         Image image;
 
-        @SerializedName("street_address")
-        String street_address;
-
         @SerializedName("latitude")
         double latitude;
 
         @SerializedName("longitude")
         double longitude;
 
-        Sighting(Submission submission) {
+        @SerializedName("street_address")
+        String street_address;
+
+        Sighting(CurrentSubmission submission) {
             this.image = new Image(StorageAccessor.convertImageToStringForServer(submission.getBitmap()), submission.getImageFilePath());
-            this.latitude = submission.getLocation().getLatLng().latitude;
-            this.longitude = submission.getLocation().getLatLng().longitude;
-            this.street_address = submission.getLocation().getName().toString();
+            this.latitude = submission.getLatitude();
+            this.longitude = submission.getLongitude();
+            this.street_address = submission.getStreetAddress();
             this.weather = submission.getWeather().name().toLowerCase();
-            if (submission.getHabitat() == Submission.Habitat.Balcony_Container_Garden) {
+            if (submission.getHabitat() == Submission.Habitat.balcony_container_garden) {
                 this.habitat = "balcony/container_garden";
             } else {
                 this.habitat = submission.getHabitat().name().toLowerCase();
@@ -159,7 +162,7 @@ public class BeeTrackerCaller {
         @SerializedName("sighting")
         Sighting sighting;
 
-        SubmissionRequest(Submission submission) {
+        SubmissionRequest(CurrentSubmission submission) {
             this.sighting = new Sighting(submission);
         }
     }
@@ -177,14 +180,17 @@ public class BeeTrackerCaller {
         @SerializedName("species")
         String species;
 
-        @SerializedName("image")
-        Image image;
+        @SerializedName("image_url")
+        String image_url;
 
         @SerializedName("latitude")
         double latitude;
 
         @SerializedName("longitude")
         double longitude;
+
+        @SerializedName("street_address")
+        String street_address;
 
         @SerializedName("date")
         String date;
@@ -200,16 +206,18 @@ public class BeeTrackerCaller {
 
         SubmissionResponse() {}
 
-        public int getId() {
-            return id;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public String getUrl() {
-            return url;
+        public CompletedSubmission getSubmission() throws ParseException{
+            CompletedSubmission submission = new CompletedSubmission();
+            submission.setHabitat(CurrentSubmission.Habitat.valueOf(habitat));
+            submission.setWeather(CurrentSubmission.Weather.valueOf(weather));
+            submission.setLocation(street_address, latitude, longitude);
+            submission.setImageUrl(image_url);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            submission.setDate(format.parse(date));
+            if (species != null && species.length() > 7) {
+                submission.setSpecies(CurrentSubmission.Species.valueOf(species.substring(7)));
+            }
+            return submission;
         }
     }
 
@@ -243,15 +251,11 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
+
         return service.resendEmail(new ResendEmailRequest(email));
     }
 
-    public Call<SubmissionResponse> submit(Submission submission, String accessToken, String tokenType, String client, String uid) throws IOException{
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
+    public Call<SubmissionResponse> submit(CurrentSubmission submission, String accessToken, String tokenType, String client, String uid) throws IOException{
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -259,6 +263,16 @@ public class BeeTrackerCaller {
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
         return service.submitSighting(accessToken, tokenType, client, uid, new SubmissionRequest(submission));
+    }
+
+    public Call<SubmissionResponse[]> getAllSightings(String accessToken, String tokenType, String client, String uid) throws IOException{
+         Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        BeeTrackerService service = retrofit.create(BeeTrackerService.class);
+        return service.getSightings(accessToken, tokenType, client, uid);
     }
 
     @NonNull

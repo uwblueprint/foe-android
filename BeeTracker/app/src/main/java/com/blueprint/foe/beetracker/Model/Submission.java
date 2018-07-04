@@ -1,27 +1,21 @@
 package com.blueprint.foe.beetracker.Model;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-
-import com.google.android.gms.location.places.Place;
+import java.util.Date;
 
 /**
- * Represents the data object that contains all information related to submission.
+ * Abstract class for common methods between a submission being built up (CurrentSubmission) and
+ * the submissions returned from the server (CompletedSubmission)
  */
-
-public class Submission {
-    private static final String TAG = Submission.class.toString();
-    public static final int MAX_FACE = 2;
-    public static final int MAX_THORAX = 5;
-    public static final int MAX_ABDOMEN = 8;
-
+public abstract class Submission {
+    // TODO: accept user input for Date https://github.com/uwblueprint/foe/issues/75
+    private Date mDate = null;
     private BeeSpeciesType mSpeciesType = null;
     private Species mSpecies = null;
     private Habitat mHabitat = null;
     private Weather mWeather = null;
-    private Place mPlace = null;
-    private String mImageFilePath = null;
-    private transient Bitmap mBitmap = null;
+    private double mLatitude = 0;
+    private double mLongitude = 0;
+    private String mStreetAddress = null;
 
     @Override
     public boolean equals(Object other) {
@@ -36,50 +30,67 @@ public class Submission {
                 && this.mSpeciesType == that.mSpeciesType
                 && this.mHabitat == that.mHabitat
                 && this.mWeather == that.mWeather
-                && this.mImageFilePath == that.mImageFilePath
-                && ((this.mBitmap == null && that.mBitmap == null)
-                    || this.mBitmap != null && that.mBitmap != null && this.mBitmap.equals(that.mBitmap))
-                && ((this.mPlace == null && that.mPlace == null)
-                    || this.mPlace != null && that.mPlace != null && this.mPlace.equals(that.mPlace));
+                && ((this.mDate == null && that.mDate == null)
+                || this.mDate != null && that.mDate != null && this.mDate.equals(that.mDate))
+                && this.mLatitude == that.mLatitude
+                && this.mLongitude == that.mLongitude
+                && ((this.mStreetAddress == null && that.mStreetAddress == null)
+                    || this.mStreetAddress != null && that.mStreetAddress != null && this.mStreetAddress.equals(that.mStreetAddress));
     }
 
     public enum Species {
         impatiens, ternarius, rufocinctus, bimaculatus, borealis, vagans, affinis,
         griseocollis, citrinus, perplexus, pensylvanicus, sylvicola, sandersoni,
         nevadensis, auricomus, terricola, fervidus, flavifrons, occidentalis, melanopygus,
-        bifarius, huntii, vosnesenski, cryptarum, mixtus, centralis
+        bifarius, huntii, vosnesenski, cryptarum, mixtus, centralis;
+
+        public String getEnglishName() {
+            String[] names = {
+                    "Common eastern bumble bee", "Tri-coloured bumble bee",  "Red-belted bumble bee",
+                    "Two-spotted bumble bee", "Northern amber bumble bee", "Half-black bumble bee",
+                    "Rusty-patched bumble bee", "Brown-belted bumble bee", "Lemon cuckoo bumble bee",
+                    "Confusing bumble bee", "American bumble bee", "Forest bumble bee",
+                    "Sanderson bumble bee", "Nevada bumble bee", "Black and gold bumble bee",
+                    "Yellow-banded bumble bee", "Yellow bumble bee", "Yellow head bumble bee",
+                    "Common western bumble bee", "Black tail bumble bee", "Two-form bumble bee",
+                    "Hunt bumble bee", "Vosnensky bumble bee", "Cryptic bumble bee",
+                    "Fuzzy-horned bumble bee", "Central bumble bee",
+            }; // Missing "Gypso cuckoo bumble bee"
+            return names[this.ordinal()];
+        }
     } // Missing bohemicus
 
 
     public enum Habitat {
-        Default, Back_Yard, Balcony_Container_Garden, Community_Garden, City_Park, Rural, Golf_Course, Roadside, Woodland, Farmland, School_Grounds, Other;
+        Default, back_yard, balcony_container_garden, community_garden, city_park, rural,
+        golf_course, roadside, woodland, farmland, school_grounds, other;
 
         @Override
         public String toString() {
             switch (this) {
                 case Default:
                     return "";
-                case Back_Yard:
+                case back_yard:
                     return "Back Yard";
-                case Balcony_Container_Garden:
+                case balcony_container_garden:
                     return "Balcony/Container Garden";
-                case Community_Garden:
+                case community_garden:
                     return "Community Garden";
-                case City_Park:
+                case city_park:
                     return "City Park";
-                case Rural:
+                case rural:
                     return "Rural";
-                case Golf_Course:
+                case golf_course:
                     return "Golf Course";
-                case Roadside:
+                case roadside:
                     return "Roadside";
-                case Woodland:
+                case woodland:
                     return "Woodland";
-                case Farmland:
+                case farmland:
                     return "Farmland";
-                case School_Grounds:
+                case school_grounds:
                     return "School Grounds";
-                case Other:
+                case other:
                     return "Other";
                 default:
                     return "There was an error.";
@@ -88,18 +99,18 @@ public class Submission {
     }
 
     public enum Weather {
-        Sunny, Partly_Cloudy, Cloudy, Rain;
+        sunny, partly_cloudy, cloudy, rain;
 
         @Override
         public String toString() {
             switch (this) {
-                case Sunny:
+                case sunny:
                     return "Sunny";
-                case Partly_Cloudy:
+                case partly_cloudy:
                     return "Partly Cloudy";
-                case Cloudy:
+                case cloudy:
                     return "Cloudy";
-                case Rain:
+                case rain:
                     return "Rainy";
                 default:
                     return "There was an error.";
@@ -112,13 +123,10 @@ public class Submission {
         mSpecies = null;
         mHabitat = null;
         mWeather = null;
-        mPlace = null;
-        mImageFilePath = null;
-        mBitmap = null;
-    }
-
-    public Submission() {
-        reset();
+        mStreetAddress = null;
+        mLatitude = 0;
+        mLongitude = 0;
+        mDate = null;
     }
 
     public void setHabitat(Habitat h) {
@@ -137,51 +145,50 @@ public class Submission {
         return mWeather;
     }
 
-    public void setLocation(Place place) {
-        this.mPlace = place;
+    public void setLocation(String address, double latitude, double longitude) {
+        this.mStreetAddress = address;
+        this.mLatitude = latitude;
+        this.mLongitude = longitude;
     }
 
-    public Place getLocation() {
-        return mPlace;
+    public String getStreetAddress() {
+        return mStreetAddress;
+    }
+
+    public double getLatitude() {
+        return mLatitude;
+    }
+
+    public double getLongitude() {
+        return mLongitude;
     }
 
     public BeeSpeciesType getSpeciesType() {
         return mSpeciesType;
     }
 
+    public void setSpeciesType(BeeSpeciesType isEastern) {
+        mSpeciesType = isEastern;
+    }
+
     public Species getSpecies() {
         return mSpecies;
     }
 
-    public void setSpecies(Species species, BeeSpeciesType isEastern) {
-        mSpeciesType = isEastern;
+    public void setSpecies(Species species) {
         mSpecies = species;
     }
 
-    public String getImageFilePath() {
-        return mImageFilePath;
+    public void setDate(Date date) {
+        mDate = date;
     }
 
-    public void setImageFilePath(String imageFilePath) {
-        mImageFilePath = imageFilePath;
-    }
-
-    public Bitmap getBitmap() {
-        return mBitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        mBitmap = bitmap;
+    public Date getDate() {
+        return mDate;
     }
 
     public boolean isComplete() {
-        return mHabitat != null && mHabitat != Habitat.Default && mWeather != null && mPlace != null && mBitmap != null;
-    }
-
-    /* For debug only */
-    public void print() {
-        Log.d(TAG, "Species: " + mSpecies + ", Habitat: " + mHabitat + ", Weather: " + mWeather);
-        Log.d(TAG, "Location: " + mPlace);
+        return mHabitat != null && mHabitat != Habitat.Default && mWeather != null && mStreetAddress != null && mLongitude != 0 && mLatitude != 0;
     }
 
     public enum BeeSpeciesType {

@@ -2,7 +2,6 @@ package com.blueprint.foe.beetracker.Model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
@@ -13,7 +12,6 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -65,7 +63,7 @@ public class StorageAccessor {
         String string = convertStreamToString(inputStream);
         inputStream.close();
         Gson gson = new Gson();
-        return gson.fromJson(string, Submission.class);
+        return gson.fromJson(string, CurrentSubmission.class);
     }
 
     public static Submission loadSubmission(Context context) throws IOException {

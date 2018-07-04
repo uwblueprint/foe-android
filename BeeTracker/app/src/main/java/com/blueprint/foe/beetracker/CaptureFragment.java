@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 import com.blueprint.foe.beetracker.Model.StorageAccessor;
-import com.blueprint.foe.beetracker.Model.Submission;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
@@ -182,7 +181,7 @@ public class CaptureFragment extends Fragment {
     private void saveSubmission(Bitmap image, String filepath) {
         SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
         submissionInterface.createOrResetSubmission();
-        Submission submission = submissionInterface.getSubmission();
+        CurrentSubmission submission = submissionInterface.getSubmission();
         submission.setBitmap(image);
         submission.setImageFilePath(filepath);
     }

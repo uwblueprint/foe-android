@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,11 +36,11 @@ public class StorageAccessorTest {
 
     @Test
     public void storeSubmission_isCorrect() throws Exception {
-        Submission submission = new Submission();
-        submission.setWeather(Submission.Weather.Cloudy);
-        submission.setHabitat(Submission.Habitat.Back_Yard);
+        CurrentSubmission submission = new CurrentSubmission();
+        submission.setWeather(CurrentSubmission.Weather.cloudy);
+        submission.setHabitat(CurrentSubmission.Habitat.back_yard);
         submission.setBitmap(bitmap); // transient so shouldn't be stored
-        String correctJson = "{\"mHabitat\":\"Back_Yard\",\"mWeather\":\"Cloudy\"}";
+        String correctJson = "{\"mHabitat\":\"back_yard\",\"mWeather\":\"cloudy\",\"mLatitude\":0.0,\"mLongitude\":0.0}";
         ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
 
         when(context.openFileOutput("submission", Context.MODE_PRIVATE)).thenReturn(fos);
@@ -54,10 +53,10 @@ public class StorageAccessorTest {
 
     @Test
     public void loadSubmission_isCorrect() throws Exception {
-        Submission correctSubmission = new Submission();
-        correctSubmission.setWeather(Submission.Weather.Cloudy);
-        correctSubmission.setHabitat(Submission.Habitat.Back_Yard);
-        String inputJson = "{\"mWeather\":\"Cloudy\",\"mHabitat\":\"Back_Yard\"}";
+        Submission correctSubmission = new CurrentSubmission();
+        correctSubmission.setWeather(CurrentSubmission.Weather.cloudy);
+        correctSubmission.setHabitat(CurrentSubmission.Habitat.back_yard);
+        String inputJson = "{\"mWeather\":\"cloudy\",\"mHabitat\":\"back_yard\"}";
         InputStream fis = new ByteArrayInputStream(inputJson.getBytes(StandardCharsets.UTF_8));
 
         Submission submission = StorageAccessor.loadSubmission(fis);

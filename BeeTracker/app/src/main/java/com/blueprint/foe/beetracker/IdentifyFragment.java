@@ -5,8 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,10 +19,12 @@ import android.widget.Toast;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Listeners.OnBeePartSelectedListener;
 import com.blueprint.foe.beetracker.Model.BeeSpeciesDrawable;
+import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 import com.blueprint.foe.beetracker.Model.PartsPickerAdapter;
 import com.blueprint.foe.beetracker.Model.Submission;
-import static com.blueprint.foe.beetracker.Model.Submission.Species;
 
+import static com.blueprint.foe.beetracker.Model.Submission.Species;
+import static com.blueprint.foe.beetracker.Model.Submission.BeeSpeciesType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,7 +88,7 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
             }
         });
 
-        Submission submission = ((SubmissionInterface) getActivity()).getSubmission();
+        CurrentSubmission submission = ((SubmissionInterface) getActivity()).getSubmission();
         Bitmap bitmap = submission.getBitmap();
         int scaledWidth = container.getWidth();
         int scaledHeight = (int)(((double)bitmap.getHeight() / (double)bitmap.getWidth()) * container.getWidth());
@@ -130,14 +130,14 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         return view;
     }
 
-    private void createAdapters(Submission submission) {
+    private void createAdapters(CurrentSubmission submission) {
         int[] easternAssets = {R.drawable.impatiens, R.drawable.ternarius, R.drawable.rufocinctus,
                 R.drawable.bimaculatus, R.drawable.borealis, R.drawable.vagans, R.drawable.affinis,
                 R.drawable.griseocollis, R.drawable.citrinus, R.drawable.perplexus,
                 R.drawable.pensylvanicus, R.drawable.sylvicola, R.drawable.sandersoni,
                 R.drawable.nevadensis, R.drawable.auricomus, R.drawable.terricola,
                 R.drawable.fervidus, R.drawable.flavifrons};
-        List<Submission.Species> easternSpecies = Arrays.asList(
+        List<Species> easternSpecies = Arrays.asList(
                 Species.impatiens, Species.ternarius, Species.rufocinctus,
                 Species.bimaculatus, Species.borealis, Species.vagans, Species.affinis,
                 Species.griseocollis, Species.citrinus, Species.perplexus,
@@ -161,16 +161,16 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
 
         List<BeeSpeciesDrawable> easternDrawables = new ArrayList<>();
         for (int i = 0; i < easternAssets.length; i++) {
-            easternDrawables.add(new BeeSpeciesDrawable(easternSpecies.get(i), Submission.BeeSpeciesType.Eastern, easternAssets[i], getActivity()));
+            easternDrawables.add(new BeeSpeciesDrawable(easternSpecies.get(i), BeeSpeciesType.Eastern, easternAssets[i]));
         }
 
         List<BeeSpeciesDrawable> westernDrawables = new ArrayList<>();
         for (int i = 0; i < westernAssets.length; i++) {
-            westernDrawables.add(new BeeSpeciesDrawable(westernSpecies.get(i), Submission.BeeSpeciesType.Western, westernAssets[i], getActivity()));
+            westernDrawables.add(new BeeSpeciesDrawable(westernSpecies.get(i), BeeSpeciesType.Western, westernAssets[i]));
         }
 
         if (submission.getSpecies() != null) {
-            if (submission.getSpeciesType() == Submission.BeeSpeciesType.Eastern) {
+            if (submission.getSpeciesType() == BeeSpeciesType.Eastern) {
                 easternDrawables.get(easternSpecies.indexOf(submission.getSpecies())).setSelection(true);
             } else {
                 westernDrawables.get(westernSpecies.indexOf(submission.getSpecies())).setSelection(true);
@@ -189,10 +189,10 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
     @Override
     public void onBeeSpeciesSelected() {
         Submission submission = ((SubmissionInterface) getActivity()).getSubmission();
-        if (submission.getSpeciesType() == Submission.BeeSpeciesType.Eastern) {
+        if (submission.getSpeciesType() == BeeSpeciesType.Eastern) {
             mWesternAdapter.unselectAllItems();
             mWesternAdapter.notifyDataSetChanged(); // to reset selection to unselected
-        } else if (submission.getSpeciesType() == Submission.BeeSpeciesType.Western) {
+        } else if (submission.getSpeciesType() == BeeSpeciesType.Western) {
             mEasternAdapter.unselectAllItems();
             mEasternAdapter.notifyDataSetChanged(); // to reset selection to unselected
         }
