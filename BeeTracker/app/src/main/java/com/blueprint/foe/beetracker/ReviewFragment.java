@@ -65,13 +65,12 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_fragment, container, false);
 
-        final ReviewFragment fragment = this;
         TextView submitButton = (TextView) view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // check all fields are completed
-                fragment.launchSpinnerPopup();
+                launchSpinnerPopup();
                 SubmissionInterface submissionInterface = (SubmissionInterface) getActivity();
                 CurrentSubmission submission = submissionInterface.getSubmission();
                 if (!submission.isComplete()) {
@@ -169,7 +168,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                     return;
                 }
                 Log.d(TAG, "The response body: " + response.body());
-                fragment.launchPopup();
+                launchPopup();
             }
 
             @Override
@@ -280,6 +279,8 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         if (id == ERROR_DIALOG) {
             // Do nothing
         } else if (id == NORMAL_DIALOG) {
+            Intent intent = new Intent(getActivity(), HistoryActivity.class);
+            startActivity(intent);
             getActivity().finish();
         }
     }

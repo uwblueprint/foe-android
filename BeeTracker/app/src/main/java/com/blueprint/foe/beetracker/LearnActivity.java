@@ -60,7 +60,6 @@ public class LearnActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
-
         listView.setAdapter(adapter);
     };
 

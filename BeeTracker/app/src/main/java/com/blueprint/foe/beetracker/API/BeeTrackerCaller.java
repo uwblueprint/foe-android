@@ -172,16 +172,16 @@ public class BeeTrackerCaller {
         int id;
 
         @SerializedName("weather")
-        public String weather;
+        String weather;
 
         @SerializedName("habitat")
-        public String habitat;
+        String habitat;
 
         @SerializedName("species")
-        public String species;
+        String species;
 
         @SerializedName("image_url")
-        public String image_url;
+        String image_url;
 
         @SerializedName("latitude")
         double latitude;
@@ -190,10 +190,10 @@ public class BeeTrackerCaller {
         double longitude;
 
         @SerializedName("street_address")
-        public String street_address;
+        String street_address;
 
         @SerializedName("date")
-        public String date;
+        String date;
 
         @SerializedName("created_at")
         String created_at;
@@ -256,11 +256,6 @@ public class BeeTrackerCaller {
     }
 
     public Call<SubmissionResponse> submit(CurrentSubmission submission, String accessToken, String tokenType, String client, String uid) throws IOException{
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -271,15 +266,9 @@ public class BeeTrackerCaller {
     }
 
     public Call<SubmissionResponse[]> getAllSightings(String accessToken, String tokenType, String client, String uid) throws IOException{
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit retrofit = new Retrofit.Builder()
+         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);

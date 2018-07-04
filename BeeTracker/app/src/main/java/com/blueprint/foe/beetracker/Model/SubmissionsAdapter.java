@@ -36,8 +36,6 @@ public class SubmissionsAdapter extends ArrayAdapter<BeeTrackerCaller.Submission
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.submission_view, parent, false);
@@ -61,7 +59,6 @@ public class SubmissionsAdapter extends ArrayAdapter<BeeTrackerCaller.Submission
         try {
             final CompletedSubmission submission = getItem(position).getSubmission();
 
-            //template submission data (illustration, text) into view
             TextView submissionDate = (TextView) convertView.findViewById(R.id.tvDate);
             SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd", Locale.ENGLISH);
             String formatted = formatter.format(submission.getDate());
@@ -73,10 +70,7 @@ public class SubmissionsAdapter extends ArrayAdapter<BeeTrackerCaller.Submission
             TextView submissionAddress = (TextView) convertView.findViewById(R.id.tvLocation);
             submissionAddress.setText(submission.getStreetAddress());
 
-            Log.d(TAG, submission.getImageUrl());
             ImageView imageView = (ImageView) convertView.findViewById(R.id.imgSubmission);
-            Picasso.with(getContext())
-                    .setLoggingEnabled(true);
             Picasso.with(getContext())
                     .load(submission.getImageUrl())
                     .placeholder(R.mipmap.submission_placeholder)
