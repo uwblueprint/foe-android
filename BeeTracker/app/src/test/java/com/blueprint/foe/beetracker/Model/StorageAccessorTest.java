@@ -40,7 +40,7 @@ public class StorageAccessorTest {
         submission.setWeather(CurrentSubmission.Weather.cloudy);
         submission.setHabitat(CurrentSubmission.Habitat.back_yard);
         submission.setBitmap(bitmap); // transient so shouldn't be stored
-        String correctJson = "{\"mHabitat\":\"back_yard\",\"mWeather\":\"cloudy\"}";
+        String correctJson = "{\"mHabitat\":\"back_yard\",\"mWeather\":\"cloudy\",\"mLatitude\":0.0,\"mLongitude\":0.0}";
         ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
 
         when(context.openFileOutput("submission", Context.MODE_PRIVATE)).thenReturn(fos);
