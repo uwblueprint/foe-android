@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
+import com.blueprint.foe.beetracker.API.TokenHelper;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Model.CompletedSubmission;
 import com.blueprint.foe.beetracker.Model.CurrentSubmission;
@@ -161,24 +162,13 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
                     Toast.makeText(getActivity(), "Sorry, you've been logged out.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                sharedPref.edit().putString(getString(R.string.preference_login_token), response.headers().get("access-token")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_token_type), response.headers().get("token-type")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
+                TokenHelper.setSharedPreferencesFromHeader(getActivity(), response.headers());
                 if (response.code() == 422 || response.body() == null) {
                     Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
                     showErrorDialog(getString(R.string.error_message_submit));
                     return;
                 }
                 Log.d(TAG, "The response body: " + response.body());
-                try {
-                    CompletedSubmission submission = response.body().getSubmission();
-
-                } catch (ParseException e) {
-
-                }
                 fragment.launchPopup();
             }
 

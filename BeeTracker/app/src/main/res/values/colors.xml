@@ -18,4 +18,12 @@
     <color name="beeYellow">#FFFF01</color>
     <color name="poppyRed">#EB5757</color>
     <color name="errorRed">#fddada</color>
+    <color name="gradient1">#00000000</color>
+    <color name="gradient2">#06000000</color>
+    <color name="gradient3">#10000000</color>
+    <color name="gradient4">#16000000</color>
+    <color name="gradient5">#36000000</color>
+    <color name="gradient6">#5b000000</color>
+    <color name="gradient7">#86000000</color>
+    <color name="gradient8">#c6000000</color>
 </resources>

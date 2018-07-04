@@ -5,6 +5,7 @@
     <string name="title_activity_submission">SubmissionActivity</string>
     <string name="title_activity_learn">LearnActivity</string>
     <string name="submit">Submit</string>
+    <string name="capture">Capture</string>
     <string name="cancel">Cancel</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
@@ -43,6 +44,7 @@
     <string name="error_message_password_too_short">Passwords must be at least 8 characters long.</string>
     <string name="error_message_resend_email">Something went wrong with resending your confirmation email, please try again.</string>
     <string name="error_message_submit">Something went wrong with submitting your image.</string>
+    <string name="error_message_history">Something went wrong with retrieving your history, please try again.</string>
     <string name="preference_file_key">com.blueprint.foe.beetracker.PREFERENCE_FILE_KEY</string>
     <string name="preference_login_token">LOGIN_TOKEN</string>
     <string name="preference_login_token_type">LOGIN_TOKEN_TYPE</string>
@@ -83,4 +85,9 @@
     <string name="identify_popup_message">Select the species that best matches your photo.</string>
     <string name="identify_popup_finish">Got it</string>
     <string name="geotag_error_message">Please enter the following fields.</string>
+    <string name="history_zero_sightings">0 sightings</string>
+    <string name="history_one_sighting">1 sighting</string>
+    <string name="history_plural_sightings">%1$d sightings</string>
+    <string name="history_cta">Submit your first sighting!</string>
+    <string name="history_submit_instruction">You can begin by hitting\nCapture below.</string>
 </resources>

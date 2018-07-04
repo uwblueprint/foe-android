@@ -145,7 +145,7 @@ public class BeeTrackerCaller {
             this.longitude = submission.getLongitude();
             this.street_address = submission.getStreetAddress();
             this.weather = submission.getWeather().name().toLowerCase();
-            if (submission.getHabitat() == Submission.Habitat.Balcony_Container_Garden) {
+            if (submission.getHabitat() == Submission.Habitat.balcony_container_garden) {
                 this.habitat = "balcony/container_garden";
             } else {
                 this.habitat = submission.getHabitat().name().toLowerCase();
@@ -214,10 +214,9 @@ public class BeeTrackerCaller {
             submission.setImageUrl(image_url);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             submission.setDate(format.parse(date));
-            if (species != null && !species.isEmpty()) {
-                submission.setSpecies(CurrentSubmission.Species.valueOf(species), CurrentSubmission.BeeSpeciesType.Eastern); // TODO store Eastern/Western
+            if (species != null && species.length() > 7) {
+                submission.setSpecies(CurrentSubmission.Species.valueOf(species.substring(7)));
             }
-            submission.setDate(java.text.DateFormat.getDateInstance().parse(date));
             return submission;
         }
     }

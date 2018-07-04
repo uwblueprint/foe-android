@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
+import com.blueprint.foe.beetracker.API.TokenHelper;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.google.gson.Gson;
 
@@ -123,13 +124,8 @@ public class MainActivity extends AppCompatActivity implements BeeAlertDialogLis
 
                     return;
                 }
+                TokenHelper.setSharedPreferencesFromHeader(MainActivity.this, response.headers());
                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                sharedPref.edit().putString(getString(R.string.preference_login_token), response.headers().get("access-token")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_token_type), response.headers().get("token-type")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
-
                 sharedPref.edit().remove(getString(R.string.signup_name)).commit();
                 sharedPref.edit().remove(getString(R.string.signup_email)).commit();
                 sharedPref.edit().remove(getString(R.string.signup_password)).commit();

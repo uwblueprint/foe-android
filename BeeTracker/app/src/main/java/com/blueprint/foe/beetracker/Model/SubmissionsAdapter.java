@@ -1,7 +1,9 @@
 package com.blueprint.foe.beetracker.Model;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,27 +42,47 @@ public class SubmissionsAdapter extends ArrayAdapter<BeeTrackerCaller.Submission
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.submission_view, parent, false);
         }
+
+        GradientDrawable gradientDrawable = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{ContextCompat.getColor(getContext(), R.color.gradient1),
+                        ContextCompat.getColor(getContext(), R.color.gradient2),
+                        ContextCompat.getColor(getContext(), R.color.gradient3),
+                        ContextCompat.getColor(getContext(), R.color.gradient4),
+                        ContextCompat.getColor(getContext(), R.color.gradient5),
+                        ContextCompat.getColor(getContext(), R.color.gradient6),
+                        ContextCompat.getColor(getContext(), R.color.gradient7),
+                        ContextCompat.getColor(getContext(), R.color.gradient8)
+
+                });
+
+        ImageView gradient = (ImageView) convertView.findViewById(R.id.imgGradient);
+        gradient.setImageDrawable(gradientDrawable);
         try {
             final CompletedSubmission submission = getItem(position).getSubmission();
 
             //template submission data (illustration, text) into view
             TextView submissionDate = (TextView) convertView.findViewById(R.id.tvDate);
-            SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMM yyyy", Locale.ENGLISH);
+            SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd", Locale.ENGLISH);
             String formatted = formatter.format(submission.getDate());
             submissionDate.setText(formatted);
-            TextView submissionStatus = (TextView) convertView.findViewById(R.id.tvStatus);
             TextView submissionSpecies = (TextView) convertView.findViewById(R.id.tvSpecies);
-            submissionSpecies.setText(submission.getSpecies().getEnglishName());
+            if (submission.getSpecies() != null) {
+                submissionSpecies.setText(submission.getSpecies().getEnglishName());
+            }
             TextView submissionAddress = (TextView) convertView.findViewById(R.id.tvLocation);
             submissionAddress.setText(submission.getStreetAddress());
 
+            Log.d(TAG, submission.getImageUrl());
             ImageView imageView = (ImageView) convertView.findViewById(R.id.imgSubmission);
-            Picasso.get()
+            Picasso.with(getContext())
+                    .setLoggingEnabled(true);
+            Picasso.with(getContext())
                     .load(submission.getImageUrl())
                     .placeholder(R.mipmap.submission_placeholder)
                     .into(imageView);
         } catch(ParseException e) {
-
+            Log.e(TAG, e.toString());
         }
         return convertView;
     }

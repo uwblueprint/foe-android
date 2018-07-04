@@ -9,8 +9,8 @@
     <TextView
         android:id="@+id/myList"
         android:layout_alignParentTop="true"
-        android:paddingLeft="24dp"
-        android:paddingRight="5dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="5dp"
         android:paddingTop="30dp"
         android:paddingBottom="16dp"
         android:layout_width="wrap_content"
@@ -18,29 +18,68 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text="My List"/>
+        android:text="@string/my_list"/>
     <TextView
         android:id="@+id/numSightings"
-        android:layout_toRightOf="@id/myList"
-        android:paddingLeft="5dp"
+        android:layout_toEndOf="@id/myList"
+        android:paddingStart="5dp"
         android:paddingTop="30dp"
         android:paddingBottom="16dp"
         android:textSize="16sp"
         android:textColor="#bdbdbd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="4 sightings"/>
+        android:text="@string/history_zero_sightings"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:id="@+id/emptyHistory">
+        <ImageView
+            android:id="@+id/empty_history_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/empty_history_illustration"/>
+        <TextView
+            android:id="@+id/submit_cta"
+            android:layout_below="@id/empty_history_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="24dp"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="@string/history_cta"/>
+        <TextView
+            android:id="@+id/submit_instruction"
+            android:layout_below="@id/submit_cta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="8dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text=""/>
+
+    </RelativeLayout>
     <ListView
         android:id="@+id/sightingsListView"
         android:layout_below="@id/myList"
         android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
         android:paddingBottom="50dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         android:scrollbars="none"
         android:divider="@android:color/transparent"
-        android:dividerHeight="18dp"/>
+        android:dividerHeight="13dp"/>
     <include layout="@layout/navigation_bar"/>
 </RelativeLayout>

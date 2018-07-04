@@ -6,13 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
+import com.blueprint.foe.beetracker.API.TokenHelper;
+import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Model.SubmissionsAdapter;
 
 import java.io.IOException;
@@ -24,12 +29,15 @@ import retrofit2.Response;
 /**
  * Activity that shows the user all of their previous submissions.
  */
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity implements BeeAlertDialogListener {
     private static final String TAG = HistoryActivity.class.toString();
 
     private Callback allSightingsCallback;
     private ListView listView;
     private TextView tvNumberOfSightings;
+    private RelativeLayout rlEmptyHistory;
+    private TextView tvSubmitInstruction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,36 +54,35 @@ public class HistoryActivity extends AppCompatActivity {
                     Toast.makeText(HistoryActivity.this, "Sorry, you've been logged out.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                sharedPref.edit().putString(getString(R.string.preference_login_token), response.headers().get("access-token")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_token_type), response.headers().get("token-type")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_client), response.headers().get("client")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_expiry), response.headers().get("expiry")).commit();
-                sharedPref.edit().putString(getString(R.string.preference_login_uid), response.headers().get("uid")).commit();
+                TokenHelper.setSharedPreferencesFromHeader(HistoryActivity.this, response.headers());
                 if (response.code() == 422 || response.body() == null) {
                     Log.e(TAG, "The response from the server is " + response.code() + " " + response.message());
+                    showErrorDialog(getString(R.string.error_message_history));
                     return;
                 }
-                Log.d(TAG, "The response body: " + response.body());
 
-                if (response.body().length == 0) {
-                    return;
+                BeeTrackerCaller.SubmissionResponse[] submissions = response.body();
+                if (submissions != null) {
+                    if (submissions.length == 0) {
+                        return;
+                    }
+
+                    rlEmptyHistory.setVisibility(View.INVISIBLE);
+                    SubmissionsAdapter adapter = new SubmissionsAdapter(HistoryActivity.this, submissions);
+                    listView.setAdapter(adapter);
+                    if (submissions.length == 1) {
+                        tvNumberOfSightings.setText(getString(R.string.history_one_sighting));
+                    } else {
+                        tvNumberOfSightings.setText(getString(R.string.history_plural_sightings, submissions.length));
+                    }
                 }
-                SubmissionsAdapter adapter = new SubmissionsAdapter(HistoryActivity.this, response.body());
-                listView.setAdapter(adapter);
-
-                if (response.body().length == 1) {
-                    tvNumberOfSightings.setText("1 sighting");
-                } else {
-                    tvNumberOfSightings.setText(response.body().length + " sightings");
-                }
-
             }
 
             @Override
             public void onFailure(Call<BeeTrackerCaller.SubmissionResponse[]> call, Throwable t) {
                 Log.e(TAG, "There was an error with the submitCallback + " + t.toString());
                 t.printStackTrace();
+                showErrorDialog(getString(R.string.error_message_history));
             }
         };
         BeeTrackerCaller caller = new BeeTrackerCaller();
@@ -90,7 +97,7 @@ public class HistoryActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e(TAG, e.toString());
             e.printStackTrace();
-            //showErrorDialog(getString(R.string.error_message_login));
+            showErrorDialog(getString(R.string.error_message_history));
         }
 
         listView = (ListView) findViewById(R.id.sightingsListView);
@@ -118,6 +125,23 @@ public class HistoryActivity extends AppCompatActivity {
         historyButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.lightbulb_green_icon), null, null, null);
 
         tvNumberOfSightings = (TextView) findViewById(R.id.numSightings);
+        rlEmptyHistory = (RelativeLayout) findViewById(R.id.emptyHistory);
+        tvSubmitInstruction = (TextView) findViewById(R.id.submit_instruction);
 
+        SpannableStringBuilder str = new SpannableStringBuilder(getString(R.string.history_submit_instruction));
+        str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 25, 32, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvSubmitInstruction.setText(str);
     }
+
+    private void showErrorDialog(String message) {
+        BeeAlertErrorDialog dialog = new BeeAlertErrorDialog();
+        Bundle args = new Bundle();
+        args.putString(BeeAlertErrorDialog.ERROR_MESSAGE_KEY, message);
+        dialog.setArguments(args);
+        dialog.show(getFragmentManager(), "ErrorMessage");
+    }
+
+
+    @Override
+    public void onDialogFinishClick(int id) {}
 }

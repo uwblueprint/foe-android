@@ -107,7 +107,8 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
                 // Update submission with the user's choice
                 SubmissionInterface activity = (SubmissionInterface) holder.mImageView.getContext();
                 Submission submission = activity.getSubmission();
-                submission.setSpecies(beeSpeciesDrawable.getSpecies(), beeSpeciesDrawable.getSpeciesType());
+                submission.setSpecies(beeSpeciesDrawable.getSpecies());
+                submission.setSpeciesType(beeSpeciesDrawable.getSpeciesType());
 
                 for (int i = 0; i < mBeeSpeciesDrawables.size(); i++) {
                     mBeeSpeciesDrawables.get(i).setSelection(false);

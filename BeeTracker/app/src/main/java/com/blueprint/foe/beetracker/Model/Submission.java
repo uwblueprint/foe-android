@@ -62,34 +62,35 @@ public abstract class Submission {
 
 
     public enum Habitat {
-        Default, Back_Yard, Balcony_Container_Garden, Community_Garden, City_Park, Rural, Golf_Course, Roadside, Woodland, Farmland, School_Grounds, Other;
+        Default, back_yard, balcony_container_garden, community_garden, city_park, rural,
+        golf_course, roadside, woodland, farmland, school_grounds, other;
 
         @Override
         public String toString() {
             switch (this) {
                 case Default:
                     return "";
-                case Back_Yard:
+                case back_yard:
                     return "Back Yard";
-                case Balcony_Container_Garden:
+                case balcony_container_garden:
                     return "Balcony/Container Garden";
-                case Community_Garden:
+                case community_garden:
                     return "Community Garden";
-                case City_Park:
+                case city_park:
                     return "City Park";
-                case Rural:
+                case rural:
                     return "Rural";
-                case Golf_Course:
+                case golf_course:
                     return "Golf Course";
-                case Roadside:
+                case roadside:
                     return "Roadside";
-                case Woodland:
+                case woodland:
                     return "Woodland";
-                case Farmland:
+                case farmland:
                     return "Farmland";
-                case School_Grounds:
+                case school_grounds:
                     return "School Grounds";
-                case Other:
+                case other:
                     return "Other";
                 default:
                     return "There was an error.";
@@ -98,18 +99,18 @@ public abstract class Submission {
     }
 
     public enum Weather {
-        Sunny, Partly_Cloudy, Cloudy, Rain;
+        sunny, partly_cloudy, cloudy, rain;
 
         @Override
         public String toString() {
             switch (this) {
-                case Sunny:
+                case sunny:
                     return "Sunny";
-                case Partly_Cloudy:
+                case partly_cloudy:
                     return "Partly Cloudy";
-                case Cloudy:
+                case cloudy:
                     return "Cloudy";
-                case Rain:
+                case rain:
                     return "Rainy";
                 default:
                     return "There was an error.";
@@ -166,12 +167,15 @@ public abstract class Submission {
         return mSpeciesType;
     }
 
+    public void setSpeciesType(BeeSpeciesType isEastern) {
+        mSpeciesType = isEastern;
+    }
+
     public Species getSpecies() {
         return mSpecies;
     }
 
-    public void setSpecies(Species species, BeeSpeciesType isEastern) {
-        mSpeciesType = isEastern;
+    public void setSpecies(Species species) {
         mSpecies = species;
     }
 
