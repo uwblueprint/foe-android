@@ -26,9 +26,6 @@
         tools:layout_editor_absoluteY="0dp"
         tools:layout_editor_absoluteX="370dp" />
 
-
-
-
     <ImageView
         android:id="@+id/ivBee"
         android:src="@mipmap/default_home_illustration"
@@ -74,7 +71,6 @@
 
     <TextView
         android:id="@+id/tvDate"
-        android:text="June 18"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:layout_width="wrap_content"
@@ -83,7 +79,6 @@
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintBottom_toBottomOf="@+id/ivBee"
         tools:layout_editor_absoluteX="41dp" />
-
 
     <android.support.constraint.Guideline
         android:id="@+id/halfGuideline"
@@ -149,7 +144,7 @@
 
     <TextView
         android:id="@+id/location_header"
-        android:text="FOUND AT"
+        android:text="@string/found_at"
         android:textSize="14sp"
         android:textColor="@color/mediumDarkGrey"
         android:layout_width="wrap_content"
@@ -229,6 +224,4 @@
         app:layout_constraintStart_toStartOf="@id/halfGuideline"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="206dp" />
-
-
 </android.support.constraint.ConstraintLayout>

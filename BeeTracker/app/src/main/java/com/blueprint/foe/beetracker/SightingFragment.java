@@ -76,6 +76,7 @@ public class SightingFragment extends Fragment {
             latinSpecies.setText(getString(R.string.latin_species, submission.getSpecies().toString()));
             beeSpecies.setImageResource(submission.getSpecies().getResource());
         }
+        // TODO: add an icon for unidentified species
 
         TextView location = (TextView) view.findViewById(R.id.location);
         location.setText(submission.getStreetAddress());

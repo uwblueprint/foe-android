@@ -91,4 +91,5 @@
     <string name="history_cta">Submit your first sighting!</string>
     <string name="history_submit_instruction">You can begin by hitting\nCapture below.</string>
     <string name="latin_species">Bombus %1$s</string>
+    <string name="found_at">FOUND AT</string>
 </resources>
