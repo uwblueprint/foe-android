@@ -11,6 +11,7 @@
     <color name="lightGrey">#e0e0e0</color>
     <color name="mediumGrey">#e5e5e5</color>
     <color name="mediumDarkGrey">#bdbdbd</color>
+    <color name="beeSpeciesBackground">#f2f2f2</color>
     <color name="subheadingTextColour">#828282</color>
     <color name="skyCyan">#66DAFF</color>
     <color name="mediumSkyCyan">#36A6C9</color>

@@ -182,7 +182,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
 
         if (submission.getSpecies() != null) {
             TextView latinSpecies = (TextView) view.findViewById(R.id.latinName);
-            latinSpecies.setText("Bombus " + submission.getSpecies().toString());
+            latinSpecies.setText(getString(R.string.latin_species, submission.getSpecies().toString()));
 
             TextView englishSpecies = (TextView) view.findViewById(R.id.englishName);
             englishSpecies.setText(submission.getSpecies().getEnglishName());

@@ -1,5 +1,7 @@
 package com.blueprint.foe.beetracker.Model;
 
+import com.blueprint.foe.beetracker.R;
+
 import java.util.Date;
 
 /**
@@ -58,6 +60,19 @@ public abstract class Submission {
             }; // Missing "Gypso cuckoo bumble bee"
             return names[this.ordinal()];
         }
+
+        public int getResource() {
+            int[] resources = {
+                    R.drawable.impatiens, R.drawable.ternarius, R.drawable.rufocinctus, R.drawable.bimaculatus,
+                    R.drawable.borealis, R.drawable.vagans, R.drawable.affinis, R.drawable.griseocollis,
+                    R.drawable.citrinus, R.drawable.perplexus, R.drawable.pensylvanicus, R.drawable.sylvicola,
+                    R.drawable.sandersoni, R.drawable.nevadensis, R.drawable.auricomus, R.drawable.terricola,
+                    R.drawable.fervidus, R.drawable.flavifrons, R.drawable.occidentalis, R.drawable.melanopygus,
+                    R.drawable.bifarius1, R.drawable.huntii, R.drawable.vosnesenski, R.drawable.cryptarum,
+                    R.drawable.mixtus, R.drawable.centralis
+            };
+            return resources[this.ordinal()];
+        }
     } // Missing bohemicus
 
 
@@ -114,6 +129,21 @@ public abstract class Submission {
                     return "Rainy";
                 default:
                     return "There was an error.";
+            }
+        }
+
+        public int getResource() {
+            switch (this) {
+                case sunny:
+                    return R.mipmap.weather_sunny;
+                case partly_cloudy:
+                    return R.mipmap.weather_partly_cloudy;
+                case cloudy:
+                    return R.mipmap.weather_cloudy;
+                case rain:
+                    return R.mipmap.weather_rainy;
+                default:
+                    return R.mipmap.weather_sunny;
             }
         }
     }

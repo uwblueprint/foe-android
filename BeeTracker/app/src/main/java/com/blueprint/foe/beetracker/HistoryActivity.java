@@ -18,9 +18,11 @@ import android.widget.Toast;
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.API.TokenHelper;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
+import com.blueprint.foe.beetracker.Model.CompletedSubmission;
 import com.blueprint.foe.beetracker.Model.SubmissionsAdapter;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,14 +69,22 @@ public class HistoryActivity extends AppCompatActivity implements BeeAlertDialog
                         return;
                     }
 
-                    rlEmptyHistory.setVisibility(View.INVISIBLE);
-                    SubmissionsAdapter adapter = new SubmissionsAdapter(HistoryActivity.this, submissions);
-                    listView.setAdapter(adapter);
-                    if (submissions.length == 1) {
-                        tvNumberOfSightings.setText(getString(R.string.history_one_sighting));
-                    } else {
-                        tvNumberOfSightings.setText(getString(R.string.history_plural_sightings, submissions.length));
+                    try {
+                        CompletedSubmission[] convertedSubmissions = convert(submissions);
+                        rlEmptyHistory.setVisibility(View.INVISIBLE);
+                        SubmissionsAdapter adapter = new SubmissionsAdapter(HistoryActivity.this, convertedSubmissions);
+                        listView.setAdapter(adapter);
+                        if (submissions.length == 1) {
+                            tvNumberOfSightings.setText(getString(R.string.history_one_sighting));
+                        } else {
+                            tvNumberOfSightings.setText(getString(R.string.history_plural_sightings, submissions.length));
+                        }
+                    } catch (ParseException e) {
+                        Log.e(TAG, "There was a parse exception. " + e.toString());
+                        showErrorDialog(getString(R.string.error_message_history));
+                        return;
                     }
+
                 }
             }
 
@@ -139,6 +149,15 @@ public class HistoryActivity extends AppCompatActivity implements BeeAlertDialog
         args.putString(BeeAlertErrorDialog.ERROR_MESSAGE_KEY, message);
         dialog.setArguments(args);
         dialog.show(getFragmentManager(), "ErrorMessage");
+    }
+
+    private CompletedSubmission[] convert(BeeTrackerCaller.SubmissionResponse[] submissions) throws ParseException {
+        CompletedSubmission[] completedSubmissions = new CompletedSubmission[submissions.length];
+        int i = 0;
+        for (BeeTrackerCaller.SubmissionResponse response : submissions) {
+            completedSubmissions[i++] = response.getSubmission();
+        }
+        return completedSubmissions;
     }
 
 
