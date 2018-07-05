@@ -130,12 +130,6 @@ public class IdentifyFragment extends Fragment implements BeeAlertDialogListener
     }
 
     private void createAdapters(CurrentSubmission submission) {
-        int[] easternAssets = {R.drawable.impatiens, R.drawable.ternarius, R.drawable.rufocinctus,
-                R.drawable.bimaculatus, R.drawable.borealis, R.drawable.vagans, R.drawable.affinis,
-                R.drawable.griseocollis, R.drawable.citrinus, R.drawable.perplexus,
-                R.drawable.pensylvanicus, R.drawable.sylvicola, R.drawable.sandersoni,
-                R.drawable.nevadensis, R.drawable.auricomus, R.drawable.terricola,
-                R.drawable.fervidus, R.drawable.flavifrons};
         List<Species> easternSpecies = Arrays.asList(
                 Species.impatiens, Species.ternarius, Species.rufocinctus,
                 Species.bimaculatus, Species.borealis, Species.vagans, Species.affinis,
@@ -145,11 +139,6 @@ public class IdentifyFragment extends Fragment implements BeeAlertDialogListener
                 Species.fervidus, Species.flavifrons
         );
 
-        int[] westernAssets = {R.drawable.occidentalis, R.drawable.melanopygus, R.drawable.bifarius1,
-                R.drawable.impatiens, R.drawable.huntii, R.drawable.ternarius, R.drawable.terricola,
-                R.drawable.nevadensis, R.drawable.vosnesenski, R.drawable.cryptarum, R.drawable.flavifrons,
-                R.drawable.griseocollis, R.drawable.perplexus, R.drawable.borealis, R.drawable.rufocinctus,
-                R.drawable.mixtus, R.drawable.centralis}; // Missing bohemicus? and have ternarius instead of tenarius
         List<Species> westernSpecies = Arrays.asList(
                 Species.occidentalis, Species.melanopygus, Species.bifarius,
                 Species.impatiens, Species.huntii, Species.ternarius, Species.terricola,
@@ -158,18 +147,8 @@ public class IdentifyFragment extends Fragment implements BeeAlertDialogListener
                 Species.mixtus, Species.centralis
         );
 
-        List<BeeSpeciesDrawable> easternDrawables = new ArrayList<>();
-        for (int i = 0; i < easternAssets.length; i++) {
-            easternDrawables.add(new BeeSpeciesDrawable(easternSpecies.get(i), BeeSpeciesType.Eastern, easternAssets[i]));
-        }
-
-        List<BeeSpeciesDrawable> westernDrawables = new ArrayList<>();
-        for (int i = 0; i < westernAssets.length; i++) {
-            westernDrawables.add(new BeeSpeciesDrawable(westernSpecies.get(i), BeeSpeciesType.Western, westernAssets[i]));
-        }
-
-        mEasternAdapter = new PartsPickerAdapter(easternDrawables);
-        mWesternAdapter = new PartsPickerAdapter(westernDrawables);
+        mEasternAdapter = new PartsPickerAdapter(easternSpecies);
+        mWesternAdapter = new PartsPickerAdapter(westernSpecies);
     }
 
     private void errorAndExit(String message) {
