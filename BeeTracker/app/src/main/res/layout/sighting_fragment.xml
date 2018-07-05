@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/leftGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="41dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/rightGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="370dp" />
+
+    <ImageView
+        android:id="@+id/ivBee"
+        android:src="@mipmap/default_home_illustration"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/species_english"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:text="June 18"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintBottom_toBottomOf="@+id/ivBee"
+        tools:layout_editor_absoluteX="41dp" />
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/halfGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="206dp" />
+
+    <TextView
+        android:id="@+id/species_english"
+        android:text="Rusty patched bumble bee"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/species_latin"
+        tools:layout_editor_absoluteX="41dp" />
+
+    <TextView
+        android:id="@+id/species_latin"
+        android:text="Bombus affinis"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/separator"
+        tools:layout_editor_absoluteX="41dp" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/beeSpeciesBackground"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toTopOf="@+id/species_english"
+        app:layout_constraintEnd_toEndOf="@id/rightGuideline">
+        <ImageView
+            android:id="@+id/ivBeeSpecies"
+            android:src="@drawable/affinis"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:layout_editor_absoluteX="320dp" />
+    </android.support.v7.widget.CardView>
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/location_header"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+        android:background="@color/mediumGrey"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <TextView
+        android:id="@+id/location_header"
+        android:text="FOUND AT"
+        android:textSize="14sp"
+        android:textColor="@color/mediumDarkGrey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/location"
+        tools:layout_editor_absoluteX="41dp" />
+
+    <TextView
+        android:id="@+id/location"
+        android:text="University of Waterloo"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@mipmap/icon_location"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/weather_header"
+        tools:layout_editor_absoluteX="41dp" />
+
+    <TextView
+        android:id="@+id/weather_header"
+        android:text="@string/weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/mediumDarkGrey"
+        android:paddingBottom="8dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/habitat_header"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/weather_status"
+        tools:layout_editor_absoluteX="41dp" />
+
+    <ImageView
+        android:id="@+id/weather_icon"
+        android:src="@mipmap/weather_partly_cloudy"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintTop_toTopOf="@+id/weather_status"/>
+
+    <TextView
+        android:id="@+id/weather_status"
+        android:text="Partly Cloudy"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/habitat_status"
+        app:layout_constraintStart_toEndOf="@id/weather_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="41dp" />
+
+    <TextView
+        android:id="@+id/habitat_header"
+        android:text="@string/habitat"
+        android:textSize="14sp"
+        android:textColor="@color/mediumDarkGrey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="@id/halfGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/habitat_status"
+        tools:layout_editor_absoluteX="206dp" />
+
+    <TextView
+        android:id="@+id/habitat_status"
+        android:text="Swamp"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="30dp"
+        app:layout_constraintStart_toStartOf="@id/halfGuideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="206dp" />
+
+
+</android.support.constraint.ConstraintLayout>

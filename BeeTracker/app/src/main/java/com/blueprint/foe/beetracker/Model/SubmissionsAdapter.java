@@ -1,5 +1,7 @@
 package com.blueprint.foe.beetracker.Model;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.R;
+import com.blueprint.foe.beetracker.SightingFragment;
+import com.blueprint.foe.beetracker.SignUpFragment;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -27,10 +31,8 @@ import java.util.Locale;
 public class SubmissionsAdapter extends ArrayAdapter<BeeTrackerCaller.SubmissionResponse> {
     private static String TAG = SubmissionsAdapter.class.toString();
 
-    private BeeTrackerCaller.SubmissionResponse[] mSubmissions;
     public SubmissionsAdapter(Context context, BeeTrackerCaller.SubmissionResponse[] submissions) {
         super(context, 0, submissions);
-        this.mSubmissions = submissions;
     }
 
 
@@ -53,6 +55,18 @@ public class SubmissionsAdapter extends ArrayAdapter<BeeTrackerCaller.Submission
                         ContextCompat.getColor(getContext(), R.color.gradient8)
 
                 });
+
+        LinearLayout container = (LinearLayout) convertView.findViewById(R.id.submissionViewContainer);
+        container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = ((Activity) getContext()).getFragmentManager().beginTransaction();
+                SightingFragment sightingFragment = new SightingFragment();
+                fragmentTransaction.replace(R.id.history_container_layout, sightingFragment);
+                fragmentTransaction.addToBackStack("main");
+                fragmentTransaction.commit();
+            }
+        });
 
         ImageView gradient = (ImageView) convertView.findViewById(R.id.imgGradient);
         gradient.setImageDrawable(gradientDrawable);
