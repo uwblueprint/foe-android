@@ -26,6 +26,9 @@
         tools:layout_editor_absoluteY="0dp"
         tools:layout_editor_absoluteX="370dp" />
 
+
+
+
     <ImageView
         android:id="@+id/ivBee"
         android:src="@mipmap/default_home_illustration"
@@ -38,6 +41,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/species_english"
         tools:layout_editor_absoluteX="0dp" />
+
+    <ImageView
+        android:id="@+id/imgGradient"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/species_english"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/closeButton"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:backgroundTint="@color/beeSpeciesBackground"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="17dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="320dp">
+        <ImageView
+            android:src="@mipmap/icon_close_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:layout_editor_absoluteX="320dp" />
+    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/tvDate"
@@ -63,7 +96,7 @@
 
     <TextView
         android:id="@+id/species_english"
-        android:text="Rusty patched bumble bee"
+        android:text="@string/unidentified_species"
         android:textSize="18sp"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -76,7 +109,7 @@
 
     <TextView
         android:id="@+id/species_latin"
-        android:text="Bombus affinis"
+        android:text="@string/unidentified_species_latin_na"
         android:textSize="18sp"
         android:textColor="@color/black"
         android:layout_width="wrap_content"
@@ -93,7 +126,8 @@
         app:cardCornerRadius="25dp"
         app:cardElevation="0dp"
         app:layout_constraintTop_toTopOf="@+id/species_english"
-        app:layout_constraintEnd_toEndOf="@id/rightGuideline">
+        app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+        tools:layout_editor_absoluteX="320dp">
         <ImageView
             android:id="@+id/ivBeeSpecies"
             android:src="@drawable/affinis"
@@ -106,12 +140,12 @@
         android:id="@+id/separator"
         android:layout_width="0dp"
         android:layout_height="1px"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="23dp"
         app:layout_constraintBottom_toTopOf="@+id/location_header"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintEnd_toEndOf="@id/rightGuideline"
         android:background="@color/mediumGrey"
-        tools:layout_editor_absoluteX="8dp" />
+        tools:layout_editor_absoluteX="41dp" />
 
     <TextView
         android:id="@+id/location_header"
@@ -127,14 +161,13 @@
 
     <TextView
         android:id="@+id/location"
-        android:text="University of Waterloo"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="24dp"
         android:drawablePadding="4dp"
-        android:drawableLeft="@mipmap/icon_location"
+        android:drawableStart="@mipmap/icon_location"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintBottom_toTopOf="@+id/weather_header"
         tools:layout_editor_absoluteX="41dp" />
@@ -158,11 +191,11 @@
         android:layout_width="22dp"
         android:layout_height="22dp"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toTopOf="@+id/weather_status"/>
+        app:layout_constraintTop_toTopOf="@+id/weather_status"
+        tools:layout_editor_absoluteX="41dp" />
 
     <TextView
         android:id="@+id/weather_status"
-        android:text="Partly Cloudy"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:layout_width="wrap_content"
@@ -172,7 +205,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/habitat_status"
         app:layout_constraintStart_toEndOf="@id/weather_icon"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="41dp" />
+        tools:layout_editor_absoluteX="63dp" />
 
     <TextView
         android:id="@+id/habitat_header"
@@ -188,7 +221,6 @@
 
     <TextView
         android:id="@+id/habitat_status"
-        android:text="Swamp"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:layout_width="wrap_content"
