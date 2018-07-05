@@ -44,10 +44,6 @@ public class BeeSpeciesDrawable {
         return mSpeciesType;
     }
 
-    public boolean isSelected() {
-        return mSelected;
-    }
-
     public void setSelection(boolean selection) {
         this.mSelected = selection;
     }

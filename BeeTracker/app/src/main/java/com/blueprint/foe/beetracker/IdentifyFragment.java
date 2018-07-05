@@ -34,7 +34,7 @@ import java.util.List;
  * This fragment will allow the user to identify a bee species based on its head, thorax
  * and abdomen patterns. It will also let the user review the image they selected.
  */
-public class IdentifyFragment extends Fragment implements OnBeePartSelectedListener, BeeAlertDialogListener {
+public class IdentifyFragment extends Fragment implements BeeAlertDialogListener {
     private static final String TAG = IdentifyFragment.class.toString();
     private PartsPickerAdapter mEasternAdapter;
     private PartsPickerAdapter mWesternAdapter;
@@ -117,7 +117,6 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         });
 
         createAdapters(submission);
-        onBeeSpeciesSelected();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -169,33 +168,13 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
             westernDrawables.add(new BeeSpeciesDrawable(westernSpecies.get(i), BeeSpeciesType.Western, westernAssets[i]));
         }
 
-        if (submission.getSpecies() != null) {
-            if (submission.getSpeciesType() == BeeSpeciesType.Eastern) {
-                easternDrawables.get(easternSpecies.indexOf(submission.getSpecies())).setSelection(true);
-            } else {
-                westernDrawables.get(westernSpecies.indexOf(submission.getSpecies())).setSelection(true);
-            }
-        }
-
-        mEasternAdapter = new PartsPickerAdapter(easternDrawables, this);
-        mWesternAdapter = new PartsPickerAdapter(westernDrawables, this);
+        mEasternAdapter = new PartsPickerAdapter(easternDrawables);
+        mWesternAdapter = new PartsPickerAdapter(westernDrawables);
     }
 
     private void errorAndExit(String message) {
         getActivity().finish();
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onBeeSpeciesSelected() {
-        Submission submission = ((SubmissionInterface) getActivity()).getSubmission();
-        if (submission.getSpeciesType() == BeeSpeciesType.Eastern) {
-            mWesternAdapter.unselectAllItems();
-            mWesternAdapter.notifyDataSetChanged(); // to reset selection to unselected
-        } else if (submission.getSpeciesType() == BeeSpeciesType.Western) {
-            mEasternAdapter.unselectAllItems();
-            mEasternAdapter.notifyDataSetChanged(); // to reset selection to unselected
-        }
     }
 
     @Override
