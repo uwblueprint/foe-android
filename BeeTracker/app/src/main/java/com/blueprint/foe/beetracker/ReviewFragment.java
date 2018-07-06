@@ -25,10 +25,8 @@ import android.widget.Toast;
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.API.TokenHelper;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
-import com.blueprint.foe.beetracker.Model.CompletedSubmission;
 import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 import com.blueprint.foe.beetracker.Model.Submission;
-import com.blueprint.foe.beetracker.Model.WeatherOption;
 import com.blueprint.foe.beetracker.Model.WeatherPickerAdapter;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -38,10 +36,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import static com.blueprint.foe.beetracker.Model.Submission.*;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,7 +98,7 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(createAdapter(submission));
+        mRecyclerView.setAdapter(new WeatherPickerAdapter(Arrays.asList(Submission.Weather.values())));
 
         mHabitatSpinner = (Spinner) view.findViewById(R.id.habitat_spinner);
         final Habitat[] habitats = Habitat.values();
@@ -283,21 +278,5 @@ public class ReviewFragment extends Fragment implements BeeAlertDialogListener {
             startActivity(intent);
             getActivity().finish();
         }
-    }
-
-    private WeatherPickerAdapter createAdapter(Submission submission) {
-        int[] weatherAssets = {R.mipmap.weather_sunny, R.mipmap.weather_partly_cloudy, R.mipmap.weather_cloudy, R.mipmap.weather_rainy};
-        List<Submission.Weather> weatherOptionEnums = Arrays.asList(Submission.Weather.values());
-
-        List<WeatherOption> weatherOptions = new ArrayList<>();
-        for (int i = 0; i < weatherAssets.length; i++) {
-            weatherOptions.add(new WeatherOption(weatherOptionEnums.get(i), weatherAssets[i]));
-        }
-
-        if (submission.getWeather() != null) {
-            weatherOptions.get(weatherOptionEnums.indexOf(submission.getWeather())).setSelection(true);
-        }
-
-        return new WeatherPickerAdapter(weatherOptions);
     }
 }

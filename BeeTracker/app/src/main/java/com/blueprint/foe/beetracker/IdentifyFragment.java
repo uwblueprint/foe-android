@@ -17,16 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
-import com.blueprint.foe.beetracker.Listeners.OnBeePartSelectedListener;
-import com.blueprint.foe.beetracker.Model.BeeSpeciesDrawable;
 import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 import com.blueprint.foe.beetracker.Model.PartsPickerAdapter;
 import com.blueprint.foe.beetracker.Model.Submission;
 
 import static com.blueprint.foe.beetracker.Model.Submission.Species;
-import static com.blueprint.foe.beetracker.Model.Submission.BeeSpeciesType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -147,8 +143,8 @@ public class IdentifyFragment extends Fragment implements BeeAlertDialogListener
                 Species.mixtus, Species.centralis
         );
 
-        mEasternAdapter = new PartsPickerAdapter(easternSpecies);
-        mWesternAdapter = new PartsPickerAdapter(westernSpecies);
+        mEasternAdapter = new PartsPickerAdapter(easternSpecies, Submission.BeeSpeciesType.Eastern);
+        mWesternAdapter = new PartsPickerAdapter(westernSpecies, Submission.BeeSpeciesType.Western);
     }
 
     private void errorAndExit(String message) {

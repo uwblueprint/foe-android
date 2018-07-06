@@ -41,4 +41,5 @@
     <dimen name="forgot_password_text_size">14sp</dimen>
     <dimen name="error_dialog_title_text_size">40sp</dimen>
     <dimen name="error_dialog_width">327dp</dimen>
+    <dimen name="padding_on_picker">8dp</dimen>
 </resources>

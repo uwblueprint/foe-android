@@ -20,14 +20,16 @@ import java.util.List;
 public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.ViewHolder> {
     private static String TAG = PartsPickerAdapter.class.toString();
     private List<Submission.Species> mBeeSpecies;
+    private Submission.BeeSpeciesType mType;
 
     @Override
     public int getItemCount() {
         return mBeeSpecies.size();
     }
 
-    public PartsPickerAdapter(List<Submission.Species> beeSpeciesDrawables) {
+    public PartsPickerAdapter(List<Submission.Species> beeSpeciesDrawables, Submission.BeeSpeciesType type) {
         this.mBeeSpecies = beeSpeciesDrawables;
+        this.mType = type;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,10 +60,10 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
         SubmissionInterface activity = (SubmissionInterface) holder.mImageView.getContext();
         Submission submission = activity.getSubmission();
         holder.mImageView.setImageResource(beeSpecies.getResource());
-        if (!beeSpecies.equals(submission.getSpecies())) {
-            holder.mSelectionView.setVisibility(View.GONE);
-        } else {
+        if (beeSpecies.equals(submission.getSpecies()) && mType.equals(submission.getSpeciesType())) {
             holder.mSelectionView.setVisibility(View.VISIBLE);
+        } else {
+            holder.mSelectionView.setVisibility(View.GONE);
         }
 
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +73,7 @@ public class PartsPickerAdapter extends RecyclerView.Adapter<PartsPickerAdapter.
                 SubmissionInterface activity = (SubmissionInterface) holder.mImageView.getContext();
                 Submission submission = activity.getSubmission();
                 submission.setSpecies(beeSpecies);
-
+                submission.setSpeciesType(mType);
                 notifyDataSetChanged();
             }
         });
