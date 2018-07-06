@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.blueprint.foe.beetracker.R;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -17,8 +18,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Surfaces methods to store and load data into internal storage.
@@ -30,6 +34,7 @@ public class StorageAccessor {
     private static final String TAG = StorageAccessor.class.toString();
     private static final String FILENAME = "submission";
     private static final String FACTS_FILENAME = "facts";
+    private static final String SIGHTINGS_FILENAME = "sightings";
     public static final int MEDIA_TYPE_IMAGE = 1;
 
     public static void storeSubmission(Context context, Submission submission) throws IOException {
@@ -44,6 +49,14 @@ public class StorageAccessor {
         Gson gson = new Gson();
         String string = gson.toJson(facts);
         FileOutputStream fos = context.openFileOutput(FACTS_FILENAME, Context.MODE_PRIVATE);
+        fos.write(string.getBytes());
+        fos.close();
+    }
+
+    public static void storeSightings(Context context, List<CompletedSubmission> submissions) throws IOException {
+        Gson gson = new Gson();
+        String string = gson.toJson(submissions);
+        FileOutputStream fos = context.openFileOutput(SIGHTINGS_FILENAME, Context.MODE_PRIVATE);
         fos.write(string.getBytes());
         fos.close();
     }
@@ -76,6 +89,20 @@ public class StorageAccessor {
         inputStream.close();
         Gson gson = new Gson();
         return gson.fromJson(string, FactCollection.class);
+    }
+
+    public static List<CompletedSubmission> loadSightings(Context context) throws IOException {
+        InputStream fis;
+        if (fileExists(context, SIGHTINGS_FILENAME)) {
+            fis = context.openFileInput(SIGHTINGS_FILENAME);
+            String string = convertStreamToString(fis);
+            fis.close();
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<CompletedSubmission>>(){}.getType();
+            return gson.fromJson(string, listType);
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     private static boolean fileExists(Context context, String fname){
