@@ -17,16 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
-import com.blueprint.foe.beetracker.Listeners.OnBeePartSelectedListener;
-import com.blueprint.foe.beetracker.Model.BeeSpeciesDrawable;
 import com.blueprint.foe.beetracker.Model.CurrentSubmission;
 import com.blueprint.foe.beetracker.Model.PartsPickerAdapter;
 import com.blueprint.foe.beetracker.Model.Submission;
 
 import static com.blueprint.foe.beetracker.Model.Submission.Species;
-import static com.blueprint.foe.beetracker.Model.Submission.BeeSpeciesType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +30,7 @@ import java.util.List;
  * This fragment will allow the user to identify a bee species based on its head, thorax
  * and abdomen patterns. It will also let the user review the image they selected.
  */
-public class IdentifyFragment extends Fragment implements OnBeePartSelectedListener, BeeAlertDialogListener {
+public class IdentifyFragment extends Fragment implements BeeAlertDialogListener {
     private static final String TAG = IdentifyFragment.class.toString();
     private PartsPickerAdapter mEasternAdapter;
     private PartsPickerAdapter mWesternAdapter;
@@ -117,7 +113,6 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
         });
 
         createAdapters(submission);
-        onBeeSpeciesSelected();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -131,12 +126,6 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
     }
 
     private void createAdapters(CurrentSubmission submission) {
-        int[] easternAssets = {R.drawable.impatiens, R.drawable.ternarius, R.drawable.rufocinctus,
-                R.drawable.bimaculatus, R.drawable.borealis, R.drawable.vagans, R.drawable.affinis,
-                R.drawable.griseocollis, R.drawable.citrinus, R.drawable.perplexus,
-                R.drawable.pensylvanicus, R.drawable.sylvicola, R.drawable.sandersoni,
-                R.drawable.nevadensis, R.drawable.auricomus, R.drawable.terricola,
-                R.drawable.fervidus, R.drawable.flavifrons};
         List<Species> easternSpecies = Arrays.asList(
                 Species.impatiens, Species.ternarius, Species.rufocinctus,
                 Species.bimaculatus, Species.borealis, Species.vagans, Species.affinis,
@@ -146,11 +135,6 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
                 Species.fervidus, Species.flavifrons
         );
 
-        int[] westernAssets = {R.drawable.occidentalis, R.drawable.melanopygus, R.drawable.bifarius1,
-                R.drawable.impatiens, R.drawable.huntii, R.drawable.ternarius, R.drawable.terricola,
-                R.drawable.nevadensis, R.drawable.vosnesenski, R.drawable.cryptarum, R.drawable.flavifrons,
-                R.drawable.griseocollis, R.drawable.perplexus, R.drawable.borealis, R.drawable.rufocinctus,
-                R.drawable.mixtus, R.drawable.centralis}; // Missing bohemicus? and have ternarius instead of tenarius
         List<Species> westernSpecies = Arrays.asList(
                 Species.occidentalis, Species.melanopygus, Species.bifarius,
                 Species.impatiens, Species.huntii, Species.ternarius, Species.terricola,
@@ -159,43 +143,13 @@ public class IdentifyFragment extends Fragment implements OnBeePartSelectedListe
                 Species.mixtus, Species.centralis
         );
 
-        List<BeeSpeciesDrawable> easternDrawables = new ArrayList<>();
-        for (int i = 0; i < easternAssets.length; i++) {
-            easternDrawables.add(new BeeSpeciesDrawable(easternSpecies.get(i), BeeSpeciesType.Eastern, easternAssets[i]));
-        }
-
-        List<BeeSpeciesDrawable> westernDrawables = new ArrayList<>();
-        for (int i = 0; i < westernAssets.length; i++) {
-            westernDrawables.add(new BeeSpeciesDrawable(westernSpecies.get(i), BeeSpeciesType.Western, westernAssets[i]));
-        }
-
-        if (submission.getSpecies() != null) {
-            if (submission.getSpeciesType() == BeeSpeciesType.Eastern) {
-                easternDrawables.get(easternSpecies.indexOf(submission.getSpecies())).setSelection(true);
-            } else {
-                westernDrawables.get(westernSpecies.indexOf(submission.getSpecies())).setSelection(true);
-            }
-        }
-
-        mEasternAdapter = new PartsPickerAdapter(easternDrawables, this);
-        mWesternAdapter = new PartsPickerAdapter(westernDrawables, this);
+        mEasternAdapter = new PartsPickerAdapter(easternSpecies, Submission.BeeSpeciesType.Eastern);
+        mWesternAdapter = new PartsPickerAdapter(westernSpecies, Submission.BeeSpeciesType.Western);
     }
 
     private void errorAndExit(String message) {
         getActivity().finish();
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onBeeSpeciesSelected() {
-        Submission submission = ((SubmissionInterface) getActivity()).getSubmission();
-        if (submission.getSpeciesType() == BeeSpeciesType.Eastern) {
-            mWesternAdapter.unselectAllItems();
-            mWesternAdapter.notifyDataSetChanged(); // to reset selection to unselected
-        } else if (submission.getSpeciesType() == BeeSpeciesType.Western) {
-            mEasternAdapter.unselectAllItems();
-            mEasternAdapter.notifyDataSetChanged(); // to reset selection to unselected
-        }
     }
 
     @Override
