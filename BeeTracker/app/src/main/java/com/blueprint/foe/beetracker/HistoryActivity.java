@@ -19,10 +19,13 @@ import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
 import com.blueprint.foe.beetracker.API.TokenHelper;
 import com.blueprint.foe.beetracker.Listeners.BeeAlertDialogListener;
 import com.blueprint.foe.beetracker.Model.CompletedSubmission;
+import com.blueprint.foe.beetracker.Model.StorageAccessor;
 import com.blueprint.foe.beetracker.Model.SubmissionsAdapter;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +42,8 @@ public class HistoryActivity extends AppCompatActivity implements BeeAlertDialog
     private TextView tvNumberOfSightings;
     private RelativeLayout rlEmptyHistory;
     private TextView tvSubmitInstruction;
+    private List<CompletedSubmission> completedSubmissions;
+    private SubmissionsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +75,28 @@ public class HistoryActivity extends AppCompatActivity implements BeeAlertDialog
                     }
 
                     try {
-                        CompletedSubmission[] convertedSubmissions = convert(submissions);
+                        List<CompletedSubmission> convertedSubmissions = convert(submissions);
                         rlEmptyHistory.setVisibility(View.INVISIBLE);
-                        SubmissionsAdapter adapter = new SubmissionsAdapter(HistoryActivity.this, convertedSubmissions);
-                        listView.setAdapter(adapter);
+                        if (adapter == null) {
+                            adapter = new SubmissionsAdapter(HistoryActivity.this, convertedSubmissions);
+                            listView.setAdapter(adapter);
+                        } else {
+                            completedSubmissions.clear();
+                            completedSubmissions.addAll(convertedSubmissions);
+                            adapter.notifyDataSetChanged();
+                        }
                         if (submissions.length == 1) {
                             tvNumberOfSightings.setText(getString(R.string.history_one_sighting));
                         } else {
                             tvNumberOfSightings.setText(getString(R.string.history_plural_sightings, submissions.length));
                         }
+                        StorageAccessor.storeSightings(HistoryActivity.this, convertedSubmissions);
                     } catch (ParseException e) {
                         Log.e(TAG, "There was a parse exception. " + e.toString());
                         showErrorDialog(getString(R.string.error_message_history));
                         return;
+                    } catch (IOException e) {
+                        Log.e(TAG, "There was an exception storing the submissions. " + e.toString());
                     }
 
                 }
@@ -111,6 +125,24 @@ public class HistoryActivity extends AppCompatActivity implements BeeAlertDialog
         }
 
         listView = (ListView) findViewById(R.id.sightingsListView);
+        tvNumberOfSightings = (TextView) findViewById(R.id.numSightings);
+        rlEmptyHistory = (RelativeLayout) findViewById(R.id.emptyHistory);
+
+        try {
+            completedSubmissions = StorageAccessor.loadSightings(this);
+            if (completedSubmissions.size() > 0) {
+                rlEmptyHistory.setVisibility(View.INVISIBLE);
+                adapter = new SubmissionsAdapter(HistoryActivity.this, completedSubmissions);
+                listView.setAdapter(adapter);
+                if (completedSubmissions.size() == 1) {
+                    tvNumberOfSightings.setText(getString(R.string.history_one_sighting));
+                } else {
+                    tvNumberOfSightings.setText(getString(R.string.history_plural_sightings, completedSubmissions.size()));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         TextView submitButton = (TextView) findViewById(R.id.buttonSubmit);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -134,8 +166,7 @@ public class HistoryActivity extends AppCompatActivity implements BeeAlertDialog
         historyButton.setTextColor(ContextCompat.getColor(this, R.color.grassGreen));
         historyButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.lightbulb_green_icon), null, null, null);
 
-        tvNumberOfSightings = (TextView) findViewById(R.id.numSightings);
-        rlEmptyHistory = (RelativeLayout) findViewById(R.id.emptyHistory);
+
         tvSubmitInstruction = (TextView) findViewById(R.id.submit_instruction);
 
         SpannableStringBuilder str = new SpannableStringBuilder(getString(R.string.history_submit_instruction));
@@ -151,11 +182,10 @@ public class HistoryActivity extends AppCompatActivity implements BeeAlertDialog
         dialog.show(getFragmentManager(), "ErrorMessage");
     }
 
-    private CompletedSubmission[] convert(BeeTrackerCaller.SubmissionResponse[] submissions) throws ParseException {
-        CompletedSubmission[] completedSubmissions = new CompletedSubmission[submissions.length];
-        int i = 0;
+    private List<CompletedSubmission> convert(BeeTrackerCaller.SubmissionResponse[] submissions) throws ParseException {
+        List<CompletedSubmission> completedSubmissions = new ArrayList<>(submissions.length);
         for (BeeTrackerCaller.SubmissionResponse response : submissions) {
-            completedSubmissions[i++] = response.getSubmission();
+            completedSubmissions.add(response.getSubmission());
         }
         return completedSubmissions;
     }

@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -33,7 +34,7 @@ import java.util.Locale;
 public class SubmissionsAdapter extends ArrayAdapter<CompletedSubmission> {
     private static String TAG = SubmissionsAdapter.class.toString();
 
-    public SubmissionsAdapter(Context context, CompletedSubmission[] submissions) {
+    public SubmissionsAdapter(Context context, List<CompletedSubmission> submissions) {
         super(context, 0, submissions);
     }
 
