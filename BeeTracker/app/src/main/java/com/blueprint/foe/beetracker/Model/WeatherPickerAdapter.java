@@ -2,7 +2,6 @@ package com.blueprint.foe.beetracker.Model;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +65,6 @@ public class WeatherPickerAdapter extends RecyclerView.Adapter<WeatherPickerAdap
         Submission submission = activity.getSubmission();
         if (weather.equals(submission.getWeather())) {
             holder.mSelection.setVisibility(View.VISIBLE);
-            int padding = holder.mImageView.getResources().getDimensionPixelOffset(R.dimen.padding_on_picker);
         } else {
             holder.mSelection.setVisibility(View.GONE);
         }
