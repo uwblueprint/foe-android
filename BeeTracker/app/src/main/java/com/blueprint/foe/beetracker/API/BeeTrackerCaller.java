@@ -46,14 +46,10 @@ public class BeeTrackerCaller {
         @SerializedName("password")
         String password;
 
-        @SerializedName("confirm_success_url")
-        String successUrl;
-
-        SignUpRequest(String name, String email, String password, String successUrl) {
+        SignUpRequest(String name, String email, String password) {
             this.name = name;
             this.email = email;
             this.password = password;
-            this.successUrl = successUrl;
         }
     }
 
@@ -208,7 +204,11 @@ public class BeeTrackerCaller {
 
         public CompletedSubmission getSubmission() throws ParseException{
             CompletedSubmission submission = new CompletedSubmission();
-            submission.setHabitat(CurrentSubmission.Habitat.valueOf(habitat));
+            if (habitat.equals("balcony/container_garden")) {
+                submission.setHabitat(Submission.Habitat.balcony_container_garden);
+            } else {
+                submission.setHabitat(CurrentSubmission.Habitat.valueOf(habitat));
+            }
             submission.setWeather(CurrentSubmission.Weather.valueOf(weather));
             submission.setLocation(street_address, latitude, longitude);
             submission.setImageUrl(image_url);
@@ -222,7 +222,6 @@ public class BeeTrackerCaller {
     }
 
     public static final String API_URL = "https://foe-api.herokuapp.com/";
-    public static final String DEFAULT_SIGNUP_SUCCESS_URL = "http://foecanada.org/";
 
     public Call<SignUpResponse> signUp(String name, String email, String password) throws IOException {
         Retrofit retrofit = new Retrofit.Builder()
@@ -231,7 +230,7 @@ public class BeeTrackerCaller {
                 .build();
 
         BeeTrackerService service = retrofit.create(BeeTrackerService.class);
-        return service.signUp(new SignUpRequest(name, email, password, DEFAULT_SIGNUP_SUCCESS_URL));
+        return service.signUp(new SignUpRequest(name, email, password));
     }
 
     public Call<LogInResponse> logIn(String email, String password) throws IOException {
