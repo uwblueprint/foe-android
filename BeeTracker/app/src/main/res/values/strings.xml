@@ -13,8 +13,8 @@
     <string name="done">Done</string>
     <string name="step_two">STEP 2: IDENTIFY</string>
     <string name="step_three">STEP 3: GEOTAG</string>
-    <string name="eastern">Eastern Species</string>
-    <string name="western">Western Species</string>
+    <string name="eastern">EASTERN SPECIES</string>
+    <string name="western">WESTERN SPECIES</string>
     <string name="submit_dialog_heading">Buzz buzz!</string>
     <string name="submit_dialog_paragraph">(That\'s thank you in bee!)</string>
     <string name="home">Home</string>
@@ -92,4 +92,5 @@
     <string name="history_submit_instruction">You can begin by hitting\nCapture below.</string>
     <string name="latin_species">Bombus %1$s</string>
     <string name="found_at">FOUND AT</string>
+    <string name="skip_step">Skip step</string>
 </resources>

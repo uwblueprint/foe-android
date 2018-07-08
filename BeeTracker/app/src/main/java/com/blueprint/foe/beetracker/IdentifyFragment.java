@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -121,6 +122,27 @@ public class IdentifyFragment extends Fragment implements BeeAlertDialogListener
 
         mRecyclerView.setAdapter(mEasternAdapter);
         mEasternButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.grassGreen));
+
+        CardView skipStepButton = (CardView) view.findViewById(R.id.skipStepButton);
+        skipStepButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SubmissionInterface activity = (SubmissionInterface) getActivity();
+                Submission submission = activity.getSubmission();
+                submission.setSpecies(null);
+                submission.setSpeciesType(null);
+
+                Fragment newFragment = new ReviewFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+                transaction.replace(R.id.fragment_container, newFragment);
+                transaction.addToBackStack(null);
+
+                transaction.commit();
+            }
+        });
 
         return view;
     }
