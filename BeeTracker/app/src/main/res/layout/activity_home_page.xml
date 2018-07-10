@@ -118,7 +118,7 @@
             <!-- This empty view is needed to fix a scrollview bug -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="60dp" />
+                android:layout_height="80dp" />
         </LinearLayout>
     </ScrollView>
     <include layout="@layout/navigation_bar"/>

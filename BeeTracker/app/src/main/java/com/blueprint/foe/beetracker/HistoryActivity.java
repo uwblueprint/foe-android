@@ -164,7 +164,7 @@ public class HistoryActivity extends AppCompatActivity implements BeeAlertDialog
         });
         TextView historyButton = (TextView) findViewById(R.id.buttonHistory);
         historyButton.setTextColor(ContextCompat.getColor(this, R.color.grassGreen));
-        historyButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.lightbulb_green_icon), null, null, null);
+        historyButton.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.mipmap.icon_me_green), null, null);
 
 
         tvSubmitInstruction = (TextView) findViewById(R.id.submit_instruction);
