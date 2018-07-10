@@ -19,7 +19,7 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
         TextView homeButton = (TextView) findViewById(R.id.buttonHome);
         homeButton.setTextColor(ContextCompat.getColor(this, R.color.grassGreen));
-        homeButton.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.home_green_icon), null, null, null);
+        homeButton.setCompoundDrawablesWithIntrinsicBounds(null, getDrawable(R.mipmap.icon_home_green), null, null);
 
         //set status bar color
         Window window = getWindow();

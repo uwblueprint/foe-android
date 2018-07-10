@@ -88,6 +88,8 @@ public class SubmissionsAdapter extends ArrayAdapter<CompletedSubmission> {
         TextView submissionSpecies = (TextView) convertView.findViewById(R.id.tvSpecies);
         if (submission.getSpecies() != null) {
             submissionSpecies.setText(submission.getSpecies().getEnglishName());
+        } else {
+            submissionSpecies.setText(getContext().getString(R.string.unidentified_species));
         }
         TextView submissionAddress = (TextView) convertView.findViewById(R.id.tvLocation);
         submissionAddress.setText(submission.getStreetAddress());

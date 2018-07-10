@@ -76,7 +76,7 @@
         android:layout_height="match_parent"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
-        android:paddingBottom="50dp"
+        android:paddingBottom="80dp"
         android:clipToPadding="false"
         android:clipChildren="false"
         android:scrollbars="none"
