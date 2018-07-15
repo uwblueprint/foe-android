@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.blueprint.foe.beetracker.API.BeeTrackerCaller;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class SignUpFragment extends Fragment {
     private TextView mEmailLabel;
     private TextView mPasswordLabel;
     private TextView mConfirmPasswordLabel;
+    private TextView mTermsLabel;
     private EditText mNameInput;
     private EditText mEmailInput;
     private EditText mPasswordInput;
@@ -49,6 +53,7 @@ public class SignUpFragment extends Fragment {
         mEmailLabel = (TextView) view.findViewById(R.id.sign_up_email_label);
         mPasswordLabel = (TextView) view.findViewById(R.id.sign_up_password_label);
         mConfirmPasswordLabel = (TextView) view.findViewById(R.id.sign_up_confirm_password_label);
+        mTermsLabel = (TextView) view.findViewById(R.id.agreement_acknowledgement);
         mNameInput = (EditText) view.findViewById(R.id.sign_up_name_input);
         mEmailInput = (EditText) view.findViewById(R.id.sign_up_email_input);
         mPasswordInput = (EditText) view.findViewById(R.id.sign_up_password_input);
@@ -181,6 +186,8 @@ public class SignUpFragment extends Fragment {
                 setAllLabelsAndFieldsToError();
             }
         };
+
+        mTermsLabel.setMovementMethod(LinkMovementMethod.getInstance());
 
         return view;
     }

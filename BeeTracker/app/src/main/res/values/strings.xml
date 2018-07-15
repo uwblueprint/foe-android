@@ -66,7 +66,7 @@
     <string name="signup_password_placeholder">Minimum 8 characters</string>
     <string name="confirm_password_label">RE-ENTER PASSWORD</string>
     <string name="confirm_password_placeholder">Re-enter password</string>
-    <string name="agreement_acknowledgement">By signing up, I agree to the <b>terms and conditions</b> and <b>EULA Agreement</b></string>
+    <string name="agreement_acknowledgement">By signing up, I agree to the <b><a href="https://foecanada.org/en/terms-and-conditions-of-use/">terms and conditions</a></b> and <b><a href="https://foecanada.org/en/about/privacy-policy/">privacy policy</a></b></string>
     <string name="almost_there">Almost there, %1$s!</string>
     <string name="confirm_email_description">We\'ve sent an email to <b>%1$s</b> with a confirmation link to complete your signup.</string>
     <string name="resend_email">Resend Email</string>
